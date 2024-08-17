@@ -1,0 +1,181 @@
+{
+  "@@locale": "en",
+  "welcome": "Welcome",
+  "@welcome": {
+    "description": "A greeting message"
+  },
+  "popularMovies": "Popular movies",
+  "@popularMovies": {
+    "description": "Title of popular movies list view in home screen"
+  },
+  "topRatedMovies": "Top rated movies",
+  "@topRatedMovies": {
+    "description": "Title of top rated movies list view in home screen"
+  },
+  "nowPlayingMovies": "Now playing movies",
+  "@nowPlayingMovies": {
+    "description": "Title of now playing movies list view in home screen"
+  },
+  "upcomingMovies": "Upcoming movies",
+  "@upcomingMovies": {
+    "description": "Title of upcoming movies list view in home screen"
+  },
+  "seeMore": "See more",
+  "@seeMore": {
+    "description": "Title of see more button"
+  },
+  "settings": "Settings",
+  "@settings": {
+    "description": "Title of settings screen"
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Language title in settings screen"
+  },
+  "themeChange": "Theme change",
+  "@themeChange": {
+    "description": "Theme change title in settings screen"
+  },
+  "miniGame": "Mini Game",
+  "@miniGame": {
+    "description": "Title of mini game screen"
+  },
+  "pickRandomMovie": "Pick Random Movie",
+  "@pickRandomMovie": {
+    "description": "Title of pick random movie mini game"
+  },
+  "quizz": "Quizz",
+  "@quizz": {
+    "description": "Title of quizz mini game"
+  },
+  "notifications": "Notifications",
+  "@notifications":{ 
+    "description": "Title of notifications screen"
+  },
+  "movieDetail": "Movie detail",
+  "@movieDetail":{
+    "description": "Title of movie detail screen"
+  },
+  "trailer": "Trailer",
+  "@trailer":{
+    "description": "Title of trailer part in movie detail screen"
+  },
+  "emptyTrailer": "No trailer available",
+  "@emptyTrailer": {
+    "description": "Notification when having no trailer available"
+  },
+  "castAndCrew": "Cast and Crew",
+  "@castAndCrew": {
+    "description": "Title of cast and crew part in movie detail screen"
+  },
+  "overview": "Overview",
+  "@overview":{
+    "description": "Title of overview part in movie detail screen"
+  },
+  "saveToFavorites": "Save to Favorites",
+  "@saveToFavorites":{
+    "description": "Title of save too favorites button"
+  },
+  "noMoviesAvailable": "No movies available",
+  "@noMoviesAvailable":{
+    "description": "Notification when no movies was found"
+  },
+  "listOfMovies": "List of Movies",
+  "@listOfMovies":{
+    "description": "Title of list of movies screen"
+  },
+  "aboutUs": "About Us",
+  "@aboutUs":{
+    "description": "Title of about us screen"
+  },
+  "cameraPermissionAsk": "Camera access is required.",
+  "@cameraPermissionAsk": {
+    "description": "Ask for camera access permission"
+  },
+  "storagePermissionAsk": "Storage access is required to select photos.",
+  "@storagePermissionAsk": {
+    "description": "Ask for storage access permission"
+  },
+  "selectImageSource": "Select image source",
+  "@selectImageSource": {
+    "description": "Title of the image source selection dialog"
+  },
+  "imagesFromGallery": "Select image from Gallery",
+  "@imagesFromGallery": {
+    "description": "Option to select image from gallery"
+  },
+  "imagesFromCamera": "Open Camera",
+  "@imagesFromCamera": {
+    "description": "Option to open camera"
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Title of the profile screen"
+  },
+  "information": "Personal Information",
+  "@information": {
+    "description": "Option to access personal information"
+  },
+  "favoritesList": "Favorites List",
+  "@favoritesList": {
+    "description": "Option to access favorites list"
+  },
+  "calendar": "Calendar",
+  "@calendar": {
+    "description": "Title of the calendar screen"
+  },
+  "options": "Options",
+  "@options": {
+    "description": "Option to access settings"
+  },
+  "logOut": "Log Out",
+  "@logOut": {
+    "description": "Option to log out of the app"
+  },
+  "searchHint": "Search...",
+  "@searchHint": {
+    "description": "Hint text for the search field"
+  },
+  "noMoviesFound": "No movies found",
+  "@noMoviesFound": {
+    "description": "Message displayed when no movies are found"
+  },
+  "searchingMovie": "Searching your destiny movie!",
+  "@searchingMovie": {
+    "description": "Message displayed while searching for movies"
+  },
+  "error": "Error: {errorMessage}",
+  "@error": {
+    "description": "Message displayed when an error occurs",
+    "placeholders": {
+      "errorMessage": {
+        "type": "String",
+        "example": "Network error"
+      }
+    }
+  },
+  "clearButtonTooltip": "Clear search",
+  "@clearButtonTooltip": {
+    "description": "Tooltip for the clear button in the search field"
+  },
+  "home": "Home",
+  "@home": {
+    "description": "Label for the Home tab in the bottom navigation bar"
+  },
+  "search": "Search",
+  "@search": {
+    "description": "Label for the Search tab in the bottom navigation bar"
+  },
+  "miniGames": "Mini Games",
+  "@miniGames": {
+    "description": "Label for the Mini Games tab in the bottom navigation bar"
+  },
+  "rememberAccount": "Remember account",
+  "@rememberAccount": {
+    "description": "Label for the checkbox to remember the account"
+  },
+  "forgotPassword": "Forgot Password?",
+  "@forgotPassword": {
+    "description": "Button label for users who forgot their password"
+  }
+}

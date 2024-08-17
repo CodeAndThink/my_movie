@@ -1,0 +1,181 @@
+{
+  "@@locale": "vi",
+  "welcome": "Xin chào",
+  "@welcome": {
+    "description": "Lời chào"
+  },
+  "popularMovies": "Phim phổ biến",
+  "@popularMovies": {
+    "description": "Tiêu đề của mục popular movies trong màn hình chính"
+  },
+  "topRatedMovies": "Phim được đánh giá cao",
+  "@topRatedMovies": {
+    "description": "Tiêu đề của mục top rated movies trong màn hình chính"
+  },
+  "nowPlayingMovies": "Phim đang chiếu",
+  "@nowPlayingMovies": {
+    "description": "Tiêu đề của mục now playing movies trong màn hình chính"
+  },
+  "upcomingMovies": "Phim sắp chiếu",
+  "@upcomingMovies": {
+    "description": "Tiêu đề của mục upcoming movies trong màn hình chính"
+  },
+  "seeMore": "Hiện thêm",
+  "@seeMore": {
+    "description": "Tiêu đề của nút hiển thị thêm"
+  },
+  "settings": "Tùy chọn",
+  "@settings": {
+    "description": "Tiêu đề của màn hình tùy chọn"
+  },
+  "language": "Ngôn ngữ",
+  "@language": {
+    "description": "Tiêu đề mục thay đổi ngôn ngữ trong màn hình settings"
+  },
+  "themeChange": "Thay đổi chủ đề",
+  "@themeChange": {
+    "description": "Tiêu đề mục thay đổi chủ đề trong màn hình settings"
+  },
+  "miniGame": "Trò chơi vui vẻ",
+  "@miniGame": {
+    "description": "Tiêu đề của màn hình mini game"
+  },
+  "pickRandomMovie": "Phim ngẫu nhiên",
+  "@pickRandomMovie": {
+    "description": "Tiêu đề của chức năng chọn phim ngẫu nhiên"
+  },
+  "quizz": "Đố vui",
+  "@quizz": {
+    "description": "Tiêu đề của trò chơi đố vui"
+  },
+  "notifications": "Thông báo",
+  "@notifications":{ 
+    "description": "Tiêu đề của màn hình thông báo"
+  },
+  "movieDetail": "Thông tin chi tiết",
+  "@movieDetail":{
+    "description": "Tiêu đề của màn hình thông tin chi tiết phim"
+  },
+  "trailer": "Trailer",
+  "@trailer":{
+    "description": "Tiêu đề của phần trailer trong màn hình thông tin chi tiết phim"
+  },
+  "emptyTrailer": "Không có trailer có sẵn",
+  "@emptyTrailer": {
+    "description": "Thông báo khi không tìm thấy trailer của bộ phim"
+  },
+  "castAndCrew": "Dàn diễn viên và đoàn làm phim",
+  "@castAndCrew": {
+    "description": "Tiêu đề của phần danh sách thành viên bộ phim trong màn hình thông tin chi tiết phim"
+  },
+  "overview": "Nội dung",
+  "@overview":{
+    "description": "Tiêu đề của phần sơ lược nội dung phim trong màn hình thông tin chi tiết phim"
+  },
+  "saveToFavorites": "Lưu vào mục yêu thích",
+  "@saveToFavorites":{
+    "description": "Tiêu đề của nút thêm phim vào danh sách yêu thích"
+  },
+  "noMoviesAvailable": "Không có phim nào được tìm thấy",
+  "@noMoviesAvailable":{
+    "description": "Thông báo khi không có phim nào đươcj tìm thấy"
+  },
+  "listOfMovies": "Danh sách phim",
+  "@listOfMovies":{
+    "description": "Tiêu đề của màn hình danh sách phim"
+  },
+  "aboutUs": "Về chúng tôi",
+  "@aboutUs":{
+    "description": "Tiêu đề của màn hình về chúng tôi"
+  },
+  "cameraPermissionAsk": "Cần cấp quyền truy cập để mở camera.",
+  "@cameraPermissionAsk":{
+    "description": "Hỏi quyền truy cập máy ảnh"
+  },
+  "storagePermissionAsk": "Cần cấp quyền truy cập để chọn ảnh.",
+  "@storagePermissionAsk":{
+    "description": "Hỏi quyền truy cập bộ nhớ trong"
+  },
+  "selectImageSource": "Chọn nguồn ảnh",
+  "@selectImageSource": {
+    "description": "Tiêu đề của hộp thông báo chọn vị trí ảnh"
+  },
+  "imagesFromGallery": "Chọn ảnh từ Thư viện",
+  "@imagesFromGallery": {
+    "description": "Tùy chọn ảnh từ thư viện"
+  },
+  "imagesFromCamera": "Mở Camera",
+  "@imagesFromCamera":{
+    "description": "Tùy chọn mở camera"
+  },
+  "profile": "Hồ sơ",
+  "@profile": {
+    "description": "Tiêu đề của màn hình hồ sơ"
+  },
+  "information": "Thông tin cá nhân",
+  "@information":{
+    "description": "Tùy chọn truy cập thông tin cá nhân"
+  },
+  "favoritesList": "Danh sách yêu thích",
+  "@favoritesList":{
+    "description": "Tùy chọn truy cập danh sách ưa thích"
+  },
+  "calendar": "Lịch",
+  "@calendar": {
+    "description": "Tiêu đề của màn hình lịch"
+  },
+  "options": "Tùy chọn",
+  "@options": {
+    "description": "Tùy chọn truy cập cài đặt"
+  },
+  "logOut": "Đăng xuất",
+  "@logOut": {
+    "description": "Tùy chọn đăng xuất khỏi ứng dụng"
+  },
+  "searchHint": "Tìm kiếm...",
+  "@searchHint": {
+    "description": "Văn bản gợi ý cho ô tìm kiếm"
+  },
+  "noMoviesFound": "Không tìm thấy phim nào",
+  "@noMoviesFound": {
+    "description": "Thông báo khi không tìm thấy phim nào"
+  },
+  "searchingMovie": "Đang tìm kiếm phim định mệnh của bạn!",
+  "@searchingMovie": {
+    "description": "Thông báo mặc định khi đang tìm kiếm phim"
+  },
+  "error": "Lỗi: {errorMessage}",
+  "@error": {
+    "description": "Thông báo lỗi khi có sự cố xảy ra",
+    "placeholders": {
+      "errorMessage": {
+        "type": "String",
+        "example": "Lỗi kết nối mạng"
+      }
+    }
+  },
+  "clearButtonTooltip": "Xóa tìm kiếm",
+  "@clearButtonTooltip": {
+    "description": "Tooltip cho nút xóa trong ô tìm kiếm"
+  },
+  "home": "Trang chủ",
+  "@home": {
+    "description": "Nhãn cho tab Trang chủ trong thanh điều hướng dưới cùng"
+  },
+  "search": "Tìm kiếm",
+  "@search": {
+    "description": "Nhãn cho tab Tìm kiếm trong thanh điều hướng dưới cùng"
+  },
+  "miniGames": "Trò chơi nhỏ",
+  "@miniGames": {
+    "description": "Nhãn cho tab Trò chơi nhỏ trong thanh điều hướng dưới cùng"
+  },
+  "rememberAccount": "Ghi nhớ tài khoản",
+  "@rememberAccount": {
+    "description": "Nhãn cho hộp kiểm để ghi nhớ tài khoản"
+  },
+  "forgotPassword": "Quên mật khẩu?",
+  "@forgotPassword": {
+    "description": "Nhãn của nút cho người dùng quên mật khẩu"
+  }
+}
