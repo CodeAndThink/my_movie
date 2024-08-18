@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -15,14 +16,17 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<LoadTrailerMovies>(_onLoadTrailerMovies);
     on<SearchMovies>(_searchMovies);
     on<LoadMovieByGenre>(_onLoadMovieByGenre);
+    on<RateMovie>(_onRateMovie);
+    on<DeleteMovieRating>(_onDeleteMovieRating);
+    on<LoadMovieReviews>(_onLoadMovieReviews);
   }
 
   Future<void> _onLoadMovieByCategories(
       LoadMoviesByCategories event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response =
-          await _movieRepository.getMovieByCategories(event.category, event.page);
+      final response = await _movieRepository.getMovieByCategories(
+          event.category, event.page);
       final List<dynamic> movieJsonList = response.data['results'];
       final List<Movie> movies =
           movieJsonList.map((json) => Movie.fromJson(json)).toList();
@@ -127,6 +131,51 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       emit(SearchByMovieGenre(movies));
     } catch (e) {
       emit(MovieError('Failed to find movie by genre'));
+    }
+  }
+
+  Future<void> _onRateMovie(RateMovie event, Emitter<MovieState> emit) async {
+    emit(MovieLoading());
+    try {
+      final response =
+          await _movieRepository.rateMovie(event.movieId, event.rating);
+      if (response.statusCode == 201) {
+        emit(MovieRatedSuccess());
+      } else {
+        emit(MovieError('Failed to rate movie'));
+      }
+    } catch (e) {
+      emit(MovieError('Failed to rate movie'));
+    }
+  }
+
+  Future<void> _onDeleteMovieRating(
+      DeleteMovieRating event, Emitter<MovieState> emit) async {
+    emit(MovieLoading());
+    try {
+      final response = await _movieRepository.deleteMovieRating(event.movieId);
+      if (response.statusCode == 200) {
+        emit(MovieRatingDeletedSuccess());
+      } else {
+        emit(MovieError('Failed to delete movie rating'));
+      }
+    } catch (e) {
+      emit(MovieError('Failed to delete movie rating'));
+    }
+  }
+
+  Future<void> _onLoadMovieReviews(
+      LoadMovieReviews event, Emitter<MovieState> emit) async {
+    emit(MovieLoading());
+    try {
+      final response =
+          await _movieRepository.getMovieReviews(event.movieId, event.page);
+      final List<dynamic> reviewsJson = response.data['results'];
+      final List<Review> reviews =
+          reviewsJson.map((json) => Review.fromJson(json)).toList();
+      emit(MovieReviewsLoaded(reviews));
+    } catch (e) {
+      emit(MovieError('Failed to load movie reviews'));
     }
   }
 }

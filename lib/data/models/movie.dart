@@ -37,8 +37,8 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      id: json['id'] as int? ?? 0, // Cung cấp giá trị mặc định nếu null
-      title: json['title'] as String? ?? '', // Cung cấp giá trị mặc định nếu null
+      id: json['id'] as int? ?? 0,
+      title: json['title'] as String? ?? '',
       genreIds: (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
       genres: (json['genres'] as List<dynamic>?)
           ?.map((e) => MovieGenre.fromJson(e as Map<String, dynamic>))

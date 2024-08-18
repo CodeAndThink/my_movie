@@ -33,3 +33,23 @@ class LoadMovieByGenre extends MovieEvent {
 
   LoadMovieByGenre(this.genreId, this.page);
 }
+
+class RateMovie extends MovieEvent {
+  final int movieId;
+  final double rating;
+
+  RateMovie(this.movieId, this.rating);
+}
+
+class DeleteMovieRating extends MovieEvent {
+  final int movieId;
+
+  DeleteMovieRating(this.movieId);
+}
+
+class LoadMovieReviews extends MovieEvent {
+  final int movieId;
+  final int page;
+
+  LoadMovieReviews(this.movieId, this.page);
+}

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/screens/login/register_screen.dart';
 import 'package:my_movie/theme/theme.dart';
 
@@ -55,7 +56,7 @@ class LoginScreenState extends State<LoginScreen> {
                           ),
                           const SizedBox(height: 30.0),
                           Text(
-                            'Welcome back!',
+                            AppLocalizations.of(context)!.welcomeBack,
                             style: Theme.of(context).textTheme.headlineLarge,
                           ),
                         ],
@@ -68,22 +69,22 @@ class LoginScreenState extends State<LoginScreen> {
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: [
-                    const Text('Enter Email and Password to Login!'),
+                    Text(AppLocalizations.of(context)!.enterEmailPassword),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.email,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     const SizedBox(height: 16.0),
                     TextField(
                       controller: passwordController,
                       obscureText: true,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.password,
+                        border: const OutlineInputBorder(),
                       ),
                     ),
                     Row(
@@ -97,11 +98,12 @@ class LoginScreenState extends State<LoginScreen> {
                             });
                           },
                         ),
-                        const Text('Remember account'),
+                        Text(AppLocalizations.of(context)!.rememberAccount),
                         const Spacer(),
                         TextButton(
                           onPressed: () {},
-                          child: const Text('Forgot Password?'),
+                          child: Text(
+                              AppLocalizations.of(context)!.forgotPassword),
                         ),
                       ],
                     ),
@@ -116,9 +118,9 @@ class LoginScreenState extends State<LoginScreen> {
                             widget.onLoginSuccess();
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
+                              SnackBar(
                                 content: Text(
-                                    'Login failed. Please check your credentials.'),
+                                    AppLocalizations.of(context)!.loginFailed),
                               ),
                             );
                           }
@@ -128,9 +130,9 @@ class LoginScreenState extends State<LoginScreen> {
                           foregroundColor: Colors.white,
                           minimumSize: Size(cardWidth - 20, 50),
                         ),
-                        child: const Text(
-                          'Log In',
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          AppLocalizations.of(context)!.logIn,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
@@ -138,7 +140,7 @@ class LoginScreenState extends State<LoginScreen> {
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text('Have no account?'),
+                        Text(AppLocalizations.of(context)!.haveNoAccount),
                         TextButton(
                           onPressed: () => Navigator.push(
                             context,
@@ -146,9 +148,9 @@ class LoginScreenState extends State<LoginScreen> {
                               builder: (context) => const RegisterScreen(),
                             ),
                           ),
-                          child: const Text(
-                            'Become new member',
-                            style: TextStyle(color: Colors.blue),
+                          child: Text(
+                            AppLocalizations.of(context)!.becomeNewMember,
+                            style: const TextStyle(color: Colors.blue),
                           ),
                         )
                       ],

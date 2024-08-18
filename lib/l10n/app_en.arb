@@ -177,5 +177,39 @@
   "forgotPassword": "Forgot Password?",
   "@forgotPassword": {
     "description": "Button label for users who forgot their password"
-  }
+  },
+  "comments": "Comments",
+  "@comments": {
+    "description": "Title of comments list part in detail screen"
+  },
+  "commentHint": "Comment...",
+  "@commentHint": {
+    "description": "Label for the comment input field."
+  },
+  "doYouLikeThisMovie": "Do you like this movie?",
+  "@doYouLikeThisMovie": {
+    "description": "Question asking if the user likes the movie."
+  },
+  "details": "Details",
+  "@details": {
+    "description": "Button text for showing more details."
+  },
+  "rates": "Rates",
+  "@rates": {
+    "description": "Title of ratio rate chart in detail movie screen"
+  },
+  "all": "All",
+  "reviewBy": "Review by {author}",
+  "authorDetails": "Author Details:",
+  "name": "Name: {name}",
+  "username": "Username: {username}",
+  "close": "Close",
+  "email": "Email",
+  "password": "Password",
+  "loginFailed": "Login failed. Please check your credentials.",
+  "logIn": "Log In",
+  "haveNoAccount": "Have no account?",
+  "becomeNewMember": "Become new member",
+  "welcomeBack": "Welcome back!",
+  "enterEmailPassword": "Enter Email and Password to Login!"
 }

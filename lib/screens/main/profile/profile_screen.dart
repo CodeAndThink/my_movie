@@ -81,6 +81,55 @@ class ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
+  Widget _buildProfileCard(String count, String label) {
+    return SizedBox(
+      height: 80,
+      width: 100,
+      child: Card(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              count,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            Text(
+              label,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProfileButton(
+      IconData icon, String text, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Icon(icon),
+          const Spacer(),
+          Center(
+            child: Text(
+              text,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+          const Spacer(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +144,10 @@ class ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             Card(
-              elevation: 4.0,
+              elevation: 7.0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
               child: Stack(
                 alignment: Alignment.center,
                 children: [
@@ -103,21 +155,15 @@ class ProfileScreenState extends State<ProfileScreen> {
                     child: Container(
                       width: double.infinity,
                       height: 200,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Positioned(
-                    child: Container(
-                      width: double.infinity,
-                      height: 100,
                       color: Theme.of(context).colorScheme.surface,
                     ),
                   ),
                   Positioned(
+                    top: 10,
                     child: Stack(
                       children: [
                         const CircleAvatar(
-                          radius: 40,
+                          radius: 50,
                           backgroundImage: AssetImage('assets/images/man.png'),
                         ),
                         Positioned(
@@ -133,111 +179,42 @@ class ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.info),
-                  const Spacer(),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.information,
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
+                  Positioned(
+                    bottom: 10,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildProfileCard('1', 'Like'),
+                        _buildProfileCard('2', 'Comments'),
+                        _buildProfileCard('3', 'Level'),
+                      ],
                     ),
                   ),
-                  const Spacer(),
                 ],
               ),
             ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(
-                    Icons.favorite,
-                    color: Colors.redAccent,
-                  ),
-                  const Spacer(),
-                  Title(
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Text(AppLocalizations.of(context)!.favoritesList)),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.calendar_month),
-                  const Spacer(),
-                  Title(
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Text(AppLocalizations.of(context)!.calendar)),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const SettingsScreen()))
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.settings),
-                  const Spacer(),
-                  Title(
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Text(AppLocalizations.of(context)!.settings)),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const AboutUsScreen()))
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.device_hub),
-                  const Spacer(),
-                  Title(
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Text(AppLocalizations.of(context)!.aboutUs)),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () => {},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Icon(Icons.logout),
-                  const Spacer(),
-                  Title(
-                      color: Theme.of(context).colorScheme.primary,
-                      child: Text(AppLocalizations.of(context)!.logOut)),
-                  const Spacer(),
-                ],
-              ),
-            )
+            _buildProfileButton(Icons.info,
+                AppLocalizations.of(context)!.information, () => {}),
+            _buildProfileButton(Icons.favorite,
+                AppLocalizations.of(context)!.favoritesList, () => {}),
+            _buildProfileButton(Icons.calendar_month,
+                AppLocalizations.of(context)!.calendar, () => {}),
+            _buildProfileButton(
+                Icons.settings, AppLocalizations.of(context)!.settings, () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SettingsScreen()));
+            }),
+            _buildProfileButton(
+                Icons.device_hub, AppLocalizations.of(context)!.aboutUs, () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const AboutUsScreen()));
+            }),
+            _buildProfileButton(
+                Icons.logout, AppLocalizations.of(context)!.logOut, () => {}),
           ],
         ),
       ),

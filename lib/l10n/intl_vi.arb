@@ -177,5 +177,39 @@
   "forgotPassword": "Quên mật khẩu?",
   "@forgotPassword": {
     "description": "Nhãn của nút cho người dùng quên mật khẩu"
-  }
+  },
+  "comments": "Bình luận",
+  "@comments": {
+    "description": "Tiêu đề phần bình luận trong màn hình thông tin chi tiết phim"
+  },
+  "commentHint": "Bình luận...",
+  "@commentHint": {
+    "description": "Nhãn cho trường nhập bình luận."
+  },
+  "doYouLikeThisMovie": "Bạn có thích bộ phim này không?",
+  "@doYouLikeThisMovie": {
+    "description": "Câu hỏi hỏi xem người dùng có thích bộ phim này không."
+  },
+  "details": "Chi tiết",
+  "@details": {
+    "description": "Nhãn nút để hiển thị thêm chi tiết."
+  },
+  "rates": "Đánh giá",
+  "@rates": {
+    "description": "Tiêu đề phần tỉ lệ đánh giá trong màn hình thông tin chi tiết phim"
+  },
+  "all": "Tất cả",
+  "reviewBy": "Đánh giá của {author}",
+  "authorDetails": "Thông tin tác giả:",
+  "name": "Tên: {name}",
+  "username": "Tên người dùng: {username}",
+  "close": "Đóng",
+  "email": "Email",
+  "password": "Mật khẩu",
+  "loginFailed": "Đăng nhập không thành công. Vui lòng kiểm tra lại thông tin đăng nhập.",
+  "logIn": "Đăng nhập",
+  "haveNoAccount": "Chưa có tài khoản?",
+  "becomeNewMember": "Trở thành thành viên mới",
+  "welcomeBack": "Chào mừng trở lại!",
+  "enterEmailPassword": "Nhập Email và Mật khẩu để đăng nhập!"
 }

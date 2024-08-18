@@ -84,4 +84,29 @@ class MovieRepository {
       'page': page,
     });
   }
+
+  Future<Response> rateMovie(int movieId, double rating) async {
+    return _apiService.post(
+      'movie/$movieId/rating',
+      data: {
+        'value': rating,
+      },
+    );
+  }
+
+  Future<Response> deleteMovieRating(int movieId) async {
+    return _apiService.delete(
+      'movie/$movieId/rating',
+    );
+  }
+
+  Future<Response> getMovieReviews(int movieId, int page) async {
+    return _apiService.get(
+      'movie/$movieId/reviews',
+      queryParameters: {
+        'language': Values.language,
+        'page': page.toString(),
+      },
+    );
+  }
 }

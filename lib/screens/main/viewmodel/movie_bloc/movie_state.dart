@@ -1,4 +1,5 @@
 // State của Bloc
+import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
 
 abstract class MovieState {}
@@ -61,4 +62,14 @@ class SearchByMovieGenre extends MovieState {
   final List<dynamic> movies;
 
   SearchByMovieGenre(this.movies);
+}
+
+class MovieRatedSuccess extends MovieState {}
+
+class MovieRatingDeletedSuccess extends MovieState {}
+
+class MovieReviewsLoaded extends MovieState {
+  final List<Review> reviews;
+
+  MovieReviewsLoaded(this.reviews);
 }

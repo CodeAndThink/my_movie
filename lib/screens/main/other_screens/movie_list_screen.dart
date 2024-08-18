@@ -66,13 +66,13 @@ class MovieListScreenState extends State<MovieListView> {
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                CategoryChip(
+                categoryChip(
                     AppLocalizations.of(context)!.popularMovies, 'popular'),
-                CategoryChip(AppLocalizations.of(context)!.nowPlayingMovies,
+                categoryChip(AppLocalizations.of(context)!.nowPlayingMovies,
                     'now_playing'),
-                CategoryChip(
+                categoryChip(
                     AppLocalizations.of(context)!.topRatedMovies, 'top_rated'),
-                CategoryChip(
+                categoryChip(
                     AppLocalizations.of(context)!.upcomingMovies, 'upcoming'),
               ],
             ),
@@ -157,7 +157,7 @@ class MovieListScreenState extends State<MovieListView> {
     );
   }
 
-  Widget CategoryChip(String label, String categoryKey) {
+  Widget categoryChip(String label, String categoryKey) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: ChoiceChip(
