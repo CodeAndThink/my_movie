@@ -49,15 +49,15 @@
     "description": "Tiêu đề của trò chơi đố vui"
   },
   "notifications": "Thông báo",
-  "@notifications":{ 
+  "@notifications": {
     "description": "Tiêu đề của màn hình thông báo"
   },
   "movieDetail": "Thông tin chi tiết",
-  "@movieDetail":{
+  "@movieDetail": {
     "description": "Tiêu đề của màn hình thông tin chi tiết phim"
   },
   "trailer": "Trailer",
-  "@trailer":{
+  "@trailer": {
     "description": "Tiêu đề của phần trailer trong màn hình thông tin chi tiết phim"
   },
   "emptyTrailer": "Không có trailer có sẵn",
@@ -69,31 +69,31 @@
     "description": "Tiêu đề của phần danh sách thành viên bộ phim trong màn hình thông tin chi tiết phim"
   },
   "overview": "Nội dung",
-  "@overview":{
+  "@overview": {
     "description": "Tiêu đề của phần sơ lược nội dung phim trong màn hình thông tin chi tiết phim"
   },
   "saveToFavorites": "Lưu vào mục yêu thích",
-  "@saveToFavorites":{
+  "@saveToFavorites": {
     "description": "Tiêu đề của nút thêm phim vào danh sách yêu thích"
   },
   "noMoviesAvailable": "Không có phim nào được tìm thấy",
-  "@noMoviesAvailable":{
+  "@noMoviesAvailable": {
     "description": "Thông báo khi không có phim nào đươcj tìm thấy"
   },
   "listOfMovies": "Danh sách phim",
-  "@listOfMovies":{
+  "@listOfMovies": {
     "description": "Tiêu đề của màn hình danh sách phim"
   },
   "aboutUs": "Về chúng tôi",
-  "@aboutUs":{
+  "@aboutUs": {
     "description": "Tiêu đề của màn hình về chúng tôi"
   },
   "cameraPermissionAsk": "Cần cấp quyền truy cập để mở camera.",
-  "@cameraPermissionAsk":{
+  "@cameraPermissionAsk": {
     "description": "Hỏi quyền truy cập máy ảnh"
   },
   "storagePermissionAsk": "Cần cấp quyền truy cập để chọn ảnh.",
-  "@storagePermissionAsk":{
+  "@storagePermissionAsk": {
     "description": "Hỏi quyền truy cập bộ nhớ trong"
   },
   "selectImageSource": "Chọn nguồn ảnh",
@@ -105,7 +105,7 @@
     "description": "Tùy chọn ảnh từ thư viện"
   },
   "imagesFromCamera": "Mở Camera",
-  "@imagesFromCamera":{
+  "@imagesFromCamera": {
     "description": "Tùy chọn mở camera"
   },
   "profile": "Hồ sơ",
@@ -113,11 +113,11 @@
     "description": "Tiêu đề của màn hình hồ sơ"
   },
   "information": "Thông tin cá nhân",
-  "@information":{
+  "@information": {
     "description": "Tùy chọn truy cập thông tin cá nhân"
   },
   "favoritesList": "Danh sách yêu thích",
-  "@favoritesList":{
+  "@favoritesList": {
     "description": "Tùy chọn truy cập danh sách ưa thích"
   },
   "calendar": "Lịch",
@@ -211,5 +211,31 @@
   "haveNoAccount": "Chưa có tài khoản?",
   "becomeNewMember": "Trở thành thành viên mới",
   "welcomeBack": "Chào mừng trở lại!",
-  "enterEmailPassword": "Nhập Email và Mật khẩu để đăng nhập!"
+  "enterEmailPassword": "Nhập Email và Mật khẩu để đăng nhập!",
+  "register": "Đăng ký",
+  "becomeMember": "Trở thành một thành viên của cộng đồng chúng tôi!",
+  "repassword": "Nhập lại mật khẩu",
+  "changeTheme": "Thay đổi chủ đề",
+  "changeLocale": "Thay đổi ngôn ngữ",
+  "createAt": "Tạo ngày: {date} lúc {time}",
+  "pleaseEnterCredentials": "Vui lòng điền đẩy đủ thông tin đăng nhập!",
+  "confirmPassword": "Xác nhận mật khẩu",
+  "originalName": "Tên khai sinh: {name}",
+  "character": "Nhân vật: {character}",
+  "job": "Nghề nghiệp: {job}",
+  "departmentLabel": "Khoa: {department}",
+  "orderLabel": "Thứ tự: {order}",
+  "castIdLabel": "ID Diễn viên: {castId}",
+  "creditIdLabel": "ID Tín dụng: {creditId}",
+  "userProfile": "Hồ sơ người dùng",
+  "noUserDataAvailable": "Không có dữ liệu người dùng",
+  "displayName": "Tên hiển thị: {displayName}",
+  "dob": "Ngày sinh: {dob}",
+  "gender": "Giới tính: {gender}",
+  "phone": "Số điện thoại: {phone}",
+  "address": "Địa chỉ: {address}",
+  "avatarPath": "URL ảnh đại diện: {avatarPath}",
+  "createDate": "Ngày tạo: {createDate}",
+  "male": "Nam",
+  "female": "Nữ"
 }

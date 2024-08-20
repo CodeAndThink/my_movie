@@ -49,15 +49,15 @@
     "description": "Title of quizz mini game"
   },
   "notifications": "Notifications",
-  "@notifications":{ 
+  "@notifications": {
     "description": "Title of notifications screen"
   },
   "movieDetail": "Movie detail",
-  "@movieDetail":{
+  "@movieDetail": {
     "description": "Title of movie detail screen"
   },
   "trailer": "Trailer",
-  "@trailer":{
+  "@trailer": {
     "description": "Title of trailer part in movie detail screen"
   },
   "emptyTrailer": "No trailer available",
@@ -69,23 +69,23 @@
     "description": "Title of cast and crew part in movie detail screen"
   },
   "overview": "Overview",
-  "@overview":{
+  "@overview": {
     "description": "Title of overview part in movie detail screen"
   },
   "saveToFavorites": "Save to Favorites",
-  "@saveToFavorites":{
+  "@saveToFavorites": {
     "description": "Title of save too favorites button"
   },
   "noMoviesAvailable": "No movies available",
-  "@noMoviesAvailable":{
+  "@noMoviesAvailable": {
     "description": "Notification when no movies was found"
   },
   "listOfMovies": "List of Movies",
-  "@listOfMovies":{
+  "@listOfMovies": {
     "description": "Title of list of movies screen"
   },
   "aboutUs": "About Us",
-  "@aboutUs":{
+  "@aboutUs": {
     "description": "Title of about us screen"
   },
   "cameraPermissionAsk": "Camera access is required.",
@@ -211,5 +211,31 @@
   "haveNoAccount": "Have no account?",
   "becomeNewMember": "Become new member",
   "welcomeBack": "Welcome back!",
-  "enterEmailPassword": "Enter Email and Password to Login!"
+  "enterEmailPassword": "Enter Email and Password to Login!",
+  "register": "Register",
+  "becomeMember": "Become one of our community!",
+  "repassword": "RePassword",
+  "changeTheme": "Change Theme",
+  "changeLocale": "Change Locale",
+  "createAt": "Create on: {date} at {time}",
+  "pleaseEnterCredentials": "Please enter both email and password",
+  "confirmPassword": "Confirm Password",
+  "originalName": "Original Name: {name}",
+  "character": "Character: {character}",
+  "job": "Job: {job}",
+  "departmentLabel": "Department: {department}",
+  "orderLabel": "Order: {order}",
+  "castIdLabel": "Cast ID: {castId}",
+  "creditIdLabel": "Credit ID: {creditId}",
+  "userProfile": "User Profile",
+  "noUserDataAvailable": "No user data available",
+  "displayName": "Display Name: {displayName}",
+  "dob": "Date of Birth: {dob}",
+  "gender": "Gender: {gender}",
+  "phone": "Phone: {phone}",
+  "address": "Address: {address}",
+  "avatarPath": "Avatar URL: {avatarPath}",
+  "createDate": "Create Date: {createDate}",
+  "male": "Male",
+  "female": "Female"
 }

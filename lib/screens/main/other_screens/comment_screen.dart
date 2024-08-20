@@ -28,17 +28,7 @@ class CommentScreenState extends State<CommentScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     rate = [
-      AppLocalizations.of(context)?.all ?? 'All',
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10'
+      AppLocalizations.of(context)?.all ?? 'All'
     ];
     selectedRate = rate[0];
     _loadMovieData();

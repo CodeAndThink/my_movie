@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/home/list_items/large_card.dart';
 import 'package:my_movie/screens/main/home/list_view/movie_sections.dart';
 import 'package:my_movie/screens/main/notifications/notifications_screen.dart';
@@ -20,14 +19,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<HomeScreen> {
-  late final MovieBloc _movieBloc;
   late final PageController _pageController;
   final int _infiniteScrollFactor = 20;
 
   @override
   void initState() {
     super.initState();
-    _movieBloc = MovieBloc(MovieRepository());
     _pageController = PageController(
       viewportFraction: 1.0,
     );
@@ -41,70 +38,63 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadAllCategories() {
-    _movieBloc.add(LoadMoviesByCategories('popular', 1));
-    _movieBloc.add(LoadMoviesByCategories('top_rated', 1));
-    _movieBloc.add(LoadMoviesByCategories('now_playing', 1));
-    _movieBloc.add(LoadMoviesByCategories('upcoming', 1));
+    (context).read<MovieBloc>().add(LoadMoviesByCategories('popular', 1));
+    (context).read<MovieBloc>().add(LoadMoviesByCategories('top_rated', 1));
+    (context).read<MovieBloc>().add(LoadMoviesByCategories('now_playing', 1));
+    (context).read<MovieBloc>().add(LoadMoviesByCategories('upcoming', 1));
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => _movieBloc,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            AppLocalizations.of(context)!.welcome,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.search,
-                  color: Theme.of(context).colorScheme.primary),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SearchScreen())),
-            ),
-            IconButton(
-              icon: Icon(Icons.notifications,
-                  color: Theme.of(context).colorScheme.primary),
-              onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const NotificationsScreen())),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context)!.welcome,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
-        body: Center(
-          child: BlocBuilder<MovieBloc, MovieState>(
-            builder: (context, state) {
-              if (state is MovieLoading) {
-                return const CircularProgressIndicator();
-              } else if (state is MovieLoaded) {
-                return CustomScrollView(
-                  slivers: [
-                    _buildMovieSection(
-                        'Popular movies:',
-                        state.popularMovies),
-                    _buildMovieSection(
-                        '${AppLocalizations.of(context)!.topRatedMovies}:',
-                        state.topRatedMovies),
-                    _buildMovieSection(
-                        '${AppLocalizations.of(context)!.nowPlayingMovies}:',
-                        state.nowPlayingMovies),
-                    _buildMovieSection(
-                        '${AppLocalizations.of(context)!.upcomingMovies}:',
-                        state.upcomingMovies),
-                  ],
-                );
-              } else if (state is MovieError) {
-                return Text('Error: ${state.message}');
-              } else {
-                return const Text('No data available');
-              }
-            },
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search,
+                color: Theme.of(context).colorScheme.primary),
+            onPressed: () => Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const SearchScreen())),
           ),
+          IconButton(
+            icon: Icon(Icons.notifications,
+                color: Theme.of(context).colorScheme.primary),
+            onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const NotificationsScreen())),
+          ),
+        ],
+      ),
+      body: Center(
+        child: BlocBuilder<MovieBloc, MovieState>(
+          builder: (context, state) {
+            if (state is MovieLoading) {
+              return const CircularProgressIndicator();
+            } else if (state is MovieLoaded) {
+              return CustomScrollView(
+                slivers: [
+                  _buildMovieSection('Popular movies:', state.popularMovies),
+                  _buildMovieSection(
+                      '${AppLocalizations.of(context)!.topRatedMovies}:',
+                      state.topRatedMovies),
+                  _buildMovieSection(
+                      '${AppLocalizations.of(context)!.nowPlayingMovies}:',
+                      state.nowPlayingMovies),
+                  _buildMovieSection(
+                      '${AppLocalizations.of(context)!.upcomingMovies}:',
+                      state.upcomingMovies),
+                ],
+              );
+            } else if (state is MovieError) {
+              return Text('Error: ${state.message}');
+            } else {
+              return const Text('No data available');
+            }
+          },
         ),
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_movie/permission/permission_services.dart';
-import 'package:my_movie/screens/main/profile/settings/about_us_screen.dart';
+import 'package:my_movie/screens/main/profile/calendar/calendar_screen.dart';
+import 'package:my_movie/screens/main/profile/favorites/favorites_screen.dart';
+import 'package:my_movie/screens/main/profile/information/information_screen.dart';
+import 'package:my_movie/screens/main/profile/about_us/about_us_screen.dart';
 import 'package:my_movie/screens/main/profile/settings/settings_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/user_avatar_bloc/image_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/user_avatar_bloc/image_event.dart';
@@ -193,12 +196,29 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ],
               ),
             ),
-            _buildProfileButton(Icons.info,
-                AppLocalizations.of(context)!.information, () => {}),
-            _buildProfileButton(Icons.favorite,
-                AppLocalizations.of(context)!.favoritesList, () => {}),
-            _buildProfileButton(Icons.calendar_month,
-                AppLocalizations.of(context)!.calendar, () => {}),
+            _buildProfileButton(
+                Icons.info, AppLocalizations.of(context)!.information, () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const InformationScreen()));
+            }),
+            _buildProfileButton(
+                Icons.favorite, AppLocalizations.of(context)!.favoritesList,
+                () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FavoritesScreen()));
+            }),
+            _buildProfileButton(
+                Icons.calendar_month, AppLocalizations.of(context)!.calendar,
+                () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CalendarScreen()));
+            }),
             _buildProfileButton(
                 Icons.settings, AppLocalizations.of(context)!.settings, () {
               Navigator.push(
@@ -214,7 +234,14 @@ class ProfileScreenState extends State<ProfileScreen> {
                       builder: (context) => const AboutUsScreen()));
             }),
             _buildProfileButton(
-                Icons.logout, AppLocalizations.of(context)!.logOut, () => {}),
+                Icons.logout, AppLocalizations.of(context)!.logOut, () {
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(
+              //       builder: (context) => LoginScreen(onLoginSuccess: () {})),
+              //   (route) => false,
+              // );
+            }),
           ],
         ),
       ),

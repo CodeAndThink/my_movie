@@ -8,7 +8,10 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.notifications),
+        title: Text(
+          AppLocalizations.of(context)!.notifications,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
       ),
       body: const Center(
         child: Text('This is Notifications screen'),

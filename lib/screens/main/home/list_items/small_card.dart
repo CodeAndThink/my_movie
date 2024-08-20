@@ -30,13 +30,14 @@ class SmallCard extends StatelessWidget {
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(10)),
                   child: Center(
-                    child: Image.network(
-                      Values.imageUrl +
+                    child: FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/placeholder.png',
+                      image: Values.imageUrl +
                           Values.imageSize +
                           (movie.posterPath ?? ''),
                       width: 150,
                       height: 200,
-                      fit: BoxFit.cover,
+                      fit: BoxFit.fitWidth,
                     ),
                   )),
               Padding(

@@ -58,21 +58,7 @@ class MinigameScreenState extends State<MinigameScreen> {
                   title: AppLocalizations.of(context)!.quizz,
                   imageUrl: 'assets/images/quizz.png',
                   onTap: () {
-                    // Xử lý khi click vào Game 2
-                  },
-                ),
-                MiniGamesCard(
-                  title: 'Game 3',
-                  imageUrl: 'assets/images/dice.png',
-                  onTap: () {
-                    // Xử lý khi click vào Game 3
-                  },
-                ),
-                MiniGamesCard(
-                  title: 'Game 4',
-                  imageUrl: 'assets/images/dice.png',
-                  onTap: () {
-                    // Xử lý khi click vào Game 4
+                    
                   },
                 ),
               ],

@@ -61,6 +61,7 @@ class SearchScreenState extends State<SearchScreen> {
             } else {
               return Center(
                   child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Image.asset(
                     'assets/logos/logo.png',
@@ -68,6 +69,7 @@ class SearchScreenState extends State<SearchScreen> {
                     width: 50,
                     fit: BoxFit.cover,
                   ),
+                  const SizedBox(height: 16),
                   Text(AppLocalizations.of(context)!.searchingMovie),
                 ],
               ));

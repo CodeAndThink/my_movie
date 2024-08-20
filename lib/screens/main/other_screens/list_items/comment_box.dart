@@ -89,9 +89,10 @@ class CommentBox extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(AppLocalizations.of(context)!
-                    .name(authorDetails.name ?? '')),
-                Text(AppLocalizations.of(context)!
                     .username(authorDetails.userName)),
+                Text(AppLocalizations.of(context)!.createAt(
+                    review.createdAt.toString().split(' ').first,
+                    review.createdAt.toString().split(' ')[1].substring(0, 8))),
               ],
             ),
           ),

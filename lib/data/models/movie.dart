@@ -56,4 +56,6 @@ class Movie {
       video: json['video'] as bool?,
     );
   }
+
+  toJson() {}
 }

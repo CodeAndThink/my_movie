@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:my_movie/constain_values/values.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
+import 'package:my_movie/screens/main/other_screens/cast_and_crew_screen.dart';
 import 'package:my_movie/screens/main/other_screens/comment_screen.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/credits_card.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
@@ -38,6 +39,7 @@ class MovieDetailView extends StatefulWidget {
 class MovieDetailScreenState extends State<MovieDetailView> {
   late final WebViewController _controller;
   final TextEditingController comment = TextEditingController();
+  final TextEditingController _textEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -142,7 +144,10 @@ class MovieDetailScreenState extends State<MovieDetailView> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   Text(
-                                    (movie.releaseDate?.substring(0, 4) ?? ''),
+                                    (movie.releaseDate != null &&
+                                            movie.releaseDate!.length >= 4
+                                        ? movie.releaseDate!.substring(0, 4)
+                                        : ''),
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineSmall,
@@ -249,7 +254,15 @@ class MovieDetailScreenState extends State<MovieDetailView> {
                                     role: isCast
                                         ? credit['character']
                                         : credit['job'],
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CastAndCrewScreen(
+                                                    credit: credit, isCast: isCast
+                                                  )));
+                                    },
                                   );
                                 },
                               ),
@@ -293,6 +306,16 @@ class MovieDetailScreenState extends State<MovieDetailView> {
                                     decoration: InputDecoration(
                                       labelText: AppLocalizations.of(context)!
                                           .commentHint,
+                                      suffixIcon: _textEditingController
+                                              .text.isNotEmpty
+                                          ? IconButton(
+                                              icon: const Icon(Icons.clear),
+                                              onPressed: () {
+                                                _textEditingController.clear();
+                                                setState(() {});
+                                              },
+                                            )
+                                          : null,
                                       border: const OutlineInputBorder(),
                                     ),
                                   ),
