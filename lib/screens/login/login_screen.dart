@@ -1,18 +1,18 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/screens/login/register_screen.dart';
+import 'package:my_movie/screens/main/main_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
-  final VoidCallback onLoginSuccess;
   final AuthBloc authBloc;
 
   const LoginScreen({
     super.key,
-    required this.onLoginSuccess,
     required this.authBloc,
   });
 
@@ -24,6 +24,13 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isChecked = false;
+
+  void onLoginSuccess() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +163,7 @@ class LoginScreenState extends State<LoginScreen> {
                     bloc: widget.authBloc,
                     listener: (context, state) {
                       if (state is AuthAuthenticated) {
-                        widget.onLoginSuccess();
+                        onLoginSuccess();
                       } else if (state is AuthFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

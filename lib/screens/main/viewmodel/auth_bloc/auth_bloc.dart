@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 import 'package:my_movie/data/models/user.dart' as MyUser;
@@ -12,6 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  final _secureStorage = const FlutterSecureStorage();
 
   AuthBloc(this._firebaseAuth) : super(AuthInitial()) {
     on<AuthSignInRequested>(_onSignInRequested);
@@ -39,6 +41,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           .doc(userCredential.user!.uid)
           .get();
       final docId = docIdSnapshot.data()?['docId'] as String? ?? '';
+
+      await _secureStorage.write(key: 'lastLoggedInEmail', value: event.email);
+      await _secureStorage.write(
+          key: 'lastLoggedInPassword', value: event.password);
 
       emit(AuthAuthenticated(userCredential.user!, docId));
       print("This is user: ${userCredential.user!}");

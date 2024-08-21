@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/permission/permission_services.dart';
+import 'package:my_movie/screens/login/check_initial_screen.dart';
+import 'package:my_movie/screens/login/login_screen.dart';
 import 'package:my_movie/screens/main/profile/calendar/calendar_screen.dart';
 import 'package:my_movie/screens/main/profile/favorites/favorites_screen.dart';
 import 'package:my_movie/screens/main/profile/information/information_screen.dart';
 import 'package:my_movie/screens/main/profile/about_us/about_us_screen.dart';
 import 'package:my_movie/screens/main/profile/settings/settings_screen.dart';
-import 'package:my_movie/screens/main/viewmodel/user_avatar_bloc/image_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/user_avatar_bloc/image_event.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,30 +21,15 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
-  final ImageBloc _imageBloc = ImageBloc();
-  final PermissionServices _permissionService = PermissionServices();
-
-  Future<void> _pickImageFromGallery() async {
-    final hasPermissions = await _permissionService.requestStoragePermission();
-    if (hasPermissions) {
-      _imageBloc.add(PickImageFromGalleryEvent());
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(AppLocalizations.of(context)!.storagePermissionAsk)),
-      );
-    }
-  }
-
-  Future<void> _pickImageFromCamera() async {
-    final hasPermissions = await _permissionService.requestCameraPermission();
-    if (hasPermissions) {
-      _imageBloc.add(PickImageFromCameraEvent());
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-            content: Text(AppLocalizations.of(context)!.cameraPermissionAsk)),
-      );
+  @override
+  void initState() {
+    super.initState();
+    final authBloc = context.read<AuthBloc>();
+    final userId = authBloc.state is AuthAuthenticated
+        ? (authBloc.state as AuthAuthenticated).docId
+        : '';
+    if (userId.isNotEmpty) {
+      authBloc.add(FetchUserData(userId));
     }
   }
 
@@ -61,7 +50,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                   minimumSize: const Size(double.infinity, 48),
                 ),
                 onPressed: () {
-                  _pickImageFromGallery();
                   Navigator.of(context).pop();
                 },
                 child: Text(AppLocalizations.of(context)!.imagesFromGallery),
@@ -72,7 +60,6 @@ class ProfileScreenState extends State<ProfileScreen> {
                   minimumSize: const Size(double.infinity, 48),
                 ),
                 onPressed: () {
-                  _pickImageFromCamera();
                   Navigator.of(context).pop();
                 },
                 child: Text(AppLocalizations.of(context)!.imagesFromCamera),
@@ -165,9 +152,28 @@ class ProfileScreenState extends State<ProfileScreen> {
                     top: 10,
                     child: Stack(
                       children: [
-                        const CircleAvatar(
-                          radius: 50,
-                          backgroundImage: AssetImage('assets/images/man.png'),
+                        BlocBuilder<AuthBloc, AuthState>(
+                          builder: (context, state) {
+                            if (state is AuthInProgress) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else if (state is AuthFailure) {
+                              return Center(
+                                  child: Text('Error: ${state.error}'));
+                            } else if (state is UserDataLoaded) {
+                              final userData = state.userData;
+                              return CircleAvatar(
+                                radius: 50,
+                                backgroundImage:
+                                    NetworkImage(userData['avatarPath']),
+                              );
+                            }
+                            return const CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage('assets/logos/logo.png'),
+                            );
+                          },
                         ),
                         Positioned(
                           bottom: 0,
@@ -235,16 +241,23 @@ class ProfileScreenState extends State<ProfileScreen> {
             }),
             _buildProfileButton(
                 Icons.logout, AppLocalizations.of(context)!.logOut, () {
-              // Navigator.pushAndRemoveUntil(
-              //   context,
-              //   MaterialPageRoute(
-              //       builder: (context) => LoginScreen(onLoginSuccess: () {})),
-              //   (route) => false,
-              // );
+              context.read<AuthBloc>().add(AuthSignOutRequested());
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CheckInitialScreen(),
+                ),
+                (route) => false,
+              );
             }),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }

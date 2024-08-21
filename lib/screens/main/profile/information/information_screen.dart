@@ -38,8 +38,8 @@ class InformationScreenState extends State<InformationScreen> {
         onPressed: () {
           print('FloatingActionButton pressed');
         },
-        child: Icon(Icons.edit),
         tooltip: 'Add',
+        child: const Icon(Icons.edit),
       ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
@@ -86,12 +86,6 @@ class InformationScreenState extends State<InformationScreen> {
                   ),
                   Text(AppLocalizations.of(context)!
                       .address(userData['address'])),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
-                  ),
-                  Text(AppLocalizations.of(context)!
-                      .avatarPath(userData['avatarPath'])),
                   Divider(
                     color: Theme.of(context).colorScheme.primary,
                     thickness: 1,

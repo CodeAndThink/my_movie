@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
+import 'package:my_movie/screens/login/check_initial_screen.dart';
 import 'package:my_movie/screens/login/login_screen.dart';
 import 'package:my_movie/screens/main/main_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
@@ -52,9 +53,10 @@ class MyHomePage extends StatelessWidget {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is AuthAuthenticated) {
-          Navigator.pushReplacement(
+          Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
+            (Route<dynamic> route) => false,
           );
         }
       },
@@ -63,15 +65,7 @@ class MyHomePage extends StatelessWidget {
 
         return state is AuthAuthenticated
             ? const MainScreen()
-            : LoginScreen(
-                onLoginSuccess: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MainScreen()),
-                  );
-                },
-                authBloc: authBloc,
-              );
+            : const CheckInitialScreen();
       },
     );
   }
