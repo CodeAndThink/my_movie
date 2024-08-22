@@ -92,7 +92,7 @@ class MovieDetailScreenState extends State<MovieDetailView> {
                 Positioned.fill(
                   child: Image.network(
                     Values.imageUrl +
-                        Values.imageSize +
+                        Values.imageSmall +
                         (movie.posterPath ?? ''),
                     fit: BoxFit.cover,
                   ),
@@ -125,7 +125,7 @@ class MovieDetailScreenState extends State<MovieDetailView> {
                               height: 200,
                               child: Image.network(
                                 Values.imageUrl +
-                                    Values.imageSize +
+                                    Values.imageSmall +
                                     (movie.posterPath ?? ''),
                                 fit: BoxFit.cover,
                               ),

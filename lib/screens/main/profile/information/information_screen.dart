@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/data/models/user.dart';
+import 'package:my_movie/screens/main/profile/information/change_information_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
@@ -13,9 +15,24 @@ class InformationScreen extends StatefulWidget {
 }
 
 class InformationScreenState extends State<InformationScreen> {
+  late TextEditingController _emailController;
+  late TextEditingController _displayNameController;
+  late TextEditingController _dobController;
+  late TextEditingController _phoneController;
+  late TextEditingController _addressController;
+  late TextEditingController _createDateController;
+  late int _gender;
+
   @override
   void initState() {
     super.initState();
+    _emailController = TextEditingController();
+    _displayNameController = TextEditingController();
+    _dobController = TextEditingController();
+    _phoneController = TextEditingController();
+    _addressController = TextEditingController();
+    _createDateController = TextEditingController();
+    _gender = 1;
     final authBloc = context.read<AuthBloc>();
     final userId = authBloc.state is AuthAuthenticated
         ? (authBloc.state as AuthAuthenticated).docId
@@ -34,13 +51,6 @@ class InformationScreenState extends State<InformationScreen> {
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          print('FloatingActionButton pressed');
-        },
-        tooltip: 'Add',
-        child: const Icon(Icons.edit),
-      ),
       body: BlocBuilder<AuthBloc, AuthState>(
         builder: (context, state) {
           if (state is AuthInProgress) {
@@ -49,49 +59,118 @@ class InformationScreenState extends State<InformationScreen> {
             return Center(child: Text('Error: ${state.error}'));
           } else if (state is UserDataLoaded) {
             final userData = state.userData;
+            final user = User.fromJson(userData);
+
+            _gender = user.gender;
+            _emailController.text = user.email;
+            _displayNameController.text = user.displayName;
+            _dobController.text = user.dob;
+            _phoneController.text = user.phone;
+            _addressController.text = user.address;
+            _createDateController.text = user.createDate
+                .toString()
+                .substring(0, 10)
+                .split('-')
+                .reversed
+                .join('/');
+
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                      '${AppLocalizations.of(context)!.email}: ${userData['email']}'),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  TextField(
+                    controller: _emailController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.email,
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
                   ),
-                  Text(AppLocalizations.of(context)!
-                      .displayName(userData['displayName'])),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  TextField(
+                    controller: _displayNameController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.name(''),
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
                   ),
-                  Text(AppLocalizations.of(context)!.dob(userData['dob'])),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  TextField(
+                    controller: _dobController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.dob,
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
                   ),
-                  Text(AppLocalizations.of(context)!.gender(
-                      userData['gender'] == 1
-                          ? AppLocalizations.of(context)!.male
-                          : AppLocalizations.of(context)!.female)),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  Row(
+                    children: [
+                      Text(
+                        AppLocalizations.of(context)!.gender,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      Expanded(
+                        child: RadioListTile<int>(
+                          title: Text(AppLocalizations.of(context)!.male),
+                          value: 1,
+                          enableFeedback: false,
+                          groupValue: _gender,
+                          onChanged: (value) {
+                            setState(() {
+                              _gender = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: RadioListTile<int>(
+                          title: Text(AppLocalizations.of(context)!.female),
+                          value: 2,
+                          groupValue: _gender,
+                          enableFeedback: false,
+                          onChanged: (value) {
+                            setState(() {
+                              _gender = value!;
+                            });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(AppLocalizations.of(context)!.phone(userData['phone'])),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  TextField(
+                    controller: _phoneController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.phone,
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
                   ),
-                  Text(AppLocalizations.of(context)!
-                      .address(userData['address'])),
-                  Divider(
-                    color: Theme.of(context).colorScheme.primary,
-                    thickness: 1,
+                  TextField(
+                    controller: _addressController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.address,
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
                   ),
-                  Text(AppLocalizations.of(context)!
-                      .createDate(userData['createDate'])),
+                  TextField(
+                    controller: _createDateController,
+                    enabled: false,
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.createDate,
+                        labelStyle: Theme.of(context).textTheme.headlineMedium),
+                    readOnly: true,
+                  ),
+                  Container(
+                    alignment: AlignmentDirectional.bottomEnd,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ChangeInformationScreen(
+                                      user: User.fromJson(userData),
+                                    )));
+                      },
+                      tooltip: 'Change Information',
+                      child: const Icon(Icons.edit),
+                    ),
+                  )
                 ],
               ),
             );
@@ -100,5 +179,16 @@ class InformationScreenState extends State<InformationScreen> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _displayNameController.dispose();
+    _dobController.dispose();
+    _phoneController.dispose();
+    _addressController.dispose();
+    _createDateController.dispose();
+    super.dispose();
   }
 }

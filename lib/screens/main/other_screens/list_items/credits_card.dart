@@ -34,7 +34,7 @@ class CreditsCard extends StatelessWidget {
               const Spacer(),
               ClipOval(
                 child: Image.network(
-                  Values.imageUrl + Values.imageSize + profilePath,
+                  Values.imageUrl + Values.imageSmall + profilePath,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,

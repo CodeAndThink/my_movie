@@ -24,9 +24,6 @@ class CastAndCrewScreen extends StatelessWidget {
     final String character = isCast ? cast?.character ?? '' : '';
     final String job = !isCast ? crew?.job ?? '' : '';
     final String department = !isCast ? crew?.department ?? '' : '';
-    final String order = isCast ? cast?.order.toString() ?? '' : '';
-    final int castId = isCast ? cast?.castId ?? 0 : 0;
-    final String creditId = !isCast ? crew?.creditId ?? '0' : '0';
 
     return Scaffold(
         appBar: AppBar(
@@ -54,7 +51,7 @@ class CastAndCrewScreen extends StatelessWidget {
                           child: Center(
                             child: ClipOval(
                               child: Image.network(
-                                '${Values.imageUrl}${Values.imageSize}$profilePath',
+                                '${Values.imageUrl}${Values.imageSmall}$profilePath',
                                 width: 150,
                                 height: 150,
                                 fit: BoxFit.cover,
@@ -129,32 +126,6 @@ class CastAndCrewScreen extends StatelessWidget {
                         color: Theme.of(context).colorScheme.primary,
                         thickness: 1,
                       ),
-                      if (isCast && order.isNotEmpty)
-                        Text(
-                          AppLocalizations.of(context)!.orderLabel(order),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.clip,
-                        ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.primary,
-                        thickness: 1,
-                      ),
-                      if (isCast)
-                        Text(
-                          AppLocalizations.of(context)!.castIdLabel(castId),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.clip,
-                        ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.primary,
-                        thickness: 1,
-                      ),
-                      if (!isCast)
-                        Text(
-                          AppLocalizations.of(context)!.creditIdLabel(creditId),
-                          style: Theme.of(context).textTheme.bodyMedium,
-                          overflow: TextOverflow.clip,
-                        ),
                     ],
                   ),
                 ),

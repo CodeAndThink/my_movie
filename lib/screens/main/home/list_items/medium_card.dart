@@ -34,7 +34,7 @@ class MediumCard extends StatelessWidget {
                 borderRadius:
                     BorderRadius.circular(10),
                 child: Image.network(
-                  Values.imageUrl + Values.imageSize + (movie.posterPath ?? ''),
+                  Values.imageUrl + Values.imageSmall + (movie.posterPath ?? ''),
                   width: 150,
                   fit: BoxFit.fitWidth,
                 ),

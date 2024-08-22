@@ -39,12 +39,14 @@ class LargeCard extends StatelessWidget {
                 child: Center(
                     child: Stack(
                   children: [
-                    Image.network(
-                        width: width,
-                        Values.imageUrl +
-                            Values.imageSize +
-                            (movie.posterPath ?? ''),
-                        fit: BoxFit.fitWidth),
+                    FadeInImage.assetNetwork(
+                      placeholder: 'assets/images/placeholder.png',
+                      image: Values.imageUrl +
+                          Values.imageSmall +
+                          (movie.posterPath ?? ''),
+                      width: cardWidth,
+                      fit: BoxFit.fitWidth,
+                    ),
                     Positioned(
                         bottom: 20,
                         width: cardWidth,

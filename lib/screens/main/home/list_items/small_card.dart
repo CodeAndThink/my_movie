@@ -33,7 +33,7 @@ class SmallCard extends StatelessWidget {
                     child: FadeInImage.assetNetwork(
                       placeholder: 'assets/images/placeholder.png',
                       image: Values.imageUrl +
-                          Values.imageSize +
+                          Values.imageSmall +
                           (movie.posterPath ?? ''),
                       width: 150,
                       height: 200,

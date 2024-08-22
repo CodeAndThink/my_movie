@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -47,7 +46,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           key: 'lastLoggedInPassword', value: event.password);
 
       emit(AuthAuthenticated(userCredential.user!, docId));
-      print("This is user: ${userCredential.user!}");
     } catch (e) {
       emit(AuthFailure(e.toString()));
     }
@@ -58,6 +56,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthInProgress());
     try {
       await _firebaseAuth.signOut();
+
       emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthFailure(e.toString()));

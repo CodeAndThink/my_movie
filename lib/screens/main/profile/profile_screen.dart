@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_movie/permission/permission_services.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
-import 'package:my_movie/screens/login/login_screen.dart';
 import 'package:my_movie/screens/main/profile/calendar/calendar_screen.dart';
 import 'package:my_movie/screens/main/profile/favorites/favorites_screen.dart';
 import 'package:my_movie/screens/main/profile/information/information_screen.dart';
@@ -130,129 +128,138 @@ class ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            Card(
-              elevation: 7.0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Positioned(
-                    child: Container(
-                      width: double.infinity,
-                      height: 200,
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
+          padding: const EdgeInsets.all(12.0),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Card(
+                  elevation: 7.0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(16.0),
                   ),
-                  Positioned(
-                    top: 10,
-                    child: Stack(
-                      children: [
-                        BlocBuilder<AuthBloc, AuthState>(
-                          builder: (context, state) {
-                            if (state is AuthInProgress) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else if (state is AuthFailure) {
-                              return Center(
-                                  child: Text('Error: ${state.error}'));
-                            } else if (state is UserDataLoaded) {
-                              final userData = state.userData;
-                              return CircleAvatar(
-                                radius: 50,
-                                backgroundImage:
-                                    NetworkImage(userData['avatarPath']),
-                              );
-                            }
-                            return const CircleAvatar(
-                              radius: 50,
-                              backgroundImage:
-                                  AssetImage('assets/logos/logo.png'),
-                            );
-                          },
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        child: Container(
+                          width: double.infinity,
+                          height: 200,
+                          color: Theme.of(context).colorScheme.surface,
                         ),
-                        Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: IconButton(
-                            icon: const Icon(Icons.camera_alt),
-                            onPressed: () {
-                              _showImageSourceDialog(context);
-                            },
-                          ),
+                      ),
+                      Positioned(
+                        top: 10,
+                        child: Stack(
+                          children: [
+                            BlocBuilder<AuthBloc, AuthState>(
+                              builder: (context, state) {
+                                if (state is AuthInProgress) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (state is AuthFailure) {
+                                  return Center(
+                                      child: Text('Error: ${state.error}'));
+                                } else if (state is UserDataLoaded) {
+                                  final userData = state.userData;
+                                  return CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        NetworkImage(userData['avatarPath']),
+                                  );
+                                }
+                                return const CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      AssetImage('assets/logos/logo.png'),
+                                );
+                              },
+                            ),
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(Icons.camera_alt),
+                                onPressed: () {
+                                  _showImageSourceDialog(context);
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Positioned(
+                        bottom: 10,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _buildProfileCard('1', 'Like'),
+                            _buildProfileCard('2', 'Comments'),
+                            _buildProfileCard('3', 'Level'),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
-                  Positioned(
-                    bottom: 10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _buildProfileCard('1', 'Like'),
-                        _buildProfileCard('2', 'Comments'),
-                        _buildProfileCard('3', 'Level'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            _buildProfileButton(
-                Icons.info, AppLocalizations.of(context)!.information, () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const InformationScreen()));
-            }),
-            _buildProfileButton(
-                Icons.favorite, AppLocalizations.of(context)!.favoritesList,
-                () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const FavoritesScreen()));
-            }),
-            _buildProfileButton(
-                Icons.calendar_month, AppLocalizations.of(context)!.calendar,
-                () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CalendarScreen()));
-            }),
-            _buildProfileButton(
-                Icons.settings, AppLocalizations.of(context)!.settings, () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsScreen()));
-            }),
-            _buildProfileButton(
-                Icons.device_hub, AppLocalizations.of(context)!.aboutUs, () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const AboutUsScreen()));
-            }),
-            _buildProfileButton(
-                Icons.logout, AppLocalizations.of(context)!.logOut, () {
-              context.read<AuthBloc>().add(AuthSignOutRequested());
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CheckInitialScreen(),
                 ),
-                (route) => false,
-              );
-            }),
-          ],
-        ),
-      ),
+                _buildProfileButton(
+                    Icons.info, AppLocalizations.of(context)!.information, () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const InformationScreen()));
+                }),
+                _buildProfileButton(
+                    Icons.favorite, AppLocalizations.of(context)!.favoritesList,
+                    () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FavoritesScreen()));
+                }),
+                _buildProfileButton(Icons.calendar_month,
+                    AppLocalizations.of(context)!.calendar, () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CalendarScreen()));
+                }),
+                _buildProfileButton(
+                    Icons.settings, AppLocalizations.of(context)!.settings, () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SettingsScreen()));
+                }),
+                _buildProfileButton(
+                    Icons.device_hub, AppLocalizations.of(context)!.aboutUs,
+                    () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AboutUsScreen()));
+                }),
+                _buildProfileButton(
+                    Icons.delete, AppLocalizations.of(context)!.deleteAccount,
+                    () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AboutUsScreen()));
+                }),
+                _buildProfileButton(
+                    Icons.logout, AppLocalizations.of(context)!.logOut, () {
+                  context.read<AuthBloc>().add(AuthSignOutRequested());
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const CheckInitialScreen(),
+                    ),
+                    (route) => false,
+                  );
+                }),
+              ],
+            ),
+          )),
     );
   }
 

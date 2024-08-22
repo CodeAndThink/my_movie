@@ -44,6 +44,12 @@ class AccountListScreenState extends State<AccountListScreen> {
   @override
   Widget build(BuildContext context) {
     final authBloc = context.read<AuthBloc>();
+    final screenSize = MediaQuery.of(context).size;
+    final cardWidth = screenSize.width;
+
+    final backgroundImage = Theme.of(context).brightness == Brightness.dark
+        ? 'assets/images/dark_background.jpg'
+        : 'assets/images/background.jpg';
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -53,6 +59,16 @@ class AccountListScreenState extends State<AccountListScreen> {
       ),
       body: Column(
         children: [
+          Stack(
+            children: [
+              Image.asset(
+                backgroundImage,
+                fit: BoxFit.cover,
+                height: MediaQuery.of(context).size.height * 0.3,
+                width: double.infinity,
+              ),
+            ],
+          ),
           Expanded(
             child: _accounts.isEmpty
                 ? const Center(
@@ -90,10 +106,14 @@ class AccountListScreenState extends State<AccountListScreen> {
                     ),
                   );
                 },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  minimumSize: Size(cardWidth - 20, 50),
+                ),
                 child: Text(
-                  'Move to Login Screen',
-                  style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  AppLocalizations.of(context)!.moveToLogin,
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),

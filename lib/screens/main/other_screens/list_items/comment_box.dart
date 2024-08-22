@@ -17,7 +17,7 @@ class CommentBox extends StatelessWidget {
     final avatarImage = authorDetails.avatarPath?.isEmpty ?? true
         ? const AssetImage('assets/images/man.png') as ImageProvider
         : NetworkImage(
-            Values.imageUrl + Values.imageSize + authorDetails.avatarPath!);
+            Values.imageUrl + Values.imageSmall + authorDetails.avatarPath!);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -91,7 +91,7 @@ class CommentBox extends StatelessWidget {
                 Text(AppLocalizations.of(context)!
                     .username(authorDetails.userName)),
                 Text(AppLocalizations.of(context)!.createAt(
-                    review.createdAt.toString().split(' ').first,
+                    review.createdAt.toString().split(' ').first.split('-').reversed.join('/'),
                     review.createdAt.toString().split(' ')[1].substring(0, 8))),
               ],
             ),
