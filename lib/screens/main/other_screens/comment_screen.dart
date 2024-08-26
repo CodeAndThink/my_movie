@@ -28,7 +28,8 @@ class CommentScreenState extends State<CommentScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     rate = [
-      AppLocalizations.of(context)?.all ?? 'All'
+      AppLocalizations.of(context)!.tmdbComments,
+      AppLocalizations.of(context)!.ourCommunity
     ];
     selectedRate = rate[0];
     _loadMovieData();

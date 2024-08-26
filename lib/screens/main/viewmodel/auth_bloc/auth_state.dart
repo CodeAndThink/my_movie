@@ -30,29 +30,3 @@ class AuthFailure extends AuthState {
   @override
   List<Object> get props => [error];
 }
-
-class UserDataLoading extends AuthState {}
-
-class UserDataLoaded extends AuthState {
-  final Map<String, dynamic> userData;
-
-  UserDataLoaded(this.userData);
-
-  @override
-  List<Object> get props => [userData];
-}
-
-class UserDataCreated extends AuthState {}
-
-class UserDataUpdated extends AuthState {}
-
-class UserDataDeleted extends AuthState {}
-
-class AuthProfilePictureUpdated extends AuthState {
-  final String avatarUrl;
-
-  AuthProfilePictureUpdated(this.avatarUrl);
-
-  @override
-  List<Object> get props => [avatarUrl];
-}

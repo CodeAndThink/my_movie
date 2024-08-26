@@ -240,5 +240,17 @@
   "female": "Female",
   "changeInformation": "Change Information",
   "moveToLogin": "Move to Login Screen",
-  "deleteAccount": "Delete Account"
+  "deleteAccount": "Delete Account",
+  "savedAccount": "Saved Account Available",
+  "enterEmail": "Enter Recovery Email",
+  "pleaseFillAllFields": "Please fill in all fields.",
+  "updateSuccess": "Update successful!",
+  "updateFailure": "Update failed. Please try again.",
+  "tmdbComments": "TMDB Community",
+  "ourCommunity": "Our Community",
+  "addToFavoriteSuccess" : "Add to Favorites List Successfully!",
+  "removeFromFavoriteSuccess" : "Remove from Favorites List Successfully!",
+  "addToFavoriteFailure" : "Add to Favorites List Successfully!",
+  "removeFromFavoriteFailure" : "Remove from Favorites List Successfully!",
+  "removeFromFavorites": "Remove from Favorites List"
 }

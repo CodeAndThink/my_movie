@@ -28,7 +28,7 @@ class SettingsScreenState extends State<SettingsScreen> {
               state.locale.languageCode == 'en' ? 'English' : 'Vietnamese';
 
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
                 Row(

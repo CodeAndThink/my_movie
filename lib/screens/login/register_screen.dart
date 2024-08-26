@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/constain_values/values.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
@@ -22,11 +23,9 @@ class RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final backgroundImage = Theme.of(context).brightness == Brightness.dark
-        ? 'assets/images/dark_background.jpg'
-        : 'assets/images/background.jpg';
     final screenSize = MediaQuery.of(context).size;
     final cardWidth = screenSize.width;
+    final cardHeight = screenSize.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +38,7 @@ class RegisterScreenState extends State<RegisterScreen> {
         bloc: widget.authBloc,
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            Navigator.pop(context);
+            Navigator.canPop(context);
           } else if (state is AuthFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -54,42 +53,44 @@ class RegisterScreenState extends State<RegisterScreen> {
           return SingleChildScrollView(
             child: Column(
               children: [
-                Stack(
-                  children: [
-                    Image.asset(
-                      backgroundImage,
-                      fit: BoxFit.cover,
-                      height: MediaQuery.of(context).size.height * 0.3,
-                      width: double.infinity,
-                    ),
-                    Positioned(
-                      top: 50,
-                      right: 0,
-                      left: 0,
-                      child: Center(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Image.asset(
-                              'assets/logos/logo.png',
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.cover,
+                SizedBox(
+                  height: cardHeight * 0.3,
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Card(
+                          elevation: 5,
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Container(
+                                    height: 70,
+                                    width: 70,
+                                    decoration: BoxDecoration(
+                                      color:
+                                          Theme.of(context).colorScheme.surface,
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: Image.asset(
+                                      'assets/logos/logo.png',
+                                      height: 50,
+                                      width: 50,
+                                      fit: BoxFit.cover,
+                                    )),
+                                Text(Values.appName,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium),
+                              ],
                             ),
-                            Text(
-                              'myMovie',
-                              style: Theme.of(context).textTheme.headlineMedium,
-                            ),
-                            const SizedBox(height: 30.0),
-                            Text(
-                              AppLocalizations.of(context)!.becomeNewMember,
-                              style: Theme.of(context).textTheme.headlineLarge,
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),

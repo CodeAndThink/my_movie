@@ -240,5 +240,17 @@
   "female": "Nữ",
   "changeInformation": "Thay đổi thông tin",
   "moveToLogin": "Chuyển đến màn hình đăng nhập",
-  "deleteAccount": "Xóa tài khoản"
+  "deleteAccount": "Xóa tài khoản",
+  "savedAccount": "Những tài khoản đã lưu",
+  "enterEmail": "Điền tài khoản email khôi phục",
+  "pleaseFillAllFields": "Vui lòng điền tất cả các trường.",
+  "updateSuccess": "Cập nhật thông tin thành công!",
+  "updateFailure": "Cập nhật thông tin thất bại. Hãy thử lại.",
+  "tmdbComments": "Cộng đồng TMDB",
+  "ourCommunity": "Cộng đồng myMovieDictionary",
+  "addToFavoriteSuccess" : "Thêm vào danh sách yêu thích thành công!",
+  "removeFromFavoriteSuccess" : "Loại bỏ khỏi danh sách yêu thích thành công!",
+  "addToFavoriteFailure" : "Thêm vào danh sách yêu thích thất bại!",
+  "removeFromFavoriteFailure" : "Loại bỏ khỏi danh sách thất bại!",
+  "removeFromFavorites": "Loại bỏ khỏi danh sách yêu thích"
 }

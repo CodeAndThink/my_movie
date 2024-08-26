@@ -1,7 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/constain_values/values.dart';
+import 'package:my_movie/screens/login/forgot_password_screen.dart';
 import 'package:my_movie/screens/login/register_screen.dart';
 import 'package:my_movie/screens/main/main_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
@@ -9,11 +10,8 @@ import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 
 class LoginScreen extends StatefulWidget {
-  final AuthBloc authBloc;
-
   const LoginScreen({
     super.key,
-    required this.authBloc,
   });
 
   @override
@@ -25,10 +23,16 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool isChecked = false;
 
+  @override
+  void initState() {
+    super.initState();
+  }
+
   void onLoginSuccess() {
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
+      (route) => false
     );
   }
 
@@ -36,6 +40,7 @@ class LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final cardWidth = screenSize.width;
+    final authBloc = context.read<AuthBloc>();
 
     final backgroundImage = Theme.of(context).brightness == Brightness.dark
         ? 'assets/images/dark_background.jpg'
@@ -58,28 +63,48 @@ class LoginScreenState extends State<LoginScreen> {
                   right: 0,
                   left: 0,
                   child: Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Image.asset(
-                          'assets/logos/logo.png',
-                          height: 50,
-                          width: 50,
-                          fit: BoxFit.cover,
+                      child: Column(
+                    children: [
+                      Card(
+                        elevation: 5,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                  height: 70,
+                                  width: 70,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Image.asset(
+                                    'assets/logos/logo.png',
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.cover,
+                                  )),
+                              Text(Values.appName,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                            ],
+                          ),
                         ),
-                        Text(
-                          'myMovie',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                        const SizedBox(height: 30.0),
-                        Text(
-                          AppLocalizations.of(context)!.welcomeBack,
-                          style: Theme.of(context).textTheme.headlineLarge,
-                        ),
-                      ],
-                    ),
-                  ),
-                )
+                      ),
+                      const SizedBox(height: 30.0),
+                      Text(
+                        AppLocalizations.of(context)!.welcomeBack,
+                        style:
+                            Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                      ),
+                    ],
+                  )),
+                ),
               ],
             ),
             Padding(
@@ -107,60 +132,53 @@ class LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Checkbox(
-                        value: isChecked,
-                        onChanged: (bool? value) {
-                          setState(() {
-                            isChecked = value ?? false;
-                          });
-                        },
-                      ),
-                      Text(AppLocalizations.of(context)!.rememberAccount),
                       const Spacer(),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPasswordScreen()));
+                        },
                         child:
                             Text(AppLocalizations.of(context)!.forgotPassword),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16.0),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final email = emailController.text;
-                        final password = passwordController.text;
+                  ElevatedButton(
+                    onPressed: () {
+                      final email = emailController.text;
+                      final password = passwordController.text;
 
-                        if (email.isNotEmpty && password.isNotEmpty) {
-                          widget.authBloc.add(
-                            AuthSignInRequested(email, password),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                AppLocalizations.of(context)!
-                                    .pleaseEnterCredentials,
-                              ),
+                      if (email.isNotEmpty && password.isNotEmpty) {
+                        authBloc.add(
+                          AuthSignInRequested(email, password),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              AppLocalizations.of(context)!
+                                  .pleaseEnterCredentials,
                             ),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        minimumSize: Size(cardWidth - 20, 50),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.logIn,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      minimumSize: Size(cardWidth - 20, 50),
+                    ),
+                    child: Text(
+                      AppLocalizations.of(context)!.logIn,
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ),
                   const SizedBox(height: 16.0),
                   BlocConsumer<AuthBloc, AuthState>(
-                    bloc: widget.authBloc,
+                    bloc: authBloc,
                     listener: (context, state) {
                       if (state is AuthAuthenticated) {
                         onLoginSuccess();
@@ -187,13 +205,12 @@ class LoginScreenState extends State<LoginScreen> {
                           context,
                           MaterialPageRoute(
                             builder: (context) => RegisterScreen(
-                              authBloc: widget.authBloc,
+                              authBloc: authBloc,
                             ),
                           ),
                         ),
                         child: Text(
                           AppLocalizations.of(context)!.becomeNewMember,
-                          style: const TextStyle(color: Colors.blue),
                         ),
                       ),
                     ],

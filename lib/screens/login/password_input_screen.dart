@@ -16,25 +16,19 @@ class PasswordInputScreen extends StatefulWidget {
 }
 
 class PasswordInputScreenState extends State<PasswordInputScreen> {
-  final _passwordController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _login() async {
-    final password = _passwordController.text;
-
-    final authBloc = context.read<AuthBloc>();
-    authBloc.add(AuthSignInRequested(widget.email, password));
-
-    authBloc.stream.listen((state) {
-      if (state is AuthFailure) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Login failed: ${state.error}')),
-        );
-      } 
-    });
+  void onLoginSuccess() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+      (route) => false
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final authBloc = context.read<AuthBloc>();
     return Scaffold(
       appBar: AppBar(
           title: Text(
@@ -51,13 +45,27 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
               decoration: const InputDecoration(labelText: 'Password'),
             ),
             const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
+            SizedBox(
                 width: MediaQuery.of(context).size.width - 32,
                 child: ElevatedButton(
                   onPressed: () {
-                    _login();
+                    final email = widget.email;
+                    final password = _passwordController.text;
+
+                    if (email.isNotEmpty && password.isNotEmpty) {
+                      authBloc.add(
+                        AuthSignInRequested(email, password),
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            AppLocalizations.of(context)!
+                                .pleaseEnterCredentials,
+                          ),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
@@ -69,9 +77,26 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
                     AppLocalizations.of(context)!.logIn,
                     style: const TextStyle(color: Colors.white),
                   ),
-                ),
-              ),
-            )
+                )),
+            BlocConsumer<AuthBloc, AuthState>(
+              bloc: authBloc,
+              listener: (context, state) {
+                if (state is AuthAuthenticated) {
+                  onLoginSuccess();
+                } else if (state is AuthFailure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        state.error,
+                      ),
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                return Container();
+              },
+            ),
           ],
         ),
       ),

@@ -3,9 +3,15 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static ThemeData get lightTheme {
     return ThemeData(
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       useMaterial3: true,
       colorScheme: const ColorScheme.light(
-        primary: Colors.blue,
+        primary: Colors.blueAccent,
         secondary: Colors.orange,
         surface: Colors.white,
       ),
@@ -45,9 +51,15 @@ class AppTheme {
 
   static ThemeData get darkTheme {
     return ThemeData(
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
+      ),
       useMaterial3: true,
       colorScheme: const ColorScheme.dark(
-        primary: Colors.blueGrey,
+        primary: Colors.blueAccent,
         secondary: Colors.amber,
         surface: Colors.black,
       ),

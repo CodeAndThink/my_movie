@@ -1,5 +1,3 @@
-import 'package:my_movie/data/models/movie.dart';
-
 class User {
   final String id;
   final String email;
@@ -11,7 +9,7 @@ class User {
   final String password;
   final String avatarPath;
   final String createDate;
-  final List<Movie> favoritesList;
+  final List<int> favoritesList;
 
   User({
     required this.id,
@@ -39,9 +37,7 @@ class User {
       password: json['password'],
       avatarPath: json['avatarPath'],
       createDate: json['createDate'],
-      favoritesList: (json['favoritesList'] as List)
-          .map((item) => Movie.fromJson(item))
-          .toList(),
+      favoritesList: List<int>.from(json['favoritesList']),
     );
   }
 
@@ -57,7 +53,12 @@ class User {
       'password': password,
       'avatarPath': avatarPath,
       'createDate': createDate,
-      'favoritesList': favoritesList.map((item) => item.toJson()).toList(),
+      'favoritesList': favoritesList,
     };
+  }
+
+  @override
+  String toString() {
+    return 'User{id: $id, email: $email, displayName: $displayName, dob: $dob, gender: $gender, phone: $phone, address: $address, password: $password, avatarPath: $avatarPath, createDate: $createDate, favoritesList: $favoritesList}';
   }
 }

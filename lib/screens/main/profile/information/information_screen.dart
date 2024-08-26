@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/screens/main/profile/information/change_information_screen.dart';
-import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_event.dart';
-import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
 
 class InformationScreen extends StatefulWidget {
   const InformationScreen({super.key});
@@ -33,13 +32,6 @@ class InformationScreenState extends State<InformationScreen> {
     _addressController = TextEditingController();
     _createDateController = TextEditingController();
     _gender = 1;
-    final authBloc = context.read<AuthBloc>();
-    final userId = authBloc.state is AuthAuthenticated
-        ? (authBloc.state as AuthAuthenticated).docId
-        : '';
-    if (userId.isNotEmpty) {
-      authBloc.add(FetchUserData(userId));
-    }
   }
 
   @override
@@ -51,11 +43,11 @@ class InformationScreenState extends State<InformationScreen> {
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      body: BlocBuilder<AuthBloc, AuthState>(
+      body: BlocBuilder<UserDataBloc, UserDataState>(
         builder: (context, state) {
-          if (state is AuthInProgress) {
+          if (state is UserDataLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is AuthFailure) {
+          } else if (state is UserDataFailure) {
             return Center(child: Text('Error: ${state.error}'));
           } else if (state is UserDataLoaded) {
             final userData = state.userData;
