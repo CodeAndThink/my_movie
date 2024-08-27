@@ -125,8 +125,10 @@ class MovieListScreenState extends State<MovieListView> {
                           : GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent: 258,
-                                childAspectRatio: 150 / 230,
+                                maxCrossAxisExtent:
+                                    230.0,
+                                childAspectRatio: 150 /
+                                    200,
                               ),
                               itemCount: movies.length,
                               itemBuilder: (context, index) {

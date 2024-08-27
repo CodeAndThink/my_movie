@@ -55,6 +55,7 @@ flutter:
     - assets/images/dark_background_2.jpg
     - assets/images/thegodfather.jpg
     - assets/images/placeholder.png
+    - assets/images/category.png
     - assets/images/dice.png
     - assets/images/dice_1.png
     - assets/images/dice_2.png

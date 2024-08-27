@@ -252,5 +252,11 @@
   "removeFromFavoriteSuccess" : "Loại bỏ khỏi danh sách yêu thích thành công!",
   "addToFavoriteFailure" : "Thêm vào danh sách yêu thích thất bại!",
   "removeFromFavoriteFailure" : "Loại bỏ khỏi danh sách thất bại!",
-  "removeFromFavorites": "Loại bỏ khỏi danh sách yêu thích"
+  "removeFromFavorites": "Loại bỏ khỏi danh sách yêu thích",
+  "cancel": "Hủy",
+  "like": "Thích",
+  "level": "Cấp",
+  "searchByCategory": "Thể loại phim",
+  "categories": "Các thể loại phim",
+  "includeAdult" : "Hiện nội dung trưởng thành"
 }

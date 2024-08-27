@@ -1,8 +1,10 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/data/repository/movie_repository.dart';
+import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
+import 'package:my_movie/screens/main/search/category_list_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
@@ -16,13 +18,20 @@ class SearchScreen extends StatefulWidget {
 }
 
 class SearchScreenState extends State<SearchScreen> {
+  void _onCancel() {
+    context.read<MovieBloc>().add(SearchMovies(''));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => MovieBloc(MovieRepository()),
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           title: const SearchBox(),
+          actions: [
+            TextButton(
+                onPressed: _onCancel,
+                child: Text(AppLocalizations.of(context)!.cancel))
+          ],
         ),
         body: BlocBuilder<MovieBloc, MovieState>(
           builder: (context, state) {
@@ -59,25 +68,29 @@ class SearchScreenState extends State<SearchScreen> {
                   child:
                       Text(AppLocalizations.of(context)!.error(state.message)));
             } else {
-              return Center(
-                  child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Image.asset(
-                    'assets/logos/logo.png',
-                    height: 50,
-                    width: 50,
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(AppLocalizations.of(context)!.searchingMovie),
-                ],
-              ));
+              return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    children: [
+                      MiniGamesCard(
+                        title: AppLocalizations.of(context)!.searchByCategory,
+                        imageUrl: 'assets/images/category.png',
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const CategoryListScreen()),
+                          );
+                        },
+                      ),
+                    ],
+                  ));
             }
           },
-        ),
-      ),
-    );
+        ));
   }
 }
 
@@ -89,28 +102,51 @@ class SearchBox extends StatefulWidget {
 }
 
 class SearchBoxState extends State<SearchBox> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  Timer? _debounce;
+  @override
+  void initState() {
+    super.initState();
+    _searchController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _debounce?.cancel();
+    _searchController.dispose();
+  }
+
+  void clearSearch() {
+    _searchController.clear();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextField(
-      controller: _controller,
+      controller: _searchController,
       decoration: InputDecoration(
         hintText: AppLocalizations.of(context)!.searchHint,
-        suffixIcon: _controller.text.isNotEmpty
+        suffixIcon: _searchController.text.isNotEmpty
             ? IconButton(
                 icon: const Icon(Icons.clear),
                 onPressed: () {
-                  _controller.clear();
-                  setState(() {});
+                  clearSearch();
                 },
               )
             : null,
         border: InputBorder.none,
       ),
       onChanged: (value) {
-        setState(() {});
-        context.read<MovieBloc>().add(SearchMovies(value));
+        if (_debounce?.isActive ?? false) _debounce?.cancel();
+        _debounce = Timer(const Duration(milliseconds: 200), () {
+          if (value.isNotEmpty) {
+            context.read<MovieBloc>().add(SearchMovies(value));
+          }
+        });
       },
     );
   }

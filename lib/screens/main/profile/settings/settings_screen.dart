@@ -93,6 +93,27 @@ class SettingsScreenState extends State<SettingsScreen> {
                   color: Theme.of(context).colorScheme.primary,
                   thickness: 1,
                 ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${AppLocalizations.of(context)!.includeAdult}:',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const Spacer(),
+                    Switch(
+                      value: state.themeData.brightness == Brightness.dark,
+                      onChanged: (bool value) {
+                        BlocProvider.of<SettingsBloc>(context)
+                            .add(ToggleThemeEvent());
+                      },
+                    ),
+                  ],
+                ),
+                Divider(
+                  color: Theme.of(context).colorScheme.primary,
+                  thickness: 1,
+                ),
               ],
             ),
           );

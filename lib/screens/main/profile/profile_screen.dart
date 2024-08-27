@@ -213,9 +213,12 @@ class ProfileScreenState extends State<ProfileScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                _buildProfileCard('1', 'Like'),
-                                _buildProfileCard('2', 'Comments'),
-                                _buildProfileCard('3', 'Level'),
+                                _buildProfileCard(
+                                    '1', AppLocalizations.of(context)!.like),
+                                _buildProfileCard('2',
+                                    AppLocalizations.of(context)!.comments),
+                                _buildProfileCard(
+                                    '3', AppLocalizations.of(context)!.level),
                               ],
                             ),
                           ),

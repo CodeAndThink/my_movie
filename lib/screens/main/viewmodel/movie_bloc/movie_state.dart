@@ -1,4 +1,4 @@
-// State của Bloc
+import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
 
@@ -23,11 +23,11 @@ class MovieLoaded extends MovieState {
 }
 
 class MovieGenresLoaded extends MovieState {
-  final List<dynamic> genres;
+  final List<MovieGenre> genres;
 
   MovieGenresLoaded(this.genres);
 
-  bool isEqual(List<dynamic> otherGenres) {
+  bool isEqual(List<MovieGenre> otherGenres) {
     return genres == otherGenres;
   }
 }
@@ -50,6 +50,8 @@ class SearchLoaded extends MovieState {
   SearchLoaded(this.movies);
 }
 
+class SearchCancel extends MovieState {}
+
 class SearchByIdLoaded extends MovieState {
   final Movie movie;
   final dynamic trailers;
@@ -58,8 +60,14 @@ class SearchByIdLoaded extends MovieState {
   SearchByIdLoaded(this.movie, this.trailers, this.credits);
 }
 
+class SearchByListIdLoaded extends MovieState {
+  final List<Movie> listMovie;
+
+  SearchByListIdLoaded(this.listMovie);
+}
+
 class SearchByMovieGenre extends MovieState {
-  final List<dynamic> movies;
+  final List<Movie> movies;
 
   SearchByMovieGenre(this.movies);
 }

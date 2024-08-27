@@ -53,3 +53,9 @@ class LoadMovieReviews extends MovieEvent {
 
   LoadMovieReviews(this.movieId, this.page);
 }
+
+class LoadMovieByListId extends MovieEvent {
+  final List<int> listMovieId;
+
+  LoadMovieByListId({required this.listMovieId});
+}

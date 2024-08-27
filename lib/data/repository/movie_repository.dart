@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_movie/constain_values/values.dart';
 import 'package:my_movie/data/connections/network/api_service.dart';
+import 'package:my_movie/data/models/movie_genre.dart';
 
 class MovieRepository {
   final ApiService _apiService = ApiService();
+  final _secureStorage = const FlutterSecureStorage();
 
   Future<Response> getPopularMovies() async {
     return _apiService.get('movie/popular', queryParameters: {
@@ -110,5 +114,9 @@ class MovieRepository {
     );
   }
 
-  
+  Future<void> storeGenres(List<MovieGenre> genres) async {
+    final genresJson =
+        jsonEncode(genres.map((genre) => genre.toJson()).toList());
+    await _secureStorage.write(key: 'movie_genres', value: genresJson);
+  }
 }

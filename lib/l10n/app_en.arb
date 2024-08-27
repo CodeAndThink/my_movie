@@ -252,5 +252,11 @@
   "removeFromFavoriteSuccess" : "Remove from Favorites List Successfully!",
   "addToFavoriteFailure" : "Add to Favorites List Successfully!",
   "removeFromFavoriteFailure" : "Remove from Favorites List Successfully!",
-  "removeFromFavorites": "Remove from Favorites List"
+  "removeFromFavorites": "Remove from Favorites List",
+  "cancel": "Cancel",
+  "like": "Like",
+  "level": "Level",
+  "searchByCategory": "Search By Category",
+  "categories": "Categories",
+  "includeAdult" : "Include Adult Movie"
 }

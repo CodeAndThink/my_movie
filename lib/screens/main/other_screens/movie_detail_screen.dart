@@ -101,6 +101,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                 buttonState = false;
               }
             });
+          } else if (state is UserDataUpdated) {
+            getUserData();
           }
         },
         child: Scaffold(
@@ -458,7 +460,6 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                   userDataBloc.add(UpdateFavorite(
                                       movieId: newFavoriteList,
                                       userId: userId));
-                                  getUserData();
                                 } else {
                                   final newFavoriteList =
                                       List<int>.from(userFavoriteList)
@@ -466,7 +467,6 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                   userDataBloc.add(UpdateFavorite(
                                       movieId: newFavoriteList,
                                       userId: userId));
-                                  getUserData();
                                 }
                               }
                             },
