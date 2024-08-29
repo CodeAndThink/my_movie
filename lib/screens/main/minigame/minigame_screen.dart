@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/animation/dice_roll_animation.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
+import 'package:my_movie/screens/main/minigame/quizz_screen.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -58,7 +59,10 @@ class MinigameScreenState extends State<MinigameScreen> {
                   title: AppLocalizations.of(context)!.quizz,
                   imageUrl: 'assets/images/quizz.png',
                   onTap: () {
-                    
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const QuizzScreen()));
                   },
                 ),
               ],

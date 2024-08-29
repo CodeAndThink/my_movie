@@ -6,9 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
+import 'package:my_movie/data/repository/quizz_repository.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/settings_bloc/settings_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/settings_bloc/settings_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
@@ -26,7 +28,8 @@ void main() async {
       BlocProvider(create: (context) => AuthBloc(AuthRepository(FirebaseAuth.instance))),
       BlocProvider(create: (context) => MovieBloc(MovieRepository())),
       BlocProvider(create: (context) => SettingsBloc()),
-      BlocProvider(create: (context) => UserDataBloc(AuthRepository(FirebaseAuth.instance)))
+      BlocProvider(create: (context) => UserDataBloc(AuthRepository(FirebaseAuth.instance))),
+      BlocProvider(create: (context) => QuizzBloc(QuizzRepository()))
     ],
     child: const MyApp(),
   ));

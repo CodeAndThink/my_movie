@@ -267,5 +267,7 @@
   "selectedImagePath": "Đã chọn hình ảnh: {path}",
   "capturedImagePath": "Đường đẫn chụp ảnh: {path}",
   "noActorFound": "Không tìm thấy diễn viên!",
-  "noGenreFound": "Không tìm thấy danh sách thể loại"
+  "noGenreFound": "Không tìm thấy danh sách thể loại!",
+  "noQuizzAvailable": "Không có câu hỏi có sẵn!",
+  "score": "Điểm: {score}"
 }

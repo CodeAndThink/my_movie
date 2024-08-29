@@ -267,5 +267,7 @@
   "selectedImagePath": "Selected image path: {path}",
   "capturedImagePath": "Captured image path: {path}",
   "noActorFound": "No Actor Found!",
-  "noGenreFound": "No Genre Found!"
+  "noGenreFound": "No Genre Found!",
+  "noQuizzAvailable": "No Quizz Available!",
+  "score": "Score: {score}"
 }
