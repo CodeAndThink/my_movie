@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:my_movie/data/models/actor.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
@@ -20,6 +21,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<DeleteMovieRating>(_onDeleteMovieRating);
     on<LoadMovieReviews>(_onLoadMovieReviews);
     on<LoadMovieByListId>(_onLoadMovieByListId);
+    on<LoadPopularActor>(_onLoadPopularActor);
+    on<SearchActor>(_onSearchActor);
   }
 
   Future<void> _onLoadMovieByCategories(
@@ -74,7 +77,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
           return;
         }
       }
-      await _movieRepository.storeGenres(genres);
       emit(MovieGenresLoaded(genres));
     } catch (e) {
       emit(MovieError('Failed to load genres of movies'));
@@ -134,7 +136,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     emit(MovieLoading());
     try {
       final response = await _movieRepository.discoverMoviesByGenre(
-          event.genreId, event.page);
+          event.genreId, event.page, event.sortOption);
       final List<dynamic> moviesJson = response.data['results'];
       final List<Movie> movies =
           moviesJson.map((json) => Movie.fromJson(json)).toList();
@@ -202,6 +204,35 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       emit(SearchByListIdLoaded(listResponse));
     } catch (e) {
       emit(MovieError('Failed to load movies'));
+    }
+  }
+
+  Future<void> _onLoadPopularActor(
+      LoadPopularActor event, Emitter<MovieState> emit) async {
+    emit(MovieLoading());
+    try {
+      final response = await _movieRepository.getPopularActor(event.page);
+      final List<dynamic> actorsJson = response.data['results'];
+      final List<Actor> actors =
+          actorsJson.map((json) => Actor.fromJson(json)).toList();
+      emit(ActorLoaded(actors));
+    } catch (e) {
+      emit(MovieError(e.toString()));
+    }
+  }
+
+  Future<void> _onSearchActor(
+      SearchActor event, Emitter<MovieState> emit) async {
+    emit(MovieLoading());
+    try {
+      final response =
+          await _movieRepository.searchPerson(event.name, event.page);
+      final List<dynamic> actorsJson = response.data['results'];
+      final List<Actor> actors =
+          actorsJson.map((json) => Actor.fromJson(json)).toList();
+      emit(ActorLoaded(actors));
+    } catch (e) {
+      emit(MovieError(e.toString()));
     }
   }
 }

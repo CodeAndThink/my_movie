@@ -1,26 +1,30 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
-import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
-import 'package:my_movie/screens/main/search/category_list_screen.dart';
-import 'package:my_movie/screens/main/search/search_by_actor.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/data/models/actor.dart';
+import 'package:my_movie/screens/main/search/list_items/actor_card.dart';
+import 'package:my_movie/screens/main/search/movie_by_actor_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({super.key});
+class SearchByActor extends StatefulWidget {
+  const SearchByActor({super.key});
 
   @override
-  SearchScreenState createState() => SearchScreenState();
+  SearchByActorState createState() => SearchByActorState();
 }
 
-class SearchScreenState extends State<SearchScreen> {
+class SearchByActorState extends State<SearchByActor> {
   void _onCancel() {
-    context.read<MovieBloc>().add(SearchMovies(''));
+    context.read<MovieBloc>().add(LoadPopularActor(page: 1));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<MovieBloc>().add(LoadPopularActor(page: 1));
   }
 
   @override
@@ -38,29 +42,34 @@ class SearchScreenState extends State<SearchScreen> {
           builder: (context, state) {
             if (state is MovieLoading) {
               return const Center(child: CircularProgressIndicator());
-            } else if (state is SearchLoaded) {
-              final movies = state.movies;
-              final List<Movie> listMovie =
-                  movies.map((json) => Movie.fromJson(json)).toList();
-
-              if (listMovie.isEmpty) {
+            } else if (state is ActorLoaded) {
+              final List<Actor> listActors = state.actors;
+              if (listActors.isEmpty) {
                 return Center(
                     child: Text(AppLocalizations.of(context)!.noMoviesFound));
               }
 
-              return ListView.builder(
-                itemCount: listMovie.length,
+              return GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 10.0,
+                  mainAxisSpacing: 10.0,
+                  childAspectRatio: 1,
+                ),
+                itemCount: listActors.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(listMovie[index].title),
+                  return ActorCard(
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MovieDetailScreen(
-                                movieId: listMovie[index].id)),
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MovieByActorScreen(
+                                  actor: listActors[index]))).then((_) {
+                        _onCancel();
+                      });
                     },
+                    imageUrl: listActors[index].profilePath ?? '',
+                    title: listActors[index].originalName,
                   );
                 },
               );
@@ -69,37 +78,9 @@ class SearchScreenState extends State<SearchScreen> {
                   child:
                       Text(AppLocalizations.of(context)!.error(state.message)));
             } else {
-              return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.count(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    children: [
-                      MiniGamesCard(
-                        title: AppLocalizations.of(context)!.searchByCategory,
-                        imageUrl: 'assets/images/category.png',
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const CategoryListScreen()),
-                          );
-                        },
-                      ),
-                      MiniGamesCard(
-                        title: AppLocalizations.of(context)!.searchByActor,
-                        imageUrl: 'assets/images/actor.png',
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const SearchByActor()),
-                          );
-                        },
-                      ),
-                    ],
-                  ));
+              return Center(
+                child: Text(AppLocalizations.of(context)!.noActorFound),
+              );
             }
           },
         ));
@@ -156,7 +137,7 @@ class SearchBoxState extends State<SearchBox> {
         if (_debounce?.isActive ?? false) _debounce?.cancel();
         _debounce = Timer(const Duration(milliseconds: 200), () {
           if (value.isNotEmpty) {
-            context.read<MovieBloc>().add(SearchMovies(value));
+            context.read<MovieBloc>().add(SearchActor(name: value, page: 1));
           }
         });
       },

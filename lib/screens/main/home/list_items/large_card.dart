@@ -27,7 +27,7 @@ class LargeCard extends StatelessWidget {
         width: width,
         height: height,
         child: Card(
-          elevation: 4,
+          elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
           ),
@@ -41,11 +41,20 @@ class LargeCard extends StatelessWidget {
                   children: [
                     FadeInImage.assetNetwork(
                       placeholder: 'assets/images/placeholder.png',
-                      image: Values.imageUrl +
-                          Values.imageSmall +
-                          (movie.posterPath ?? ''),
+                      image: movie.posterPath != null
+                          ? Values.imageUrl +
+                              Values.imageSmall +
+                              movie.posterPath!
+                          : 'assets/images/placeholder.png',
                       width: cardWidth,
                       fit: BoxFit.fitWidth,
+                      imageErrorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          'assets/images/placeholder.png',
+                          width: cardWidth,
+                          fit: BoxFit.fitWidth,
+                        );
+                      },
                     ),
                     Positioned(
                         bottom: 20,

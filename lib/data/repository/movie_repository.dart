@@ -1,13 +1,9 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_movie/constain_values/values.dart';
 import 'package:my_movie/data/connections/network/api_service.dart';
-import 'package:my_movie/data/models/movie_genre.dart';
 
 class MovieRepository {
   final ApiService _apiService = ApiService();
-  final _secureStorage = const FlutterSecureStorage();
 
   Future<Response> getPopularMovies() async {
     return _apiService.get('movie/popular', queryParameters: {
@@ -74,11 +70,27 @@ class MovieRepository {
     });
   }
 
-  Future<Response> discoverMoviesByGenre(int genreId, int page) async {
+  Future<Response> discoverMoviesByGenre(
+      int genreId, int page, int sortOptions) async {
+    String sortBy;
+    switch (sortOptions) {
+      case 0:
+        sortBy = 'popularity.desc';
+        break;
+      case 1:
+        sortBy = 'primary_release_date.desc';
+        break;
+      case 2:
+        sortBy = 'vote_average.desc';
+        break;
+      default:
+        sortBy = 'popularity.desc';
+    }
     return _apiService.get('discover/movie', queryParameters: {
       'with_genres': genreId.toString(),
       'language': Values.language,
       'page': page.toString(),
+      'sort_by': sortBy,
     });
   }
 
@@ -114,9 +126,25 @@ class MovieRepository {
     );
   }
 
-  Future<void> storeGenres(List<MovieGenre> genres) async {
-    final genresJson =
-        jsonEncode(genres.map((genre) => genre.toJson()).toList());
-    await _secureStorage.write(key: 'movie_genres', value: genresJson);
+  Future<Response> getPopularActor(int page) async {
+    return _apiService.get(
+      'person/popular',
+      queryParameters: {
+        'language': Values.language,
+        'page': page.toString(),
+      },
+    );
+  }
+
+  Future<Response> searchPerson(String query, int page) async {
+    return _apiService.get(
+      'search/person',
+      queryParameters: {
+        'query': query,
+        'include_adult': 'false',
+        'language': Values.language,
+        'page': page.toString(),
+      },
+    );
   }
 }

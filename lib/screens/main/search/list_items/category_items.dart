@@ -12,7 +12,7 @@ class CategoryItems extends StatelessWidget {
         child: SizedBox(
           height: 70,
           child: Card(
-            elevation: 4,
+            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),

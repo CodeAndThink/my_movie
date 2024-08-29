@@ -87,8 +87,8 @@ class AccountListScreenState extends State<AccountListScreen> {
           ),
           Expanded(
               child: _accounts.isEmpty
-                  ? const Center(
-                      child: Text('No accounts found'),
+                  ? Center(
+                      child: Text(AppLocalizations.of(context)!.noUserDataAvailable),
                     )
                   : ListView.builder(
                       itemCount: _accounts.length,

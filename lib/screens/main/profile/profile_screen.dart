@@ -13,6 +13,8 @@ import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -40,6 +42,7 @@ class ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showImageSourceDialog(BuildContext context) {
+    final ImagePicker picker = ImagePicker();
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -55,8 +58,28 @@ class ProfileScreenState extends State<ProfileScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 48),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  final permissionStatus = await Permission.photos.request();
+                  if (permissionStatus.isGranted) {
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    if (image != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .selectedImagePath(image.path)),
+                        ),
+                      );
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.permissionDenied),
+                      ),
+                    );
+                  }
                 },
                 child: Text(AppLocalizations.of(context)!.imagesFromGallery),
               ),
@@ -65,8 +88,28 @@ class ProfileScreenState extends State<ProfileScreen> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 48),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
+                  final permissionStatus = await Permission.camera.request();
+                  if (permissionStatus.isGranted) {
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.camera);
+                    if (image != null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(AppLocalizations.of(context)!
+                              .capturedImagePath(image.path)),
+                        ),
+                      );
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.permissionDenied),
+                      ),
+                    );
+                  }
                 },
                 child: Text(AppLocalizations.of(context)!.imagesFromCamera),
               ),
@@ -82,7 +125,7 @@ class ProfileScreenState extends State<ProfileScreen> {
       height: 80,
       width: 100,
       child: Card(
-        elevation: 10,
+        elevation: 2,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0),
         ),
@@ -154,7 +197,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                 child: Column(
                   children: [
                     Card(
-                      elevation: 7.0,
+                      elevation: 2.0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16.0),
                       ),
@@ -285,10 +328,5 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
               )),
         ));
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }

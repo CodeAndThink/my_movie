@@ -3,7 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/screens/main/profile/information/change_information_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
 
 class InformationScreen extends StatefulWidget {
@@ -22,6 +25,17 @@ class InformationScreenState extends State<InformationScreen> {
   late TextEditingController _createDateController;
   late int _gender;
 
+  void getUserData() {
+    final authBloc = context.read<AuthBloc>();
+    final userDataBloc = context.read<UserDataBloc>();
+    final userId = authBloc.state is AuthAuthenticated
+        ? (authBloc.state as AuthAuthenticated).docId
+        : '';
+    if (userId.isNotEmpty) {
+      userDataBloc.add(FetchUserData(userId));
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +53,7 @@ class InformationScreenState extends State<InformationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'User Profile',
+          AppLocalizations.of(context)!.userProfile,
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ),
@@ -100,7 +114,7 @@ class InformationScreenState extends State<InformationScreen> {
                       ),
                       Expanded(
                         child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.male),
+                          title: Text(AppLocalizations.of(context)!.female),
                           value: 1,
                           enableFeedback: false,
                           groupValue: _gender,
@@ -113,7 +127,7 @@ class InformationScreenState extends State<InformationScreen> {
                       ),
                       Expanded(
                         child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.female),
+                          title: Text(AppLocalizations.of(context)!.male),
                           value: 2,
                           groupValue: _gender,
                           enableFeedback: false,
@@ -157,7 +171,9 @@ class InformationScreenState extends State<InformationScreen> {
                             MaterialPageRoute(
                                 builder: (context) => ChangeInformationScreen(
                                       user: User.fromJson(userData),
-                                    )));
+                                    ))).then((_) {
+                          getUserData();
+                        });
                       },
                       tooltip: 'Change Information',
                       child: const Icon(Icons.edit),
@@ -167,7 +183,8 @@ class InformationScreenState extends State<InformationScreen> {
               ),
             );
           }
-          return const Center(child: Text('No user data available'));
+          return Center(
+              child: Text(AppLocalizations.of(context)!.noUserDataAvailable));
         },
       ),
     );

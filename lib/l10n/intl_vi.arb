@@ -258,5 +258,14 @@
   "level": "Cấp",
   "searchByCategory": "Thể loại phim",
   "categories": "Các thể loại phim",
-  "includeAdult" : "Hiện nội dung trưởng thành"
+  "includeAdult" : "Hiện nội dung trưởng thành",
+  "sortByReleasedDate": "Sắp xếp theo thời gian",
+  "sortByRatingScore": "Sắp xếp theo đánh giá",
+  "sortByPopularity": "Sắp xếp theo độ phổ biến",
+  "searchByActor": "Tìm theo diễn viên",
+  "permissionDenied": "Quyền hạn bị từ chối",
+  "selectedImagePath": "Đã chọn hình ảnh: {path}",
+  "capturedImagePath": "Đường đẫn chụp ảnh: {path}",
+  "noActorFound": "Không tìm thấy diễn viên!",
+  "noGenreFound": "Không tìm thấy danh sách thể loại"
 }

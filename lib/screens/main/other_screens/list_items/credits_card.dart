@@ -29,7 +29,6 @@ class CreditsCard extends StatelessWidget {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            
             children: [
               const Spacer(),
               ClipOval(

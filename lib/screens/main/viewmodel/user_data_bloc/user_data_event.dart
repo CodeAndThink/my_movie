@@ -57,3 +57,12 @@ class UpdateFavorite extends UserDataEvent {
   @override
   List<Object> get props => [userId];
 }
+
+class AuthUpdateProfilePicture extends UserDataEvent {
+  final String imageUrl;
+
+  AuthUpdateProfilePicture({required this.imageUrl});
+
+  @override
+  List<Object> get props => [imageUrl];
+}

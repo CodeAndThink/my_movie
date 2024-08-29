@@ -20,10 +20,9 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
 
   void onLoginSuccess() {
     Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-      (route) => false
-    );
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+        (route) => false);
   }
 
   @override
@@ -32,7 +31,7 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
     return Scaffold(
       appBar: AppBar(
           title: Text(
-        'Enter Password',
+        AppLocalizations.of(context)!.password,
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
       )),
       body: Padding(
@@ -42,7 +41,8 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.password),
             ),
             const SizedBox(height: 20),
             SizedBox(

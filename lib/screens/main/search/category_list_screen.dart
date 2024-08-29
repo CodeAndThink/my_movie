@@ -1,13 +1,12 @@
-import 'dart:convert';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/screens/main/search/list_items/category_items.dart';
 import 'package:my_movie/screens/main/search/movie_by_genre_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
 
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({super.key});
@@ -17,9 +16,6 @@ class CategoryListScreen extends StatefulWidget {
 }
 
 class CategoryListScreenState extends State<CategoryListScreen> {
-  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
-  List<MovieGenre> _genres = [];
-
   @override
   void initState() {
     super.initState();
@@ -27,15 +23,7 @@ class CategoryListScreenState extends State<CategoryListScreen> {
   }
 
   Future<void> _loadGenres() async {
-    final genresString = await _secureStorage.read(key: 'movie_genres');
-    if (genresString != null) {
-      final List<dynamic> genresJson = jsonDecode(genresString);
-      setState(() {
-        _genres = genresJson.map((json) => MovieGenre.fromJson(json)).toList();
-      });
-    } else {
-      context.read<MovieBloc>().add(LoadMovieGenres());
-    }
+    context.read<MovieBloc>().add(LoadMovieGenres());
   }
 
   @override
@@ -48,21 +36,40 @@ class CategoryListScreenState extends State<CategoryListScreen> {
           ),
         ),
         body: Center(
-            child: ListView.builder(
-          itemCount: _genres.length,
-          itemBuilder: (context, index) {
-            final category = _genres[index];
-            return CategoryItems(
-                title: category.name,
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MovieByGenreScreen(
-                                genreId: _genres[index].id,
-                              )));
-                });
-          },
-        )));
+          child: BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is MovieLoading) {
+                return const CircularProgressIndicator();
+              } else if (state is MovieGenresLoaded) {
+                List<MovieGenre> genres = state.genres;
+                return ListView.builder(
+                  itemCount: genres.length,
+                  itemBuilder: (context, index) {
+                    final category = genres[index];
+                    return CategoryItems(
+                      title: category.name,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MovieByGenreScreen(
+                              genreId: category.id,
+                            ),
+                          ),
+                        ).then((_) {
+                          _loadGenres();
+                        });
+                      },
+                    );
+                  },
+                );
+              } else if (state is MovieError) {
+                return Text(state.message);
+              } else {
+                return Text(AppLocalizations.of(context)!.noGenreFound);
+              }
+            },
+          ),
+        ));
   }
 }

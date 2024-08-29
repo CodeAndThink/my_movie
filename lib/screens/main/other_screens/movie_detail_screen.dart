@@ -132,11 +132,20 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                 return Stack(
                   children: [
                     Positioned.fill(
-                      child: Image.network(
-                        Values.imageUrl +
-                            Values.imageSmall +
-                            (movie.posterPath ?? ''),
+                      child: FadeInImage.assetNetwork(
+                        placeholder: 'assets/images/placeholder.png',
+                        image: movie.posterPath != null
+                            ? Values.imageUrl +
+                                Values.imageSmall +
+                                movie.posterPath!
+                            : 'assets/images/placeholder.png',
                         fit: BoxFit.cover,
+                        imageErrorBuilder: (context, error, stackTrace) {
+                          return Image.asset(
+                            'assets/images/placeholder.png',
+                            fit: BoxFit.cover,
+                          );
+                        },
                       ),
                     ),
                     Positioned.fill(
@@ -165,11 +174,22 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 SizedBox(
                                   width: 120,
                                   height: 200,
-                                  child: Image.network(
-                                    Values.imageUrl +
-                                        Values.imageSmall +
-                                        (movie.posterPath ?? ''),
+                                  child: FadeInImage.assetNetwork(
+                                    placeholder:
+                                        'assets/images/placeholder.png',
+                                    image: movie.posterPath != null
+                                        ? Values.imageUrl +
+                                            Values.imageSmall +
+                                            movie.posterPath!
+                                        : 'assets/images/placeholder.png',
                                     fit: BoxFit.cover,
+                                    imageErrorBuilder:
+                                        (context, error, stackTrace) {
+                                      return Image.asset(
+                                        'assets/images/placeholder.png',
+                                        fit: BoxFit.cover,
+                                      );
+                                    },
                                   ),
                                 ),
                                 const SizedBox(width: 10),

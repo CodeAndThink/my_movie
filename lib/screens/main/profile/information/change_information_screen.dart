@@ -151,7 +151,7 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
                       ),
                       Expanded(
                         child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.male),
+                          title: Text(AppLocalizations.of(context)!.female),
                           value: 1,
                           groupValue: _gender,
                           onChanged: (value) {
@@ -163,7 +163,7 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
                       ),
                       Expanded(
                         child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.female),
+                          title: Text(AppLocalizations.of(context)!.male),
                           value: 2,
                           groupValue: _gender,
                           onChanged: (value) {

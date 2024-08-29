@@ -20,7 +20,7 @@ class SmallCard extends StatelessWidget {
           child: SizedBox(
             width: 200,
             child: Card(
-              elevation: 4,
+              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),
@@ -33,12 +33,22 @@ class SmallCard extends StatelessWidget {
                       child: Center(
                         child: FadeInImage.assetNetwork(
                           placeholder: 'assets/images/placeholder.png',
-                          image: Values.imageUrl +
-                              Values.imageSmall +
-                              (movie.posterPath ?? ''),
+                          image: movie.posterPath != null
+                              ? Values.imageUrl +
+                                  Values.imageSmall +
+                                  movie.posterPath!
+                              : 'assets/images/placeholder.png',
                           width: 150,
                           height: 200,
                           fit: BoxFit.fitWidth,
+                          imageErrorBuilder: (context, error, stackTrace) {
+                            return Image.asset(
+                              'assets/images/placeholder.png',
+                              width: 150,
+                              height: 200,
+                              fit: BoxFit.fitWidth,
+                            );
+                          },
                         ),
                       )),
                   Center(
@@ -52,7 +62,10 @@ class SmallCard extends StatelessWidget {
                             maxLines: 2,
                             overflow: TextOverflow.clip,
                           ),
-                          Text(movie.releaseDate?.substring(0, 4) ?? ''),
+                          Text(movie.releaseDate != null &&
+                                  movie.releaseDate!.length >= 4
+                              ? movie.releaseDate!.substring(0, 4)
+                              : ''),
                         ],
                       ),
                     ),

@@ -1,3 +1,4 @@
+import 'package:my_movie/data/models/actor.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
@@ -80,4 +81,10 @@ class MovieReviewsLoaded extends MovieState {
   final List<Review> reviews;
 
   MovieReviewsLoaded(this.reviews);
+}
+
+class ActorLoaded extends MovieState {
+  final List<Actor> actors;
+
+  ActorLoaded(this.actors);
 }

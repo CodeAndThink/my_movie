@@ -30,8 +30,9 @@ class SearchMovies extends MovieEvent {
 class LoadMovieByGenre extends MovieEvent {
   final int genreId;
   final int page;
+  final int sortOption;
 
-  LoadMovieByGenre(this.genreId, this.page);
+  LoadMovieByGenre(this.genreId, this.page, this.sortOption);
 }
 
 class RateMovie extends MovieEvent {
@@ -58,4 +59,17 @@ class LoadMovieByListId extends MovieEvent {
   final List<int> listMovieId;
 
   LoadMovieByListId({required this.listMovieId});
+}
+
+class LoadPopularActor extends MovieEvent {
+  final int page;
+
+  LoadPopularActor({required this.page});
+}
+
+class SearchActor extends MovieEvent {
+  final int page;
+  final String name;
+
+  SearchActor({required this.name, required this.page});
 }

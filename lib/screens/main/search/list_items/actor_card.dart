@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie/constain_values/values.dart';
 
-class MiniGamesCard extends StatelessWidget {
+class ActorCard extends StatelessWidget {
   final VoidCallback onTap;
-  final String imageUrl;
+  final String? imageUrl;
   final String title;
 
-  const MiniGamesCard(
-      {super.key,
-      required this.onTap,
-      required this.imageUrl,
-      required this.title});
+  const ActorCard(
+      {super.key, required this.onTap, this.imageUrl, required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +26,22 @@ class MiniGamesCard extends StatelessWidget {
               ClipRRect(
                 borderRadius:
                     const BorderRadius.vertical(top: Radius.circular(10)),
-                child: Image.asset(
-                  imageUrl,
-                  width: 100,
-                  height: 100,
+                child: FadeInImage.assetNetwork(
+                  placeholder: 'assets/images/placeholder.png',
+                  image: imageUrl != null
+                      ? Values.imageUrl + Values.imageSmall + imageUrl!
+                      : 'assets/images/placeholder.png',
+                  width: 150,
+                  height: 150,
                   fit: BoxFit.cover,
+                  imageErrorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      'assets/images/placeholder.png',
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.fitWidth,
+                    );
+                  },
                 ),
               ),
               Padding(

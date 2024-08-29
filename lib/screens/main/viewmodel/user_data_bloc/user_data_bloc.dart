@@ -12,7 +12,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     on<UpdateUserData>(_onUpdateUserData);
     on<DeleteUserData>(_onDeleteUserData);
     on<UpdateFavorite>(_onUpdateFavorite);
-    // on<AuthUpdateProfilePicture>(_onUpdateProfilePicture);
+    on<AuthUpdateProfilePicture>(_onUpdateProfilePicture);
   }
 
   Future<void> _onFetchUserData(
@@ -61,6 +61,16 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     try {
       await _authRepository.deleteUserData(event.userId);
       emit(UserDataDeleted());
+    } catch (e) {
+      emit(UserDataFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onUpdateProfilePicture(
+      AuthUpdateProfilePicture event, Emitter<UserDataState> emit) async {
+    try {
+      await _authRepository.uploadImage(event.imageUrl);
+      emit(UserDataUpdated());
     } catch (e) {
       emit(UserDataFailure(e.toString()));
     }

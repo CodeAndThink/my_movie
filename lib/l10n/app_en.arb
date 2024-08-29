@@ -258,5 +258,14 @@
   "level": "Level",
   "searchByCategory": "Search By Category",
   "categories": "Categories",
-  "includeAdult" : "Include Adult Movie"
+  "includeAdult" : "Include Adult Movie",
+  "sortByReleasedDate": "Sort by date",
+  "sortByRatingScore": "Sort by rating",
+  "sortByPopularity": "Sort by popularity",
+  "searchByActor": "Search By Actor",
+  "permissionDenied": "Permission denied",
+  "selectedImagePath": "Selected image path: {path}",
+  "capturedImagePath": "Captured image path: {path}",
+  "noActorFound": "No Actor Found!",
+  "noGenreFound": "No Genre Found!"
 }
