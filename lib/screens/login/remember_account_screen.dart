@@ -88,7 +88,8 @@ class AccountListScreenState extends State<AccountListScreen> {
           Expanded(
               child: _accounts.isEmpty
                   ? Center(
-                      child: Text(AppLocalizations.of(context)!.noUserDataAvailable),
+                      child: Text(
+                          AppLocalizations.of(context)!.noUserDataAvailable),
                     )
                   : ListView.builder(
                       itemCount: _accounts.length,
@@ -103,6 +104,7 @@ class AccountListScreenState extends State<AccountListScreen> {
                               email,
                               style: Theme.of(context).textTheme.bodyLarge,
                               textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                             onTap: () => _onAccountSelected(email),
                           ),
@@ -118,8 +120,7 @@ class AccountListScreenState extends State<AccountListScreen> {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const LoginScreen(
-                      ),
+                      builder: (context) => const LoginScreen(),
                     ),
                   );
                 },
@@ -131,6 +132,7 @@ class AccountListScreenState extends State<AccountListScreen> {
                 child: Text(
                   AppLocalizations.of(context)!.moveToLogin,
                   style: const TextStyle(color: Colors.white),
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),

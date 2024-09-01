@@ -269,5 +269,15 @@
   "noActorFound": "Không tìm thấy diễn viên!",
   "noGenreFound": "Không tìm thấy danh sách thể loại!",
   "noQuizzAvailable": "Không có câu hỏi có sẵn!",
-  "score": "Điểm: {score}"
+  "score": "Điểm: {score}",
+  "ranking": "Bảng xếp hạng",
+  "results": "Kết quả",
+  "yourScores": "Điểm của bạn",
+  "topScores": "Điểm cao nhất",
+  "youHaveSurpassed": "Bạn đã vượt qua: {number} người chơi!",
+  "loadQuizz": "Tải thêm câu đố",
+  "correctAnswer": "Đáp án đúng là: {answer}",
+  "answer": "Đáp án",
+  "scores": "Điểm",
+  "noNotificationsFound" :"Không có thông báo nào!"
 }

@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
@@ -13,6 +14,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     on<DeleteUserData>(_onDeleteUserData);
     on<UpdateFavorite>(_onUpdateFavorite);
     on<AuthUpdateProfilePicture>(_onUpdateProfilePicture);
+    on<FetchUserDisplayInfo>(_onFetchUserDisplayInfo);
   }
 
   Future<void> _onFetchUserData(
@@ -21,6 +23,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     try {
       final userData = await _authRepository.fetchUserData(event.userId);
       emit(UserDataLoaded(userData));
+      
     } catch (e) {
       emit(UserDataFailure(e.toString()));
     }
@@ -41,7 +44,9 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     try {
       await _authRepository.updateUserData(event.userId, event.updatedData);
       emit(UserDataUpdated());
+
     } catch (e) {
+      print(e.toString());
       emit(UserDataFailure(e.toString()));
     }
   }
@@ -50,6 +55,7 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       UpdateFavorite event, Emitter<UserDataState> emit) async {
     try {
       await _authRepository.updateFavorite(event.userId, event.movieId);
+      print(event.userId);
       emit(UserDataUpdated());
     } catch (e) {
       emit(UserDataFailure(e.toString()));
@@ -71,6 +77,18 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     try {
       await _authRepository.uploadImage(event.imageUrl);
       emit(UserDataUpdated());
+    } catch (e) {
+      emit(UserDataFailure(e.toString()));
+    }
+  }
+
+  Future<void> _onFetchUserDisplayInfo(
+      FetchUserDisplayInfo event, Emitter<UserDataState> emit) async {
+    emit(UserDataLoading());
+    try {
+      final List<UserDisplayInfo> listDatas =
+          await _authRepository.fetchListUserCommentData(event.listIds);
+      emit(UserCommentDatasLoaded(listDatas));
     } catch (e) {
       emit(UserDataFailure(e.toString()));
     }

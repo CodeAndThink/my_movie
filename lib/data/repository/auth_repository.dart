@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:my_movie/data/models/comment.dart';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:my_movie/data/models/user.dart' as my_user;
+import 'package:my_movie/data/models/user_display_info.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final _secureStorage = const FlutterSecureStorage();
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   AuthRepository(this._firebaseAuth);
 
@@ -48,9 +51,62 @@ class AuthRepository {
       'avatarPath': newUser.avatarPath,
       'createDate': newUser.createDate,
       'favoritesList': newUser.favoritesList,
+      'commentIds': newUser.commentIds
     });
 
     return userId;
+  }
+
+  Future<String> createUserComment(Comment comment) async {
+    String commentId = _firestore.collection('comments').doc().id;
+
+    await _firestore.collection('comments').doc(commentId).set({
+      'id': comment.id,
+      'userId': comment.userId,
+      'url': comment.url,
+      'author': comment.author,
+      'movieId': comment.movieId,
+      'content': comment.content,
+      'createdAt': comment.createdAt,
+      'updatedAt': comment.updatedAt,
+      'favoriteLevel': comment.favoriteLevel
+    });
+
+    return commentId;
+  }
+
+  Future<List<Map<String, dynamic>>> getMymovieCommentsByMovieId(int movieId) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('comments')
+          .where('movieId', isEqualTo: movieId)
+          .get();
+
+      final comments = querySnapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      return comments;
+    } catch (e) {
+      throw Exception('Failed to get comments: $e');
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getMymovieCommentsByUserId(int movieId) async {
+    try {
+      final querySnapshot = await _firestore
+          .collection('comments')
+          .where('movieId', isEqualTo: movieId)
+          .get();
+
+      final comments = querySnapshot.docs.map((doc) {
+        return doc.data();
+      }).toList();
+
+      return comments;
+    } catch (e) {
+      throw Exception('Failed to get comments: $e');
+    }
   }
 
   Future<void> createUserMetadata(String uid, String docId) async {
@@ -87,6 +143,12 @@ class AuthRepository {
     await _firestore.collection('users').doc(userId).update(updatedData);
   }
 
+  Future<void> updateUserDocumentId(String docId) async {
+    await _firestore.collection('users').doc(docId).update({
+      'id': docId,
+    });
+  }
+
   Future<void> deleteUserData(String userId) async {
     await _firestore.collection('users').doc(userId).delete();
   }
@@ -121,5 +183,38 @@ class AuthRepository {
         value: jsonEncode(storedEmails),
       );
     }
+  }
+
+  Future<String> getDeviceToken() async {
+    return await _firebaseMessaging.getToken() ?? '';
+  }
+
+  Future<void> subscribeToTopic(String topic) async {
+    await _firebaseMessaging.subscribeToTopic(topic);
+  }
+
+  Future<void> unsubscribeFromTopic(String topic) async {
+    await _firebaseMessaging.unsubscribeFromTopic(topic);
+  }
+
+  Future<List<UserDisplayInfo>> fetchListUserCommentData(
+      List<String> userIds) async {
+    List<UserDisplayInfo> usersData = [];
+
+    for (String userId in userIds) {
+      DocumentSnapshot userDoc =
+          await _firestore.collection('users').doc(userId).get();
+
+      if (userDoc.exists) {
+        UserDisplayInfo userData = UserDisplayInfo(
+          userDoc['displayName'] as String,
+          userDoc['avatarPath'] as String,
+        );
+
+        usersData.add(userData);
+      }
+    }
+
+    return usersData;
   }
 }

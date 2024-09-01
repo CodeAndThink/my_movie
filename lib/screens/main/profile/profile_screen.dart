@@ -64,7 +64,7 @@ class ProfileScreenState extends State<ProfileScreen> {
                   if (permissionStatus.isGranted) {
                     final XFile? image =
                         await picker.pickImage(source: ImageSource.gallery);
-                    if (image != null) {
+                    if (image != null && mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text(AppLocalizations.of(context)!
@@ -90,25 +90,31 @@ class ProfileScreenState extends State<ProfileScreen> {
                 ),
                 onPressed: () async {
                   Navigator.of(context).pop();
+
                   final permissionStatus = await Permission.camera.request();
                   if (permissionStatus.isGranted) {
                     final XFile? image =
                         await picker.pickImage(source: ImageSource.camera);
-                    if (image != null) {
+                    if (image != null && mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text(AppLocalizations.of(context)!
-                              .capturedImagePath(image.path)),
+                          content: Text(
+                            AppLocalizations.of(context)!
+                                .capturedImagePath(image.path),
+                          ),
                         ),
                       );
                     }
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            AppLocalizations.of(context)!.permissionDenied),
-                      ),
-                    );
+                    if (mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            AppLocalizations.of(context)!.permissionDenied,
+                          ),
+                        ),
+                      );
+                    }
                   }
                 },
                 child: Text(AppLocalizations.of(context)!.imagesFromCamera),
@@ -139,6 +145,7 @@ class ProfileScreenState extends State<ProfileScreen> {
             Text(
               label,
               style: Theme.of(context).textTheme.bodyMedium,
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),
@@ -213,56 +220,72 @@ class ProfileScreenState extends State<ProfileScreen> {
                           ),
                           Positioned(
                             top: 10,
-                            child: Stack(
-                              children: [
-                                BlocBuilder<UserDataBloc, UserDataState>(
-                                  builder: (context, state) {
-                                    if (state is UserDataLoading) {
-                                      return const Center(
-                                          child: CircularProgressIndicator());
-                                    } else if (state is UserDataFailure) {
-                                      return Center(
-                                          child: Text('Error: ${state.error}'));
-                                    } else if (state is UserDataLoaded) {
-                                      final userData = state.userData;
-                                      return CircleAvatar(
-                                        radius: 50,
-                                        backgroundImage: NetworkImage(
-                                            userData['avatarPath']),
-                                      );
-                                    }
-                                    return const CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage:
-                                          AssetImage('assets/logos/logo.png'),
-                                    );
-                                  },
-                                ),
-                                Positioned(
-                                  bottom: 0,
-                                  right: 0,
-                                  child: IconButton(
-                                    icon: const Icon(Icons.camera_alt),
-                                    onPressed: () {
-                                      _showImageSourceDialog(context);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 10,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                _buildProfileCard(
-                                    '1', AppLocalizations.of(context)!.like),
-                                _buildProfileCard('2',
-                                    AppLocalizations.of(context)!.comments),
-                                _buildProfileCard(
-                                    '3', AppLocalizations.of(context)!.level),
-                              ],
+                            child: BlocBuilder<UserDataBloc, UserDataState>(
+                              builder: (context, state) {
+                                if (state is UserDataLoading) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                } else if (state is UserDataFailure) {
+                                  return Center(
+                                      child: Text('Error: ${state.error}'));
+                                } else if (state is UserDataLoaded) {
+                                  final userData = state.userData;
+                                  return Center(
+                                    child: Column(
+                                      children: [
+                                        Stack(
+                                          children: [
+                                            CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: NetworkImage(
+                                                  userData['avatarPath']),
+                                            ),
+                                            Positioned(
+                                              right: 0,
+                                              bottom: 0,
+                                              child: IconButton(
+                                                icon: const Icon(
+                                                    Icons.camera_alt),
+                                                onPressed: () {
+                                                  _showImageSourceDialog(
+                                                      context);
+                                                },
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _buildProfileCard(
+                                                userData['favoritesList']
+                                                    .length
+                                                    .toString(),
+                                                AppLocalizations.of(context)!
+                                                    .like),
+                                            _buildProfileCard(
+                                                userData['commentIds']
+                                                    .length
+                                                    .toString(),
+                                                AppLocalizations.of(context)!
+                                                    .comments),
+                                            _buildProfileCard(
+                                                '3',
+                                                AppLocalizations.of(context)!
+                                                    .level),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                                return const CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      AssetImage('assets/logos/logo.png'),
+                                );
+                              },
                             ),
                           ),
                         ],
@@ -283,6 +306,8 @@ class ProfileScreenState extends State<ProfileScreen> {
                           MaterialPageRoute(
                               builder: (context) => const FavoritesScreen()));
                     }),
+                    _buildProfileButton(Icons.comment,
+                        AppLocalizations.of(context)!.comments, () {}),
                     _buildProfileButton(Icons.calendar_month,
                         AppLocalizations.of(context)!.calendar, () {
                       Navigator.push(

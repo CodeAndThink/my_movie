@@ -269,5 +269,15 @@
   "noActorFound": "No Actor Found!",
   "noGenreFound": "No Genre Found!",
   "noQuizzAvailable": "No Quizz Available!",
-  "score": "Score: {score}"
+  "score": "Score: {score}",
+  "ranking": "Ranking Board",
+  "results": "Results",
+  "yourScores": "Your Scores",
+  "topScores": "Top Scores",
+  "youHaveSurpassed": "You have surpassed: {number} players!",
+  "loadQuizz": "Load Quizz",
+  "correctAnswer": "Correct answer is: {answer}",
+  "answer": "Answer",
+  "scores": "Scores",
+  "noNotificationsFound" :"No Notifications Available!"
 }

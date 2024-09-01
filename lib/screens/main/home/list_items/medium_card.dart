@@ -49,9 +49,10 @@ class MediumCard extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                    width: 200,
-                    height: 200,
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 200,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

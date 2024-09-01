@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/comment_box.dart';
+import 'package:my_movie/screens/main/other_screens/list_items/review_box.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
+import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
 
 class CommentScreen extends StatefulWidget {
   const CommentScreen({super.key, required this.movieId});
@@ -36,8 +41,11 @@ class CommentScreenState extends State<CommentScreen> {
   }
 
   void _loadMovieData() {
-    final movieBloc = BlocProvider.of<MovieBloc>(context);
-    movieBloc.add(LoadMovieReviews(widget.movieId, 1));
+    context.read<MovieBloc>().add(LoadMovieReviews(widget.movieId, 1));
+  }
+
+  void _loadUserById(List<String> listIds) {
+    context.read<UserDataBloc>().add(FetchUserDisplayInfo(listIds));
   }
 
   @override
@@ -53,6 +61,11 @@ class CommentScreenState extends State<CommentScreen> {
         builder: (context, state) {
           if (state is MovieReviewsLoaded) {
             final reviews = state.reviews;
+            final comments = state.comments;
+            final List<String> listUserIds =
+                comments.map((comment) => comment.userId).toList();
+
+            _loadUserById(listUserIds);
             return Column(
               children: [
                 SizedBox(
@@ -65,20 +78,54 @@ class CommentScreenState extends State<CommentScreen> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: reviews.length,
-                    itemBuilder: (context, index) {
-                      final review = reviews[index];
-                      final authorDetails = review.authorDetails;
+                selectedRate == AppLocalizations.of(context)!.tmdbComments
+                    ? Expanded(
+                        child: ListView.builder(
+                          itemCount: reviews.length,
+                          itemBuilder: (context, index) {
+                            final review = reviews[index];
+                            final authorDetails = review.authorDetails;
 
-                      return CommentBox(
-                        authorDetails: authorDetails,
-                        review: review,
-                      );
-                    },
-                  ),
-                ),
+                            return ReviewBox(
+                              authorDetails: authorDetails,
+                              review: review,
+                            );
+                          },
+                        ),
+                      )
+                    : BlocBuilder<UserDataBloc, UserDataState>(
+                        builder: (context, state) {
+                        if (state is UserDataLoading) {
+                          return const Expanded(
+                              child: Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                        } else if (state is UserCommentDatasLoaded) {
+                          List<UserDisplayInfo> listUserInfors =
+                              state.userCommentDatas;
+                          return Expanded(
+                            child: ListView.builder(
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                return CommentBox(
+                                  comment: comments[index],
+                                  userDisplayInfo: listUserInfors[index],
+                                );
+                              },
+                            ),
+                          );
+                        } else if (state is UserDataFailure) {
+                          return const Expanded(
+                              child: Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                        } else {
+                          return const Expanded(
+                              child: Center(
+                            child: CircularProgressIndicator(),
+                          ));
+                        }
+                      })
               ],
             );
           } else if (state is MovieLoading) {

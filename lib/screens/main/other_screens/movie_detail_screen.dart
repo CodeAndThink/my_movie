@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:my_movie/constain_values/values.dart';
-import 'package:my_movie/data/models/user.dart';
+import 'package:my_movie/data/models/comment.dart';
+import 'package:my_movie/data/models/user.dart' as my_user;
+import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/other_screens/cast_and_crew_screen.dart';
 import 'package:my_movie/screens/main/other_screens/comment_screen.dart';
@@ -26,7 +29,8 @@ class MovieDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) => MovieBloc(MovieRepository()),
+        create: (context) =>
+            MovieBloc(MovieRepository(), AuthRepository(FirebaseAuth.instance)),
         child: MovieDetailScreenView(
           id: movieId,
         ));
@@ -44,8 +48,10 @@ class MovieDetailScreenView extends StatefulWidget {
 class MovieDetailScreenState extends State<MovieDetailScreenView> {
   late final WebViewController _controller;
   final TextEditingController _comment = TextEditingController();
-  late User userData;
+  late my_user.User userData;
   bool buttonState = false;
+  late String userId;
+  int favoriteLevel = 0;
 
   @override
   void initState() {
@@ -59,10 +65,14 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
     getUserData();
   }
 
+  void loadMovieReviewAndCommentData() {
+    context.read<MovieBloc>().add(LoadMovieReviews(widget.id, 1));
+  }
+
   void getUserData() {
     final authBloc = context.read<AuthBloc>();
     final userDataBloc = context.read<UserDataBloc>();
-    final userId = authBloc.state is AuthAuthenticated
+    userId = authBloc.state is AuthAuthenticated
         ? (authBloc.state as AuthAuthenticated).docId
         : '';
     if (userId.isNotEmpty) {
@@ -94,7 +104,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
         listener: (context, state) {
           if (state is UserDataLoaded) {
             setState(() {
-              userData = User.fromJson(state.userData);
+              userData = my_user.User.fromJson(state.userData);
               if (userData.favoritesList.contains(widget.id)) {
                 buttonState = true;
               } else {
@@ -360,11 +370,14 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                               ],
                             ),
                           ),
+                          //Comments part area
+
                           Container(
                             padding: const EdgeInsets.all(15),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                //Comments title
                                 Text(
                                   AppLocalizations.of(context)!.comments,
                                   style: Theme.of(context)
@@ -375,6 +388,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 Row(
                                   children: [
                                     Expanded(
+                                        //Comments text feild
                                         child: TextField(
                                       controller: _comment,
                                       decoration: InputDecoration(
@@ -392,22 +406,41 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                       ),
                                     )),
                                     IconButton(
-                                      onPressed: () => {},
+                                      onPressed: () => {
+                                        context.read<MovieBloc>().add(
+                                            CreateMymovieComments(
+                                                userId,
+                                                widget.id,
+                                                favoriteLevel,
+                                                _comment.text,
+                                                userData.displayName,
+                                                userData.avatarPath)),
+                                        _loadMovieData()
+                                      },
                                       icon: const Icon(Icons.send),
                                     ),
                                   ],
                                 ),
+                                //Like, dislike and unsure comments
                                 Row(
                                   children: [
-                                    Text(AppLocalizations.of(context)!
-                                        .doYouLikeThisMovie),
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth: cardWidth * 0.6,
+                                      ),
+                                      child: Text(
+                                        AppLocalizations.of(context)!
+                                            .doYouLikeThisMovie,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                     const Spacer(),
                                     IconButton(
-                                      onPressed: () => {},
+                                      onPressed: () => {favoriteLevel = 1},
                                       icon: const Icon(Icons.thumb_up),
                                     ),
                                     IconButton(
-                                      onPressed: () => {},
+                                      onPressed: () => {favoriteLevel = 2},
                                       icon: const Icon(Icons.thumb_down),
                                     ),
                                   ],
@@ -438,12 +471,17 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                                       BlocProvider(
                                                     create: (context) =>
                                                         MovieBloc(
-                                                            MovieRepository()),
+                                                            MovieRepository(),
+                                                            AuthRepository(
+                                                                FirebaseAuth
+                                                                    .instance)),
                                                     child: CommentScreen(
                                                         movieId: widget.id),
                                                   ),
                                                 ),
-                                              )
+                                              ).then((_) {
+                                                getUserData();
+                                              })
                                             },
                                         child: Text(
                                           AppLocalizations.of(context)!.details,

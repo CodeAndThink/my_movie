@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/animation/dice_roll_animation.dart';
+import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
 import 'package:my_movie/screens/main/minigame/quizz_screen.dart';
@@ -19,7 +21,8 @@ class MinigameScreen extends StatefulWidget {
 }
 
 class MinigameScreenState extends State<MinigameScreen> {
-  final MovieBloc _movieBloc = MovieBloc(MovieRepository());
+  final MovieBloc _movieBloc =
+      MovieBloc(MovieRepository(), AuthRepository(FirebaseAuth.instance));
 
   @override
   Widget build(BuildContext context) {

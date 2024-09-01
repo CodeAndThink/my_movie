@@ -18,11 +18,18 @@ class PasswordInputScreen extends StatefulWidget {
 class PasswordInputScreenState extends State<PasswordInputScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   void onLoginSuccess() {
     Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-        (route) => false);
+      context,
+      MaterialPageRoute(builder: (context) => const MainScreen()),
+      (route) => false,
+    );
   }
 
   @override
@@ -30,22 +37,36 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
     final authBloc = context.read<AuthBloc>();
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-        AppLocalizations.of(context)!.password,
-        style: TextStyle(color: Theme.of(context).colorScheme.primary),
-      )),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.password),
-            ),
-            const SizedBox(height: 20),
-            SizedBox(
+        title: Text(
+          AppLocalizations.of(context)!.password,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
+      ),
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthAuthenticated) {
+            onLoginSuccess();
+          } else if (state is AuthFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.error),
+              ),
+            );
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.password,
+                ),
+              ),
+              const SizedBox(height: 20),
+              SizedBox(
                 width: MediaQuery.of(context).size.width - 32,
                 child: ElevatedButton(
                   onPressed: () {
@@ -77,27 +98,10 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
                     AppLocalizations.of(context)!.logIn,
                     style: const TextStyle(color: Colors.white),
                   ),
-                )),
-            BlocConsumer<AuthBloc, AuthState>(
-              bloc: authBloc,
-              listener: (context, state) {
-                if (state is AuthAuthenticated) {
-                  onLoginSuccess();
-                } else if (state is AuthFailure) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        state.error,
-                      ),
-                    ),
-                  );
-                }
-              },
-              builder: (context, state) {
-                return Container();
-              },
-            ),
-          ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -59,13 +59,15 @@ class SmallCard extends StatelessWidget {
                           Text(
                             movie.title,
                             style: Theme.of(context).textTheme.headlineSmall,
-                            maxLines: 2,
-                            overflow: TextOverflow.clip,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          Text(movie.releaseDate != null &&
-                                  movie.releaseDate!.length >= 4
-                              ? movie.releaseDate!.substring(0, 4)
-                              : ''),
+                          Text(
+                            movie.releaseDate != null &&
+                                    movie.releaseDate!.length >= 4
+                                ? movie.releaseDate!.substring(0, 4)
+                                : '',
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ],
                       ),
                     ),

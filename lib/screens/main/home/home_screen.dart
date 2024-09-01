@@ -46,11 +46,16 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          AppLocalizations.of(context)!.welcome,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        title: ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: screenWidth * 0.6),
+          child: Text(
+            AppLocalizations.of(context)!.welcome,
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
         ),
         actions: [
           IconButton(

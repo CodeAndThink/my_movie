@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/data/models/trivia_question.dart';
+import 'package:my_movie/screens/main/minigame/ranking_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_event.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_state.dart';
@@ -16,10 +17,16 @@ class QuizzScreen extends StatefulWidget {
 
 class QuizzScreenState extends State<QuizzScreen> {
   int score = 0;
+  int heard = 3;
+  List<TriviaQuestion> listQuestions = [];
 
   @override
   void initState() {
     super.initState();
+    context.read<QuizzBloc>().add(LoadQuizz(1, 0, 0));
+  }
+
+  void loadMoreQuizz() {
     context.read<QuizzBloc>().add(LoadQuizz(1, 0, 0));
   }
 
@@ -28,11 +35,30 @@ class QuizzScreenState extends State<QuizzScreen> {
     bool isCorrect = answer == correctAnswer;
     cardState.updateColor(isCorrect);
 
-    Future.delayed(const Duration(seconds: 3), () {
-      context.read<QuizzBloc>().add(LoadQuizz(1, 0, 0));
-      answer == correctAnswer ? score += 1 : score += 0;
-      setState(() {});
-    });
+    if (heard > 0) {
+      if (isCorrect) {
+        score += 1;
+      } else {
+        heard--;
+      }
+
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        context.read<QuizzBloc>().add(LoadQuizz(100, 0, 0));
+        setState(() {});
+      });
+    } else {
+      Future.delayed(const Duration(seconds: 2), () {
+        if (!mounted) return;
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => RankingScreen(
+                      score: score,
+                      listQuestions: listQuestions,
+                    )));
+      });
+    }
   }
 
   @override
@@ -57,6 +83,7 @@ class QuizzScreenState extends State<QuizzScreen> {
                     return const CircularProgressIndicator();
                   } else if (state is QuizzLoaded) {
                     TriviaQuestion question = state.listQuestions.first;
+                    listQuestions.add(question);
                     String quizz = convertString(question.question);
                     List<String> answers = question.incorrectAnswers;
                     String correctAnswer = question.correctAnswer;
@@ -133,9 +160,40 @@ class QuizzScreenState extends State<QuizzScreen> {
                             ),
                           );
                   } else if (state is QuizzLoadedFailure) {
-                    return Text(AppLocalizations.of(context)!.noQuizzAvailable);
+                    loadMoreQuizz();
+                    return const CircularProgressIndicator();
                   } else {
-                    return Text(AppLocalizations.of(context)!.noQuizzAvailable);
+                    return Column(
+                      children: [
+                        Expanded(
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(AppLocalizations.of(context)!
+                                    .noQuizzAvailable),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    loadMoreQuizz();
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.green,
+                                    foregroundColor: Colors.white,
+                                  ),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.loadQuizz,
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
                   }
                 }),
               ),
@@ -144,18 +202,38 @@ class QuizzScreenState extends State<QuizzScreen> {
                 top: 10,
                 right: 10,
                 child: SizedBox(
-                  height: 50,
-                  width: 130,
-                  child: Card(
-                    elevation: 2,
-                    child: Center(
-                      child: Text(
-                        AppLocalizations.of(context)!.score(score),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                    ),
-                  ),
-                ))
+                    width: 130,
+                    child: Column(
+                      children: [
+                        Card(
+                          elevation: 2,
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.score(score),
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Center(
+                          child: Row(
+                            children: [
+                              for (int i = heard; i > 0; i--)
+                                const SizedBox(
+                                  height: 30,
+                                  width: 30,
+                                  child: Icon(
+                                    Icons.favorite,
+                                    color: Colors.redAccent,
+                                  ),
+                                ),
+                            ],
+                          ),
+                        )
+                      ],
+                    )))
           ],
         ));
   }

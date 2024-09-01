@@ -17,6 +17,9 @@ class SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings,
@@ -34,9 +37,15 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.themeChange}:',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: screenWidth * 0.6,
+                      ),
+                      child: Text(
+                        '${AppLocalizations.of(context)!.themeChange}:',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                     const Spacer(),
                     Switch(
@@ -55,9 +64,14 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.language}:',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: screenWidth * 0.6,
+                      ),
+                      child: Text(
+                        '${AppLocalizations.of(context)!.language}:',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                     const Spacer(),
                     DropdownButton<String>(
@@ -96,9 +110,14 @@ class SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.includeAdult}:',
-                      style: Theme.of(context).textTheme.bodyMedium,
+                    ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxWidth: screenWidth * 0.6,
+                      ),
+                      child: Text(
+                        '${AppLocalizations.of(context)!.includeAdult}:',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                     ),
                     const Spacer(),
                     Switch(

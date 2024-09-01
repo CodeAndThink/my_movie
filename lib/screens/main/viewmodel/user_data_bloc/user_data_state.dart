@@ -1,3 +1,5 @@
+import 'package:my_movie/data/models/user_display_info.dart';
+
 abstract class UserDataState {
   List<Object> get props => [];
 }
@@ -37,4 +39,10 @@ class UserDataFailure extends UserDataState {
 
   @override
   List<Object> get props => [error];
+}
+
+class UserCommentDatasLoaded extends UserDataState {
+  final List<UserDisplayInfo> userCommentDatas;
+
+  UserCommentDatasLoaded(this.userCommentDatas);
 }

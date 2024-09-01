@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/data/models/user.dart';
+import 'package:my_movie/data/models/user.dart' as my_user;
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
 
 class ChangeInformationScreen extends StatefulWidget {
-  final User user;
+  final my_user.User user;
   const ChangeInformationScreen({super.key, required this.user});
 
   @override
@@ -46,6 +48,14 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
     _dobController.text = _selectedDate == null
         ? widget.user.dob
         : _selectedDate!.toLocal().toString().split(' ')[0];
+  }
+
+  String getUserId() {
+    final authBloc = context.read<AuthBloc>();
+    final userId = authBloc.state is AuthAuthenticated
+        ? (authBloc.state as AuthAuthenticated).docId
+        : '';
+    return userId;
   }
 
   @override
@@ -102,145 +112,153 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  TextField(
-                    controller: _emailController,
-                    enabled: false,
-                    decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.email,
-                        labelStyle: Theme.of(context).textTheme.headlineMedium),
-                  ),
-                  TextField(
-                    controller: _displayNameController,
-                    decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.name(''),
-                        labelStyle: Theme.of(context).textTheme.headlineMedium),
-                  ),
-                  Stack(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: TextField(
-                              controller: _dobController,
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                labelText: AppLocalizations.of(context)!.dob,
-                                labelStyle:
-                                    Theme.of(context).textTheme.headlineMedium,
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    TextField(
+                      controller: _emailController,
+                      enabled: false,
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.email,
+                          labelStyle:
+                              Theme.of(context).textTheme.headlineMedium),
+                    ),
+                    TextField(
+                      controller: _displayNameController,
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.name(''),
+                          labelStyle:
+                              Theme.of(context).textTheme.headlineMedium),
+                    ),
+                    Stack(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _dobController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: AppLocalizations.of(context)!.dob,
+                                  labelStyle: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                              onPressed: _selectDate,
-                              icon: const Icon(Icons.calendar_month))
-                        ],
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        AppLocalizations.of(context)!.gender,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      Expanded(
-                        child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.female),
-                          value: 1,
-                          groupValue: _gender,
-                          onChanged: (value) {
-                            setState(() {
-                              _gender = value!;
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: RadioListTile<int>(
-                          title: Text(AppLocalizations.of(context)!.male),
-                          value: 2,
-                          groupValue: _gender,
-                          onChanged: (value) {
-                            setState(() {
-                              _gender = value!;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextField(
-                    controller: _phoneController,
-                    decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.phone,
-                        labelStyle: Theme.of(context).textTheme.headlineMedium),
-                  ),
-                  TextField(
-                    controller: _addressController,
-                    decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.address,
-                        labelStyle: Theme.of(context).textTheme.headlineMedium),
-                  ),
-                  TextField(
-                    controller: _createDateController,
-                    decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.createDate,
-                        labelStyle: Theme.of(context).textTheme.headlineMedium),
-                    enabled: false,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        final userDataBloc = (context).read<UserDataBloc>();
-                        User user = User(
-                          id: widget.user.id,
-                          email: widget.user.email,
-                          displayName: _displayNameController.text,
-                          dob: _dobController.text,
-                          gender: _gender,
-                          phone: _phoneController.text,
-                          address: _addressController.text,
-                          password: widget.user.password,
-                          avatarPath: widget.user.avatarPath,
-                          createDate: widget.user.createDate,
-                          favoritesList: widget.user.favoritesList,
-                        );
-                        Map<String, dynamic> userJsonMap = user.toJson();
-                        if (_displayNameController.text.isNotEmpty &&
-                            _phoneController.text.isNotEmpty &&
-                            _addressController.text.isNotEmpty) {
-                          userDataBloc
-                              .add(UpdateUserData(widget.user.id, userJsonMap));
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                                content: Text(AppLocalizations.of(context)!
-                                    .pleaseFillAllFields)),
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                        minimumSize:
-                            Size(MediaQuery.of(context).size.width - 20, 50),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context)!.changeInformation,
-                        style: const TextStyle(color: Colors.white),
-                      ),
+                            IconButton(
+                                onPressed: _selectDate,
+                                icon: const Icon(Icons.calendar_month))
+                          ],
+                        )
+                      ],
                     ),
-                  )
-                ],
+                    Row(
+                      children: [
+                        Text(
+                          AppLocalizations.of(context)!.gender,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: Text(AppLocalizations.of(context)!.female),
+                            value: 1,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: RadioListTile<int>(
+                            title: Text(AppLocalizations.of(context)!.male),
+                            value: 2,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    TextField(
+                      controller: _phoneController,
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.phone,
+                          labelStyle:
+                              Theme.of(context).textTheme.headlineMedium),
+                    ),
+                    TextField(
+                      controller: _addressController,
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.address,
+                          labelStyle:
+                              Theme.of(context).textTheme.headlineMedium),
+                    ),
+                    TextField(
+                      controller: _createDateController,
+                      decoration: InputDecoration(
+                          labelText: AppLocalizations.of(context)!.createDate,
+                          labelStyle:
+                              Theme.of(context).textTheme.headlineMedium),
+                      enabled: false,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final userDataBloc = (context).read<UserDataBloc>();
+                          my_user.User user = my_user.User(
+                              id: widget.user.id,
+                              email: widget.user.email,
+                              displayName: _displayNameController.text,
+                              dob: _dobController.text,
+                              gender: _gender,
+                              phone: _phoneController.text,
+                              address: _addressController.text,
+                              password: widget.user.password,
+                              avatarPath: widget.user.avatarPath,
+                              createDate: widget.user.createDate,
+                              favoritesList: widget.user.favoritesList,
+                              commentIds: widget.user.commentIds);
+                          Map<String, dynamic> userJsonMap = user.toJson();
+                          if (_displayNameController.text.isNotEmpty &&
+                              _phoneController.text.isNotEmpty &&
+                              _addressController.text.isNotEmpty) {
+                            userDataBloc.add(
+                                UpdateUserData(getUserId(), userJsonMap));
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(AppLocalizations.of(context)!
+                                      .pleaseFillAllFields)),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          minimumSize:
+                              Size(MediaQuery.of(context).size.width - 20, 50),
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.changeInformation,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             )));
   }

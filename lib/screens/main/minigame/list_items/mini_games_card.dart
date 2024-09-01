@@ -43,7 +43,6 @@ class MiniGamesCard extends StatelessWidget {
                         Text(
                           title,
                           style: Theme.of(context).textTheme.headlineSmall,
-                          maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ],

@@ -1,7 +1,6 @@
 import 'package:my_movie/data/models/trivia_question.dart';
 
 abstract class QuizzState {
-  @override
   List<Object> get props => [];
 }
 

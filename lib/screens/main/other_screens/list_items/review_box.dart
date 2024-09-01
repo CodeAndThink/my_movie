@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:my_movie/constain_values/values.dart';
+import 'package:my_movie/data/models/auth_detail.dart';
+import 'package:my_movie/data/models/review.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/data/models/comment.dart';
-import 'package:my_movie/data/models/user_display_info.dart';
 
-class CommentBox extends StatelessWidget {
-  const CommentBox(
-      {super.key, required this.comment, required this.userDisplayInfo});
-  final Comment comment;
-  final UserDisplayInfo userDisplayInfo;
+class ReviewBox extends StatelessWidget {
+  const ReviewBox(
+      {super.key, required this.authorDetails, required this.review});
+  final AuthorDetails authorDetails;
+  final Review review;
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final cardWidth = screenSize.width * 0.85;
-    final avatarImage = NetworkImage(userDisplayInfo.avatarPath);
+    final avatarImage = authorDetails.avatarPath?.isEmpty ?? true
+        ? const AssetImage('assets/images/man.png') as ImageProvider
+        : NetworkImage(
+            Values.imageUrl + Values.imageSmall + authorDetails.avatarPath!);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
@@ -37,7 +41,7 @@ class CommentBox extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        userDisplayInfo.displayName,
+                        review.author,
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       Divider(
@@ -45,7 +49,7 @@ class CommentBox extends StatelessWidget {
                         thickness: 1,
                       ),
                       Text(
-                        comment.content == null ? '' : comment.content!,
+                        review.content,
                         maxLines: 3,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -65,8 +69,7 @@ class CommentBox extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!
-              .reviewBy(userDisplayInfo.displayName)),
+          title: Text(AppLocalizations.of(context)!.reviewBy(review.author)),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -75,7 +78,7 @@ class CommentBox extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                   thickness: 1,
                 ),
-                Text(comment.content == null ? '' : comment.content!),
+                Text(review.content),
                 const SizedBox(height: 10),
                 Divider(
                   color: Theme.of(context).colorScheme.primary,
@@ -86,14 +89,16 @@ class CommentBox extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(AppLocalizations.of(context)!
-                    .username(userDisplayInfo.displayName)),
+                    .username(authorDetails.userName)),
                 Text(AppLocalizations.of(context)!.createAt(
-                    comment.createdAt
-                        .substring(0, 10)
+                    review.createdAt
+                        .toString()
+                        .split(' ')
+                        .first
                         .split('-')
                         .reversed
                         .join('/'),
-                    comment.createdAt.substring(11, 19))),
+                    review.createdAt.toString().split(' ')[1].substring(0, 8))),
               ],
             ),
           ),

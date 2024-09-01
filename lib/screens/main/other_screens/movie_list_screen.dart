@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie.dart';
+import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -16,8 +18,9 @@ class MovieListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MovieBloc(MovieRepository())
-        ..add(LoadMoviesByCategories('popular', 1)),
+      create: (context) =>
+          MovieBloc(MovieRepository(), AuthRepository(FirebaseAuth.instance))
+            ..add(LoadMoviesByCategories('popular', 1)),
       child: const MovieListView(),
     );
   }
@@ -125,10 +128,8 @@ class MovieListScreenState extends State<MovieListView> {
                           : GridView.builder(
                               gridDelegate:
                                   const SliverGridDelegateWithMaxCrossAxisExtent(
-                                maxCrossAxisExtent:
-                                    230.0,
-                                childAspectRatio: 150 /
-                                    200,
+                                maxCrossAxisExtent: 230.0,
+                                childAspectRatio: 150 / 200,
                               ),
                               itemCount: movies.length,
                               itemBuilder: (context, index) {
@@ -190,11 +191,16 @@ class MovieListAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
     return Row(
       children: [
-        Text(
-          AppLocalizations.of(context)!.listOfMovies,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: screenWidth * 0.55),
+          child: Text(
+            AppLocalizations.of(context)!.listOfMovies,
+            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          ),
         ),
         const Spacer(),
         IconButton(

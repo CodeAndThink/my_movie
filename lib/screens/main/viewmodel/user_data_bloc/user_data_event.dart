@@ -66,3 +66,9 @@ class AuthUpdateProfilePicture extends UserDataEvent {
   @override
   List<Object> get props => [imageUrl];
 }
+
+class FetchUserDisplayInfo extends UserDataEvent {
+  final List<String> listIds;
+
+  FetchUserDisplayInfo(this.listIds);
+}

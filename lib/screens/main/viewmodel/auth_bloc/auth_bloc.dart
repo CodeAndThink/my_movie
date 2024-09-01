@@ -64,7 +64,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             'https://firebasestorage.googleapis.com/v0/b/flutter-movie-app-9eb63.appspot.com/o/man.png?alt=media&token=b62057de-25bb-4271-b578-0dbccd15506f',
         createDate: DateTime.now().toIso8601String(),
         favoritesList: [],
+        commentIds: []
       ));
+
+      await _authRepository.updateUserDocumentId(userId);
 
       await _authRepository.createUserMetadata(
           userCredential.user!.uid, userId);

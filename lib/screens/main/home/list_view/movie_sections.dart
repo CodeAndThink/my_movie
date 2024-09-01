@@ -18,37 +18,53 @@ class MoviesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Text(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: screenWidth * 0.6,
+                ),
+                child: Text(
                   title,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const Spacer(),
-                TextButton(
-                    onPressed: () => {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const MovieListScreen()),
-                          ),
-                        },
-                    child: Text(
-                      AppLocalizations.of(context)!.seeMore,
-                    ))
-              ],
-            )),
+              ),
+              const Spacer(),
+              ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: screenWidth * 0.25,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MovieListScreen(),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.seeMore,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
         SizedBox(
           height: 290,
           width: double.infinity,
           child: ListView.builder(
-            scrollDirection:
-                Axis.horizontal,
+            scrollDirection: Axis.horizontal,
             itemCount: movies.length,
             itemBuilder: (context, index) {
               final movie = movies[index];
