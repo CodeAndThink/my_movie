@@ -17,6 +17,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     emit(NotificationLoading());
     try {
       final deviceToken = await _authRepository.getDeviceToken();
+      print("Devide token: $deviceToken");
       emit(NotificationLoaded(deviceToken: deviceToken));
     } catch (e) {
       emit(NotificationLoadedFailure(e.toString()));

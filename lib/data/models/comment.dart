@@ -1,5 +1,4 @@
 class Comment {
-  final String id;
   final String userId;
   final String url;
   final String author;
@@ -10,8 +9,7 @@ class Comment {
   final int favoriteLevel;
 
   Comment(
-      {required this.id,
-      required this.userId,
+      {required this.userId,
       required this.url,
       required this.author,
       required this.movieId,
@@ -19,10 +17,9 @@ class Comment {
       required this.createdAt,
       required this.updatedAt,
       required this.favoriteLevel});
-      
+
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'userId': userId,
       'url': url,
       'author': author,
@@ -36,7 +33,6 @@ class Comment {
 
   factory Comment.fromJson(Map<String, dynamic> json) {
     return Comment(
-      id: json['id'] as String,
       userId: json['userId'] as String,
       url: json['url'] as String,
       author: json['author'] as String,

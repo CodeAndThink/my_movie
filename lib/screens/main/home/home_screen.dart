@@ -38,16 +38,18 @@ class HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadAllCategories() {
-    (context).read<MovieBloc>().add(LoadMoviesByCategories('popular', 1));
-    (context).read<MovieBloc>().add(LoadMoviesByCategories('top_rated', 1));
-    (context).read<MovieBloc>().add(LoadMoviesByCategories('now_playing', 1));
-    (context).read<MovieBloc>().add(LoadMoviesByCategories('upcoming', 1));
+    final movieBloc = context.read<MovieBloc>();
+    movieBloc.add(LoadMoviesByCategories('popular', 1));
+    movieBloc.add(LoadMoviesByCategories('top_rated', 1));
+    movieBloc.add(LoadMoviesByCategories('now_playing', 1));
+    movieBloc.add(LoadMoviesByCategories('upcoming', 1));
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
+
     return Scaffold(
       appBar: AppBar(
         title: ConstrainedBox(
@@ -74,33 +76,84 @@ class HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-      body: Center(
-        child: BlocBuilder<MovieBloc, MovieState>(
-          builder: (context, state) {
-            if (state is MovieLoading) {
-              return const CircularProgressIndicator();
-            } else if (state is MovieLoaded) {
-              return CustomScrollView(
-                slivers: [
-                  _buildMovieSection('Popular movies:', state.popularMovies),
-                  _buildMovieSection(
-                      '${AppLocalizations.of(context)!.topRatedMovies}:',
-                      state.topRatedMovies),
-                  _buildMovieSection(
-                      '${AppLocalizations.of(context)!.nowPlayingMovies}:',
-                      state.nowPlayingMovies),
-                  _buildMovieSection(
-                      '${AppLocalizations.of(context)!.upcomingMovies}:',
-                      state.upcomingMovies),
-                ],
-              );
-            } else if (state is MovieError) {
-              return Text('Error: ${state.message}');
-            } else {
-              return const Text('No data available');
-            }
-          },
-        ),
+      body: CustomScrollView(
+        slivers: [
+          BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is MovieLoading) {
+                return _buildLoadingSection();
+              } else if (state is MovieLoaded) {
+                return _buildMovieSection(
+                    'Popular movies:', state.popularMovies);
+              } else if (state is MovieError) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text('Error: ${state.message}')),
+                );
+              } else {
+                return const SliverToBoxAdapter(
+                  child: Center(child: Text('No data available')),
+                );
+              }
+            },
+          ),
+          BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is MovieLoading) {
+                return _buildLoadingSection();
+              } else if (state is MovieLoaded) {
+                return _buildMovieSection(
+                    '${AppLocalizations.of(context)!.topRatedMovies}:',
+                    state.topRatedMovies);
+              } else if (state is MovieError) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text('Error: ${state.message}')),
+                );
+              } else {
+                return const SliverToBoxAdapter(
+                  child: Center(child: Text('No data available')),
+                );
+              }
+            },
+          ),
+          BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is MovieLoading) {
+                return _buildLoadingSection();
+              } else if (state is MovieLoaded) {
+                return _buildMovieSection(
+                    '${AppLocalizations.of(context)!.nowPlayingMovies}:',
+                    state.nowPlayingMovies);
+              } else if (state is MovieError) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text('Error: ${state.message}')),
+                );
+              } else {
+                return const SliverToBoxAdapter(
+                  child: Center(child: Text('No data available')),
+                );
+              }
+            },
+          ),
+          BlocBuilder<MovieBloc, MovieState>(
+            builder: (context, state) {
+              if (state is MovieLoading) {
+                return _buildLoadingSection();
+              } else if (state is MovieLoaded) {
+                return _buildMovieSection(
+                    '${AppLocalizations.of(context)!.upcomingMovies}:',
+                    state.upcomingMovies);
+              } else if (state is MovieError) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text('Error: ${state.message}')),
+                );
+              } else {
+                return const SliverToBoxAdapter(
+                  child: Center(child: Text('No data available')),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -166,5 +219,14 @@ class HomeScreenState extends State<HomeScreen> {
         ),
       );
     }
+  }
+
+  SliverToBoxAdapter _buildLoadingSection() {
+    return const SliverToBoxAdapter(
+      child: SizedBox(
+        height: 300,
+        child: Center(child: CircularProgressIndicator()),
+      ),
+    );
   }
 }

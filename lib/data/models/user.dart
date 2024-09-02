@@ -1,5 +1,4 @@
 class User {
-  final String id;
   final String email;
   final String displayName;
   final String dob;
@@ -12,9 +11,7 @@ class User {
   final List<int> favoritesList;
   final List<String> commentIds;
 
-  User(
-      {required this.id,
-      required this.email,
+  User({required this.email,
       required this.displayName,
       required this.dob,
       required this.gender,
@@ -28,7 +25,6 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        id: json['id'],
         email: json['email'],
         displayName: json['displayName'],
         dob: json['dob'],
@@ -44,7 +40,6 @@ class User {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'email': email,
       'displayName': displayName,
       'dob': dob,
@@ -61,6 +56,6 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, email: $email, displayName: $displayName, dob: $dob, gender: $gender, phone: $phone, address: $address, password: $password, avatarPath: $avatarPath, createDate: $createDate, favoritesList: $favoritesList}, commentIds : $commentIds';
+    return 'User{email: $email, displayName: $displayName, dob: $dob, gender: $gender, phone: $phone, address: $address, password: $password, avatarPath: $avatarPath, createDate: $createDate, favoritesList: $favoritesList}, commentIds : $commentIds';
   }
 }

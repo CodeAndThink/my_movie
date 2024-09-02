@@ -1,17 +1,21 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:my_movie/constain_values/values.dart';
 import 'package:my_movie/data/models/comment.dart';
+import 'package:my_movie/data/models/movie.dart';
 import 'package:my_movie/data/models/user.dart' as my_user;
-import 'package:my_movie/data/repository/auth_repository.dart';
+import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/other_screens/cast_and_crew_screen.dart';
 import 'package:my_movie/screens/main/other_screens/comment_screen.dart';
+import 'package:my_movie/screens/main/other_screens/list_items/comment_box.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/credits_card.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_event.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_state.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
@@ -29,8 +33,7 @@ class MovieDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-        create: (context) =>
-            MovieBloc(MovieRepository(), AuthRepository(FirebaseAuth.instance)),
+        create: (context) => MovieBloc(MovieRepository()),
         child: MovieDetailScreenView(
           id: movieId,
         ));
@@ -52,6 +55,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
   bool buttonState = false;
   late String userId;
   int favoriteLevel = 0;
+  late Movie movie;
+  late List trailers;
+  late Map credits;
+  late List<Comment> comments;
 
   @override
   void initState() {
@@ -62,14 +69,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
     _comment.addListener(() {
       setState(() {});
     });
-    getUserData();
+    _loadUserData();
   }
 
-  void loadMovieReviewAndCommentData() {
-    context.read<MovieBloc>().add(LoadMovieReviews(widget.id, 1));
-  }
-
-  void getUserData() {
+  void _loadUserData() {
     final authBloc = context.read<AuthBloc>();
     final userDataBloc = context.read<UserDataBloc>();
     userId = authBloc.state is AuthAuthenticated
@@ -77,7 +80,12 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
         : '';
     if (userId.isNotEmpty) {
       userDataBloc.add(FetchUserData(userId));
+      _loadUserComment(userId);
     }
+  }
+
+  void _loadUserComment(String userDocId) {
+    context.read<CommentBloc>().add(FetchCommentByUserId(userDocId));
   }
 
   void _loadTrailer(String trailerKey) {
@@ -112,7 +120,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
               }
             });
           } else if (state is UserDataUpdated) {
-            getUserData();
+            _loadUserData();
           }
         },
         child: Scaffold(
@@ -127,9 +135,9 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
               if (state is MovieLoading) {
                 return const Center(child: CircularProgressIndicator());
               } else if (state is SearchByIdLoaded) {
-                final movie = state.movie;
-                final trailers = state.trailers;
-                final credits = state.credits;
+                movie = state.movie;
+                trailers = state.trailers;
+                credits = state.credits;
 
                 if (trailers.isNotEmpty) {
                   String trailerKey = trailers.first['key'];
@@ -371,7 +379,6 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                             ),
                           ),
                           //Comments part area
-
                           Container(
                             padding: const EdgeInsets.all(15),
                             child: Column(
@@ -407,15 +414,16 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                     )),
                                     IconButton(
                                       onPressed: () => {
-                                        context.read<MovieBloc>().add(
-                                            CreateMymovieComments(
-                                                userId,
-                                                widget.id,
-                                                favoriteLevel,
-                                                _comment.text,
-                                                userData.displayName,
-                                                userData.avatarPath)),
-                                        _loadMovieData()
+                                        context
+                                            .read<CommentBloc>()
+                                            .add(CreateMymovieComment(
+                                              userId,
+                                              userData.avatarPath,
+                                              userData.displayName,
+                                              widget.id,
+                                              favoriteLevel,
+                                              _comment.text,
+                                            )),
                                       },
                                       icon: const Icon(Icons.send),
                                     ),
@@ -448,6 +456,55 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                               ],
                             ),
                           ),
+                          BlocBuilder<CommentBloc, CommentState>(
+                              builder: (context, state) {
+                            if (state is CommentLoading) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (state is FetchCommentByUserIdSucess) {
+                              final userComment = state.listComments;
+                              final List<Comment> comments = [];
+                              for (Comment comment in userComment) {
+                                if (comment.movieId == movie.id) {
+                                  comments.add(comment);
+                                }
+                              }
+                              if (comments.isNotEmpty) {
+                                final UserDisplayInfo userDisplayInfo =
+                                    UserDisplayInfo(userData.displayName,
+                                        userData.avatarPath);
+                                return SizedBox(
+                                    height: 200,
+                                    child: ListView.builder(
+                                      itemCount: comments.length,
+                                      itemBuilder: (context, index) {
+                                        return CommentBox(
+                                          comment: comments[index],
+                                          userDisplayInfo: userDisplayInfo,
+                                        );
+                                      },
+                                    ));
+                              } else {
+                                return Container();
+                              }
+                            } else if (state is CommentError) {
+                              return Center(
+                                child: Column(
+                                  children: [
+                                    Text(AppLocalizations.of(context)!
+                                        .loadCommentError)
+                                  ],
+                                ),
+                              );
+                            } else if (state is CreateMymovieCommentsSuccess) {
+                              _loadUserComment(userId);
+                              return const CircularProgressIndicator();
+                            } else {
+                              return Container();
+                            }
+                          }),
+
                           Container(
                             padding: const EdgeInsets.all(15),
                             child: Column(
@@ -468,20 +525,12 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BlocProvider(
-                                                    create: (context) =>
-                                                        MovieBloc(
-                                                            MovieRepository(),
-                                                            AuthRepository(
-                                                                FirebaseAuth
-                                                                    .instance)),
-                                                    child: CommentScreen(
-                                                        movieId: widget.id),
-                                                  ),
+                                                      CommentScreen(
+                                                          movieId: movie.id),
                                                 ),
                                               ).then((_) {
-                                                getUserData();
-                                              })
+                                                _loadUserComment(userId);
+                                              }),
                                             },
                                         child: Text(
                                           AppLocalizations.of(context)!.details,

@@ -1,8 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -19,7 +17,7 @@ class MovieListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) =>
-          MovieBloc(MovieRepository(), AuthRepository(FirebaseAuth.instance))
+          MovieBloc(MovieRepository())
             ..add(LoadMoviesByCategories('popular', 1)),
       child: const MovieListView(),
     );

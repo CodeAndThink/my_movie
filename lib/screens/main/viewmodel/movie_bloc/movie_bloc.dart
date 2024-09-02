@@ -1,20 +1,15 @@
 import 'package:bloc/bloc.dart';
 import 'package:my_movie/data/models/actor.dart';
-import 'package:my_movie/data/models/comment.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
-import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
 
 class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepository _movieRepository;
-  final AuthRepository _authRepository;
 
-  MovieBloc(this._movieRepository, this._authRepository)
-      : super(MovieInitial()) {
+  MovieBloc(this._movieRepository) : super(MovieInitial()) {
     on<LoadMoviesByCategories>(_onLoadMovieByCategories);
     on<LoadMovieGenres>(_onLoadMovieGenres);
     on<LoadMovieById>(_onLoadMovieById);
@@ -23,11 +18,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<LoadMovieByGenre>(_onLoadMovieByGenre);
     on<RateMovie>(_onRateMovie);
     on<DeleteMovieRating>(_onDeleteMovieRating);
-    on<LoadMovieReviews>(_onLoadMovieReviews);
     on<LoadMovieByListId>(_onLoadMovieByListId);
     on<LoadPopularActor>(_onLoadPopularActor);
     on<SearchActor>(_onSearchActor);
-    on<CreateMymovieComments>(_onCreateMymovieComments);
   }
 
   Future<void> _onLoadMovieByCategories(
@@ -181,26 +174,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     }
   }
 
-  Future<void> _onLoadMovieReviews(
-      LoadMovieReviews event, Emitter<MovieState> emit) async {
-    emit(MovieLoading());
-    try {
-      final response =
-          await _movieRepository.getMovieReviews(event.movieId, event.page);
-      final List<dynamic> reviewsJson = response.data['results'];
-      final List<Review> reviews =
-          reviewsJson.map((json) => Review.fromJson(json)).toList();
-      final List<Map<String, dynamic>> listCommentsJson =
-          await _authRepository.getMymovieCommentsByMovieId(event.movieId);
-      final List<Comment> listComments =
-          listCommentsJson.map((json) => Comment.fromJson(json)).toList();
-      print(listCommentsJson);
-      emit(MovieReviewsLoaded(reviews, listComments));
-    } catch (e) {
-      emit(MovieError('Failed to load movie reviews'));
-    }
-  }
-
   Future<void> _onLoadMovieByListId(
       LoadMovieByListId event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
@@ -241,27 +214,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       final List<Actor> actors =
           actorsJson.map((json) => Actor.fromJson(json)).toList();
       emit(ActorLoaded(actors));
-    } catch (e) {
-      emit(MovieError(e.toString()));
-    }
-  }
-
-  Future<void> _onCreateMymovieComments(
-      CreateMymovieComments event, Emitter<MovieState> emit) async {
-    emit(MovieLoading());
-    try {
-      final Comment comment = Comment(
-          id: '',
-          userId: event.userId,
-          author: event.author,
-          movieId: event.movieId,
-          content: event.content,
-          createdAt: DateTime.now().toIso8601String(),
-          updatedAt: DateTime.now().toIso8601String(),
-          favoriteLevel: 0,
-          url: event.url);
-      await _authRepository.createUserComment(comment);
-      emit(CreateMymovieCommentsSuccess(comment));
     } catch (e) {
       emit(MovieError(e.toString()));
     }

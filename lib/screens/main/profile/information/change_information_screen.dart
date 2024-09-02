@@ -219,7 +219,6 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
                         onPressed: () {
                           final userDataBloc = (context).read<UserDataBloc>();
                           my_user.User user = my_user.User(
-                              id: widget.user.id,
                               email: widget.user.email,
                               displayName: _displayNameController.text,
                               dob: _dobController.text,

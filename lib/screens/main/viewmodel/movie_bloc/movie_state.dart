@@ -1,7 +1,5 @@
 import 'package:my_movie/data/models/actor.dart';
-import 'package:my_movie/data/models/comment.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
-import 'package:my_movie/data/models/review.dart';
 import 'package:my_movie/data/models/movie.dart';
 
 abstract class MovieState {}
@@ -78,21 +76,8 @@ class MovieRatedSuccess extends MovieState {}
 
 class MovieRatingDeletedSuccess extends MovieState {}
 
-class MovieReviewsLoaded extends MovieState {
-  final List<Review> reviews;
-  final List<Comment> comments;
-
-  MovieReviewsLoaded(this.reviews, this.comments);
-}
-
 class ActorLoaded extends MovieState {
   final List<Actor> actors;
 
   ActorLoaded(this.actors);
-}
-
-class CreateMymovieCommentsSuccess extends MovieState {
-  final Comment comment;
-
-  CreateMymovieCommentsSuccess(this.comment);
 }

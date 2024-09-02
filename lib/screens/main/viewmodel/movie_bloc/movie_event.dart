@@ -1,5 +1,3 @@
-import 'package:my_movie/data/models/review.dart';
-
 abstract class MovieEvent {}
 
 class LoadMoviesByCategories extends MovieEvent {
@@ -74,22 +72,4 @@ class SearchActor extends MovieEvent {
   final String name;
 
   SearchActor({required this.name, required this.page});
-}
-
-class LoadMymovieCommentsByMovieId extends MovieEvent {
-  final List<Review> listReviews;
-
-  LoadMymovieCommentsByMovieId(this.listReviews);
-}
-
-class CreateMymovieComments extends MovieEvent {
-  final String userId;
-  final String url;
-  final String author;
-  final int movieId;
-  final int favoriteLevel;
-  final String content;
-
-  CreateMymovieComments(
-      this.userId, this.movieId, this.favoriteLevel, this.content, this.author, this.url);
 }

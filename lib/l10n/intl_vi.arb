@@ -279,5 +279,6 @@
   "correctAnswer": "Đáp án đúng là: {answer}",
   "answer": "Đáp án",
   "scores": "Điểm",
-  "noNotificationsFound" :"Không có thông báo nào!"
+  "noNotificationsFound" :"Không có thông báo nào!",
+  "loadCommentError": "Tải bình luận và đánh giá không thành công!"
 }

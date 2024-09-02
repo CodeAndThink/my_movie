@@ -259,7 +259,7 @@ class AnswerCard extends StatefulWidget {
 }
 
 class AnswerCardState extends State<AnswerCard> {
-  Color stateColor = Colors.white;
+  Color stateColor = Colors.grey;
 
   void updateColor(bool isCorrect) {
     setState(() {

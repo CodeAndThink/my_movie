@@ -279,5 +279,6 @@
   "correctAnswer": "Correct answer is: {answer}",
   "answer": "Answer",
   "scores": "Scores",
-  "noNotificationsFound" :"No Notifications Available!"
+  "noNotificationsFound" :"No Notifications Available!",
+  "loadCommentError": "Load Comments and Review falure!"
 }

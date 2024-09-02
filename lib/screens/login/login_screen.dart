@@ -30,21 +30,17 @@ class LoginScreenState extends State<LoginScreen> {
 
   void onLoginSuccess() {
     Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const MainScreen()),
-      (route) => false
-    );
+        context,
+        MaterialPageRoute(builder: (context) => const MainScreen()),
+        (route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final cardWidth = screenSize.width;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
     final authBloc = context.read<AuthBloc>();
-
-    final backgroundImage = Theme.of(context).brightness == Brightness.dark
-        ? 'assets/images/dark_background.jpg'
-        : 'assets/images/background.jpg';
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -52,11 +48,8 @@ class LoginScreenState extends State<LoginScreen> {
           children: [
             Stack(
               children: [
-                Image.asset(
-                  backgroundImage,
-                  fit: BoxFit.cover,
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: double.infinity,
+                Container(
+                  height: screenHeight * 0.3,
                 ),
                 Positioned(
                   top: 50,
@@ -169,7 +162,7 @@ class LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
                       foregroundColor: Colors.white,
-                      minimumSize: Size(cardWidth - 20, 50),
+                      minimumSize: Size(screenWidth - 20, 50),
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.logIn,

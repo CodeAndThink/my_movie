@@ -40,7 +40,6 @@ class AuthRepository {
     String userId = _firestore.collection('users').doc().id;
 
     await _firestore.collection('users').doc(userId).set({
-      'id': newUser.id,
       'email': newUser.email,
       'displayName': newUser.displayName,
       'dob': newUser.dob,
@@ -61,7 +60,6 @@ class AuthRepository {
     String commentId = _firestore.collection('comments').doc().id;
 
     await _firestore.collection('comments').doc(commentId).set({
-      'id': comment.id,
       'userId': comment.userId,
       'url': comment.url,
       'author': comment.author,
@@ -75,7 +73,8 @@ class AuthRepository {
     return commentId;
   }
 
-  Future<List<Map<String, dynamic>>> getMymovieCommentsByMovieId(int movieId) async {
+  Future<List<Map<String, dynamic>>> getMymovieCommentsByMovieId(
+      int movieId) async {
     try {
       final querySnapshot = await _firestore
           .collection('comments')
@@ -92,11 +91,12 @@ class AuthRepository {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getMymovieCommentsByUserId(int movieId) async {
+  Future<List<Map<String, dynamic>>> getMymovieCommentsByUserId(
+      String userDocId) async {
     try {
       final querySnapshot = await _firestore
           .collection('comments')
-          .where('movieId', isEqualTo: movieId)
+          .where('userId', isEqualTo: userDocId)
           .get();
 
       final comments = querySnapshot.docs.map((doc) {
@@ -143,9 +143,9 @@ class AuthRepository {
     await _firestore.collection('users').doc(userId).update(updatedData);
   }
 
-  Future<void> updateUserDocumentId(String docId) async {
-    await _firestore.collection('users').doc(docId).update({
-      'id': docId,
+  Future<void> updateUserDocumentId(String userDocId, String docId) async {
+    await _firestore.collection('users').doc(userDocId).update({
+      'commentIds': FieldValue.arrayUnion([docId])
     });
   }
 

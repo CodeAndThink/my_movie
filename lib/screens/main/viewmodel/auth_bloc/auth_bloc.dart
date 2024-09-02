@@ -52,22 +52,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           await _authRepository.signUp(event.email, event.password);
 
       String userId = await _authRepository.createUserDocument(my_user.User(
-        id: '',
-        email: event.email,
-        displayName: 'User',
-        dob: '2000-01-01',
-        gender: 1,
-        phone: '0123456789',
-        address: 'Địa chỉ',
-        password: event.password,
-        avatarPath:
-            'https://firebasestorage.googleapis.com/v0/b/flutter-movie-app-9eb63.appspot.com/o/man.png?alt=media&token=b62057de-25bb-4271-b578-0dbccd15506f',
-        createDate: DateTime.now().toIso8601String(),
-        favoritesList: [],
-        commentIds: []
-      ));
-
-      await _authRepository.updateUserDocumentId(userId);
+          email: event.email,
+          displayName: 'User',
+          dob: '2000-01-01',
+          gender: 1,
+          phone: '0123456789',
+          address: 'Địa chỉ',
+          password: event.password,
+          avatarPath:
+              'https://firebasestorage.googleapis.com/v0/b/flutter-movie-app-9eb63.appspot.com/o/man.png?alt=media&token=b62057de-25bb-4271-b578-0dbccd15506f',
+          createDate: DateTime.now().toIso8601String(),
+          favoritesList: [],
+          commentIds: []));
 
       await _authRepository.createUserMetadata(
           userCredential.user!.uid, userId);

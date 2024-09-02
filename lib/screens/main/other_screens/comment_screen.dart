@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/comment_box.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/review_box.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_event.dart';
+import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
@@ -41,7 +41,7 @@ class CommentScreenState extends State<CommentScreen> {
   }
 
   void _loadMovieData() {
-    context.read<MovieBloc>().add(LoadMovieReviews(widget.movieId, 1));
+    context.read<CommentBloc>().add(FetchCommentByMovieId(widget.movieId, 1));
   }
 
   void _loadUserById(List<String> listIds) {
@@ -57,11 +57,11 @@ class CommentScreenState extends State<CommentScreen> {
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
         ),
       ),
-      body: BlocBuilder<MovieBloc, MovieState>(
+      body: BlocBuilder<CommentBloc, CommentState>(
         builder: (context, state) {
-          if (state is MovieReviewsLoaded) {
-            final reviews = state.reviews;
-            final comments = state.comments;
+          if (state is FetchCommentByMovieIdSucess) {
+            final reviews = state.listReviews;
+            final comments = state.listComments;
             final List<String> listUserIds =
                 comments.map((comment) => comment.userId).toList();
 
@@ -128,9 +128,9 @@ class CommentScreenState extends State<CommentScreen> {
                       })
               ],
             );
-          } else if (state is MovieLoading) {
+          } else if (state is CommentLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (state is MovieError) {
+          } else if (state is CommentError) {
             return Center(child: Text(state.message));
           } else {
             return const SizedBox.shrink();
