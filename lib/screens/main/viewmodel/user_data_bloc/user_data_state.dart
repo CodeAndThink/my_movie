@@ -1,3 +1,4 @@
+import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/data/models/user_display_info.dart';
 
 abstract class UserDataState {
@@ -9,7 +10,7 @@ class UserDataInitial extends UserDataState {}
 class UserDataLoading extends UserDataState {}
 
 class UserDataLoaded extends UserDataState {
-  final Map<String, dynamic> userData;
+  final User userData;
 
   UserDataLoaded(this.userData);
 

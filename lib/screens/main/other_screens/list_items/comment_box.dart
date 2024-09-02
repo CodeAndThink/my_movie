@@ -15,45 +15,42 @@ class CommentBox extends StatelessWidget {
     final cardWidth = screenSize.width * 0.85;
     final avatarImage = NetworkImage(userDisplayInfo.avatarPath);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: GestureDetector(
-        onTap: () {
-          _showReviewDialog(context);
-        },
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Row(
-              children: [
-                CircleAvatar(
-                  radius: 20,
-                  backgroundImage: avatarImage,
+    return GestureDetector(
+      onTap: () {
+        _showReviewDialog(context);
+      },
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundImage: avatarImage,
+              ),
+              const SizedBox(width: 10),
+              SizedBox(
+                width: cardWidth - 20,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      userDisplayInfo.displayName,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    Divider(
+                      color: Theme.of(context).colorScheme.primary,
+                      thickness: 1,
+                    ),
+                    Text(
+                      comment.content == null ? '' : comment.content!,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
-                SizedBox(
-                  width: cardWidth - 20,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        userDisplayInfo.displayName,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      Divider(
-                        color: Theme.of(context).colorScheme.primary,
-                        thickness: 1,
-                      ),
-                      Text(
-                        comment.content == null ? '' : comment.content!,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),

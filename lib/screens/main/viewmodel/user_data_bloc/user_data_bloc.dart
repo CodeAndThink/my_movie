@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/data/repository/auth_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
@@ -22,7 +23,8 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
     emit(UserDataLoading());
     try {
       final userData = await _authRepository.fetchUserData(event.userId);
-      emit(UserDataLoaded(userData));
+      final user = User.fromJson(userData);
+      emit(UserDataLoaded(user));
       
     } catch (e) {
       emit(UserDataFailure(e.toString()));

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:my_movie/data/models/notification_model.dart';
 
 abstract class NotificationState extends Equatable {
   @override
@@ -10,12 +11,12 @@ class NotificationInitial extends NotificationState {}
 class NotificationLoading extends NotificationState {}
 
 class NotificationLoaded extends NotificationState {
-  final String deviceToken;
+  final List<NotificationModel> messages;
 
-  NotificationLoaded({required this.deviceToken});
+  NotificationLoaded( this.messages);
 
   @override
-  List<Object> get props => [deviceToken];
+  List<Object> get props => [messages];
 }
 
 class NotificationLoadedFailure extends NotificationState {

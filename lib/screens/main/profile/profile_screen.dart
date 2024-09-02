@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
 import 'package:my_movie/screens/main/profile/calendar/calendar_screen.dart';
+import 'package:my_movie/screens/main/profile/comment/comment_screen.dart';
 import 'package:my_movie/screens/main/profile/favorites/favorites_screen.dart';
 import 'package:my_movie/screens/main/profile/information/information_screen.dart';
 import 'package:my_movie/screens/main/profile/about_us/about_us_screen.dart';
@@ -24,6 +26,8 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class ProfileScreenState extends State<ProfileScreen> {
+  late User userData;
+
   @override
   void initState() {
     super.initState();
@@ -229,16 +233,30 @@ class ProfileScreenState extends State<ProfileScreen> {
                                   return Center(
                                       child: Text('Error: ${state.error}'));
                                 } else if (state is UserDataLoaded) {
-                                  final userData = state.userData;
+                                  userData = state.userData;
                                   return Center(
                                     child: Column(
                                       children: [
                                         Stack(
                                           children: [
-                                            CircleAvatar(
-                                              radius: 50,
-                                              backgroundImage: NetworkImage(
-                                                  userData['avatarPath']),
+                                            ClipOval(
+                                              child: FadeInImage.assetNetwork(
+                                                placeholder:
+                                                    'assets/images/placeholder.png',
+                                                image: userData.avatarPath,
+                                                width: 80,
+                                                height: 80,
+                                                fit: BoxFit.cover,
+                                                imageErrorBuilder: (context,
+                                                    error, stackTrace) {
+                                                  return Image.asset(
+                                                    'assets/images/placeholder.png',
+                                                    width: 100,
+                                                    height: 100,
+                                                    fit: BoxFit.cover,
+                                                  );
+                                                },
+                                              ),
                                             ),
                                             Positioned(
                                               right: 0,
@@ -259,13 +277,13 @@ class ProfileScreenState extends State<ProfileScreen> {
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             _buildProfileCard(
-                                                userData['favoritesList']
+                                                userData.favoritesList
                                                     .length
                                                     .toString(),
                                                 AppLocalizations.of(context)!
                                                     .like),
                                             _buildProfileCard(
-                                                userData['commentIds']
+                                                userData.commentIds
                                                     .length
                                                     .toString(),
                                                 AppLocalizations.of(context)!
@@ -306,8 +324,16 @@ class ProfileScreenState extends State<ProfileScreen> {
                           MaterialPageRoute(
                               builder: (context) => const FavoritesScreen()));
                     }),
-                    _buildProfileButton(Icons.comment,
-                        AppLocalizations.of(context)!.comments, () {}),
+                    _buildProfileButton(
+                        Icons.comment, AppLocalizations.of(context)!.comments,
+                        () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CommentScreen(
+                                    user: userData,
+                                  )));
+                    }),
                     _buildProfileButton(Icons.calendar_month,
                         AppLocalizations.of(context)!.calendar, () {
                       Navigator.push(

@@ -65,8 +65,7 @@ class InformationScreenState extends State<InformationScreen> {
               } else if (state is UserDataFailure) {
                 return Center(child: Text('Error: ${state.error}'));
               } else if (state is UserDataLoaded) {
-                final userData = state.userData;
-                final user = User.fromJson(userData);
+                final User user = state.userData;
 
                 _gender = user.gender;
                 _emailController.text = user.email;
@@ -178,7 +177,7 @@ class InformationScreenState extends State<InformationScreen> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         ChangeInformationScreen(
-                                          user: User.fromJson(userData),
+                                          user: user,
                                         ))).then((_) {
                               getUserData();
                             });

@@ -1,11 +1,19 @@
 import 'package:equatable/equatable.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 abstract class NotificationEvent extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class LoadNotifications extends NotificationEvent {}
+class LoadNotifications extends NotificationEvent {
+  final RemoteMessage message;
+
+  LoadNotifications(this.message);
+
+  @override
+  List<Object> get props => [message];
+}
 
 class SubscribeToTopic extends NotificationEvent {
   final String topic;

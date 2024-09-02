@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:my_movie/data/models/comment.dart';
+import 'package:my_movie/data/models/notification_model.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:my_movie/data/models/user.dart' as my_user;
@@ -189,6 +190,10 @@ class AuthRepository {
     return await _firebaseMessaging.getToken() ?? '';
   }
 
+/////////////////////////////////////////////////////////
+  ///
+///////////Subcribe to topic of message//////////////////
+
   Future<void> subscribeToTopic(String topic) async {
     await _firebaseMessaging.subscribeToTopic(topic);
   }
@@ -196,6 +201,38 @@ class AuthRepository {
   Future<void> unsubscribeFromTopic(String topic) async {
     await _firebaseMessaging.unsubscribeFromTopic(topic);
   }
+
+  List<Map<String, dynamic>> notificationsToJson(
+      List<NotificationModel> notifications) {
+    return notifications.map((notification) => notification.toJson()).toList();
+  }
+
+  Future<void> storeNotifications(List<NotificationModel> notifications) async {
+    final List<Map<String, dynamic>> notificationsJson =
+        notifications.map((n) => n.toJson()).toList();
+    final String notificationsString = jsonEncode(notificationsJson);
+    await _secureStorage.write(
+        key: 'notifications', value: notificationsString);
+  }
+
+  Future<List<NotificationModel>> loadNotifications() async {
+    final String? notificationsString =
+        await _secureStorage.read(key: 'notifications');
+    if (notificationsString != null) {
+      final List<dynamic> decodedList =
+          jsonDecode(notificationsString) as List<dynamic>;
+      return decodedList
+          .map((json) =>
+              NotificationModel.fromJson(json as Map<String, dynamic>))
+          .toList();
+    } else {
+      return [];
+    }
+  }
+
+/////////////////////////////////////////////////////////
+  ///
+///////////Fetch comment by user id//////////////////////
 
   Future<List<UserDisplayInfo>> fetchListUserCommentData(
       List<String> userIds) async {

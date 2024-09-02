@@ -59,7 +59,7 @@ class FavoritesScreenState extends State<FavoritesScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (state is UserDataLoaded) {
-            User userData = User.fromJson(state.userData);
+            User userData = state.userData;
             List<int> favoritesList = userData.favoritesList;
             getFavoritesList(favoritesList);
 

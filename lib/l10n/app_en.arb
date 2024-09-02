@@ -280,5 +280,6 @@
   "answer": "Answer",
   "scores": "Scores",
   "noNotificationsFound" :"No Notifications Available!",
-  "loadCommentError": "Load Comments and Review falure!"
+  "loadCommentError": "Load Comments and Review failure!",
+  "loadNotificationsError": "Load Notification failure!"
 }

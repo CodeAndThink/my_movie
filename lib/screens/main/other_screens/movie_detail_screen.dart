@@ -112,7 +112,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
         listener: (context, state) {
           if (state is UserDataLoaded) {
             setState(() {
-              userData = my_user.User.fromJson(state.userData);
+              userData = state.userData;
               if (userData.favoritesList.contains(widget.id)) {
                 buttonState = true;
               } else {
@@ -181,13 +181,13 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                       ),
                     ),
                     SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 280),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Row(
+                      child: Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 280),
+                            Row(
                               children: [
                                 SizedBox(
                                   width: 120,
@@ -286,10 +286,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -297,6 +297,9 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium,
+                                ),
+                                const SizedBox(
+                                  height: 15,
                                 ),
                                 Container(
                                   height: 200,
@@ -311,10 +314,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -357,10 +360,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
@@ -377,11 +380,11 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          //Comments part area
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            //Comments part area
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 //Comments title
@@ -455,59 +458,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          BlocBuilder<CommentBloc, CommentState>(
-                              builder: (context, state) {
-                            if (state is CommentLoading) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            } else if (state is FetchCommentByUserIdSucess) {
-                              final userComment = state.listComments;
-                              final List<Comment> comments = [];
-                              for (Comment comment in userComment) {
-                                if (comment.movieId == movie.id) {
-                                  comments.add(comment);
-                                }
-                              }
-                              if (comments.isNotEmpty) {
-                                final UserDisplayInfo userDisplayInfo =
-                                    UserDisplayInfo(userData.displayName,
-                                        userData.avatarPath);
-                                return SizedBox(
-                                    height: 200,
-                                    child: ListView.builder(
-                                      itemCount: comments.length,
-                                      itemBuilder: (context, index) {
-                                        return CommentBox(
-                                          comment: comments[index],
-                                          userDisplayInfo: userDisplayInfo,
-                                        );
-                                      },
-                                    ));
-                              } else {
-                                return Container();
-                              }
-                            } else if (state is CommentError) {
-                              return Center(
-                                child: Column(
-                                  children: [
-                                    Text(AppLocalizations.of(context)!
-                                        .loadCommentError)
-                                  ],
-                                ),
-                              );
-                            } else if (state is CreateMymovieCommentsSuccess) {
-                              _loadUserComment(userId);
-                              return const CircularProgressIndicator();
-                            } else {
-                              return Container();
-                            }
-                          }),
-
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
@@ -541,9 +492,59 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
-                          ),
-                          const SizedBox(height: 70)
-                        ],
+                            BlocBuilder<CommentBloc, CommentState>(
+                                builder: (context, state) {
+                              if (state is CommentLoading) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (state is FetchCommentByUserIdSucess) {
+                                final userComment = state.listComments;
+                                final List<Comment> comments = [];
+                                for (Comment comment in userComment) {
+                                  if (comment.movieId == movie.id) {
+                                    comments.add(comment);
+                                  }
+                                }
+                                if (comments.isNotEmpty) {
+                                  final UserDisplayInfo userDisplayInfo =
+                                      UserDisplayInfo(userData.displayName,
+                                          userData.avatarPath);
+                                  return SizedBox(
+                                      height: 200,
+                                      child: ListView.builder(
+                                        itemCount: comments.length,
+                                        itemBuilder: (context, index) {
+                                          return CommentBox(
+                                            comment: comments[index],
+                                            userDisplayInfo: userDisplayInfo,
+                                          );
+                                        },
+                                      ));
+                                } else {
+                                  return Container();
+                                }
+                              } else if (state is CommentError) {
+                                return Center(
+                                  child: Column(
+                                    children: [
+                                      Text(AppLocalizations.of(context)!
+                                          .loadCommentError)
+                                    ],
+                                  ),
+                                );
+                              } else if (state
+                                  is CreateMymovieCommentsSuccess) {
+                                _loadUserComment(userId);
+                                return const CircularProgressIndicator();
+                              } else {
+                                return Container();
+                              }
+                            }),
+
+                            const SizedBox(height: 70)
+                          ],
+                        ),
                       ),
                     ),
                     Positioned(

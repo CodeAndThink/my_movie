@@ -35,7 +35,7 @@ class MainScreenState extends State<MainScreen> {
       const HomeScreen(),
       const SearchScreen(),
       const MinigameScreen(),
-      const NotificationsScreen(),
+      const NotificationScreen(),
       const ProfileScreen(),
     ];
   }
