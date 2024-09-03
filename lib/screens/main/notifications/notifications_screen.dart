@@ -29,7 +29,7 @@ class NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.notifications)),
+      appBar: AppBar(title: _appBarLayout(context)),
       body: BlocBuilder<NotificationBloc, NotificationState>(
         builder: (context, state) {
           if (state is NotificationLoading) {
@@ -40,6 +40,7 @@ class NotificationScreenState extends State<NotificationScreen> {
               itemBuilder: (context, index) {
                 final message = state.messages[index];
                 return NotificationCard(
+                  seen: message.seen!,
                   notification: message,
                   onTap: (notification) {
                     showNotificationDetails(context, notification);
@@ -51,11 +52,35 @@ class NotificationScreenState extends State<NotificationScreen> {
             return Center(child: Text('Error: ${state.message}'));
           } else {
             return Center(
-                child:
-                    Text(AppLocalizations.of(context)!.loadNotificationsError));
+                child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/logos/logo.png',
+                  height: 50,
+                  width: 50,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(height: 16),
+                Text(AppLocalizations.of(context)!.noNotificationsFound),
+              ],
+            ));
           }
         },
       ),
+    );
+  }
+
+  Widget _appBarLayout(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          AppLocalizations.of(context)!.notifications,
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+        ),
+        const Spacer(),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.clear_all))
+      ],
     );
   }
 }

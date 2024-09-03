@@ -281,5 +281,6 @@
   "scores": "Scores",
   "noNotificationsFound" :"No Notifications Available!",
   "loadCommentError": "Load Comments and Review failure!",
-  "loadNotificationsError": "Load Notification failure!"
+  "loadNotificationsError": "Load Notification failure!",
+  "delete": "Delete"
 }

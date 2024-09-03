@@ -63,7 +63,7 @@ class FavoritesScreenState extends State<FavoritesScreen> {
             List<int> favoritesList = userData.favoritesList;
             getFavoritesList(favoritesList);
 
-            return Expanded(child: BlocBuilder<MovieBloc, MovieState>(
+            return BlocBuilder<MovieBloc, MovieState>(
                 builder: (context, movieState) {
               if (movieState is MovieLoading) {
                 return const Center(
@@ -101,7 +101,7 @@ class FavoritesScreenState extends State<FavoritesScreen> {
               } else {
                 return const Center(child: Text('No movies found.'));
               }
-            }));
+            });
           } else {
             return const Center(child: Text('Failed to load user data.'));
           }

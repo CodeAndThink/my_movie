@@ -48,7 +48,6 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       emit(UserDataUpdated());
 
     } catch (e) {
-      print(e.toString());
       emit(UserDataFailure(e.toString()));
     }
   }
@@ -57,7 +56,6 @@ class UserDataBloc extends Bloc<UserDataEvent, UserDataState> {
       UpdateFavorite event, Emitter<UserDataState> emit) async {
     try {
       await _authRepository.updateFavorite(event.userId, event.movieId);
-      print(event.userId);
       emit(UserDataUpdated());
     } catch (e) {
       emit(UserDataFailure(e.toString()));

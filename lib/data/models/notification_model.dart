@@ -29,4 +29,14 @@ class NotificationModel {
       'seen': seen,
     };
   }
+
+  NotificationModel copyWith(
+      {String? title, String? body, DateTime? timestamp, bool? seen}) {
+    return NotificationModel(
+      title: title ?? this.title,
+      body: body ?? this.body,
+      timestamp: timestamp ?? this.timestamp,
+      seen: seen ?? this.seen,
+    );
+  }
 }

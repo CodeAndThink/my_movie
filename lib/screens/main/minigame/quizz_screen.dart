@@ -35,7 +35,7 @@ class QuizzScreenState extends State<QuizzScreen> {
     bool isCorrect = answer == correctAnswer;
     cardState.updateColor(isCorrect);
 
-    if (heard > 0) {
+    if (heard != 0) {
       if (isCorrect) {
         score += 1;
       } else {

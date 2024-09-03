@@ -428,7 +428,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                               _comment.text,
                                             )),
                                       },
-                                      icon: const Icon(Icons.send),
+                                      icon: const Icon(
+                                        Icons.send,
+                                        color: Colors.blue,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -448,11 +451,17 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                     const Spacer(),
                                     IconButton(
                                       onPressed: () => {favoriteLevel = 1},
-                                      icon: const Icon(Icons.thumb_up),
+                                      icon: const Icon(
+                                        Icons.thumb_up,
+                                        color: Colors.blue,
+                                      ),
                                     ),
                                     IconButton(
                                       onPressed: () => {favoriteLevel = 2},
-                                      icon: const Icon(Icons.thumb_down),
+                                      icon: const Icon(
+                                        Icons.thumb_down,
+                                        color: Colors.red,
+                                      ),
                                     ),
                                   ],
                                 ),

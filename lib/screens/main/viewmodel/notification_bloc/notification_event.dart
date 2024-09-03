@@ -15,6 +15,10 @@ class LoadNotifications extends NotificationEvent {
   List<Object> get props => [message];
 }
 
+class UpdateStatusMessage extends NotificationEvent {
+  
+}
+
 class SubscribeToTopic extends NotificationEvent {
   final String topic;
 

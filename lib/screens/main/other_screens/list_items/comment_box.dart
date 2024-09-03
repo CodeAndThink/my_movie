@@ -62,8 +62,19 @@ class CommentBox extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!
-              .reviewBy(userDisplayInfo.displayName)),
+          title: Row(
+            children: [
+              Text(AppLocalizations.of(context)!
+                  .reviewBy(userDisplayInfo.displayName)),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,8 +106,11 @@ class CommentBox extends StatelessWidget {
             ),
           ),
           actions: [
-            TextButton(
-              child: Text(AppLocalizations.of(context)!.close),
+            IconButton(
+              icon: const Icon(
+                Icons.delete,
+                color: Colors.red,
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },

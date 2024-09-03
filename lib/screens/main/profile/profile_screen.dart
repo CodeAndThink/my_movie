@@ -15,8 +15,6 @@ import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_state.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_event.dart';
 import 'package:my_movie/screens/main/viewmodel/user_data_bloc/user_data_state.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -43,91 +41,6 @@ class ProfileScreenState extends State<ProfileScreen> {
     if (userId.isNotEmpty) {
       userDataBloc.add(FetchUserData(userId));
     }
-  }
-
-  void _showImageSourceDialog(BuildContext context) {
-    final ImagePicker picker = ImagePicker();
-    showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            AppLocalizations.of(context)!.selectImageSource,
-            textAlign: TextAlign.center,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  final permissionStatus = await Permission.photos.request();
-                  if (permissionStatus.isGranted) {
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    if (image != null && mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(AppLocalizations.of(context)!
-                              .selectedImagePath(image.path)),
-                        ),
-                      );
-                    }
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                            AppLocalizations.of(context)!.permissionDenied),
-                      ),
-                    );
-                  }
-                },
-                child: Text(AppLocalizations.of(context)!.imagesFromGallery),
-              ),
-              const SizedBox(height: 16),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 48),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-
-                  final permissionStatus = await Permission.camera.request();
-                  if (permissionStatus.isGranted) {
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.camera);
-                    if (image != null && mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            AppLocalizations.of(context)!
-                                .capturedImagePath(image.path),
-                          ),
-                        ),
-                      );
-                    }
-                  } else {
-                    if (mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            AppLocalizations.of(context)!.permissionDenied,
-                          ),
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: Text(AppLocalizations.of(context)!.imagesFromCamera),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   Widget _buildProfileCard(String count, String label) {
@@ -264,34 +177,28 @@ class ProfileScreenState extends State<ProfileScreen> {
                                               child: IconButton(
                                                 icon: const Icon(
                                                     Icons.camera_alt),
-                                                onPressed: () {
-                                                  _showImageSourceDialog(
-                                                      context);
-                                                },
+                                                onPressed: () {},
                                               ),
                                             )
                                           ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
                                         ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
                                             _buildProfileCard(
-                                                userData.favoritesList
-                                                    .length
+                                                userData.favoritesList.length
                                                     .toString(),
                                                 AppLocalizations.of(context)!
                                                     .like),
                                             _buildProfileCard(
-                                                userData.commentIds
-                                                    .length
+                                                userData.commentIds.length
                                                     .toString(),
                                                 AppLocalizations.of(context)!
                                                     .comments),
-                                            _buildProfileCard(
-                                                '3',
-                                                AppLocalizations.of(context)!
-                                                    .level),
                                           ],
                                         ),
                                       ],

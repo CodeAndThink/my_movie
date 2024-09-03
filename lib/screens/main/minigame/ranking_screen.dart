@@ -75,6 +75,9 @@ class RankingScreenState extends State<RankingScreen> {
                 ],
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
             SizedBox(
               height: screenHeight * 0.25,
               child: Card(
@@ -160,9 +163,15 @@ class RankingScreenState extends State<RankingScreen> {
                 ),
               ),
             ),
+            const SizedBox(
+              height: 15,
+            ),
             Text(
               AppLocalizations.of(context)!.answer,
               style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(
+              height: 15,
             ),
             Expanded(
               child: ListView.builder(

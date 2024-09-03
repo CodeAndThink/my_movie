@@ -5,24 +5,32 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class NotificationCard extends StatelessWidget {
   final NotificationModel notification;
   final Function(NotificationModel) onTap;
+  final bool seen;
 
   const NotificationCard({
     super.key,
     required this.notification,
     required this.onTap,
+    required this.seen,
   });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
-      margin: const EdgeInsets.all(8.0),
-      child: ListTile(
-        title: Text(notification.title ?? 'No Title'),
-        subtitle: Text(notification.body ?? 'No Content'),
-        onTap: () => onTap(notification),
-      ),
-    );
+        elevation: 5,
+        margin: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            ListTile(
+              title: Text(notification.title ?? 'No Title'),
+              subtitle: Text(notification.body ?? 'No Content'),
+              onTap: () => onTap(notification),
+            ),
+            seen
+                ? const Icon(Icons.newspaper)
+                : const Icon(Icons.newspaper_outlined)
+          ],
+        ));
   }
 }
 

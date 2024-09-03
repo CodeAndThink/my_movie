@@ -16,6 +16,7 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
     on<LoadNotifications>(_onLoadNotifications);
     on<SubscribeToTopic>(_onSubscribeToTopic);
     on<UnsubscribeFromTopic>(_onUnsubscribeFromTopic);
+    on<UpdateStatusMessage>(_onUpdateStatusMessage);
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       add(LoadNotifications(message));
@@ -48,6 +49,16 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
       platformChannelSpecifics,
       payload: 'item x',
     );
+  }
+
+  Future<void> _onUpdateStatusMessage(
+      UpdateStatusMessage event, Emitter<NotificationState> emit) async {
+    final messages = await _authRepository.loadNotifications();
+
+    final updatedMessages = messages.map((message) {
+      return message.copyWith(seen: true);
+    }).toList();
+    await _authRepository.storeNotifications(updatedMessages);
   }
 
   Future<void> _initializeNotifications() async {
