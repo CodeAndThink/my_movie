@@ -1,12 +1,5 @@
 abstract class MovieEvent {}
 
-class LoadMoviesByCategories extends MovieEvent {
-  final String category;
-  final int page;
-
-  LoadMoviesByCategories(this.category, this.page);
-}
-
 class LoadTrailerMovies extends MovieEvent {
   final int trailerId;
 

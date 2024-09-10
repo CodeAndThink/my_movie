@@ -1,51 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/data/repository/movie_repository.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_state.dart';
 import 'package:my_movie/screens/main/home/list_items/medium_card.dart';
 import 'package:my_movie/screens/main/home/list_items/small_card.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class MovieListScreen extends StatelessWidget {
+class MovieListScreen extends StatefulWidget {
   const MovieListScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          MovieBloc(MovieRepository())
-            ..add(LoadMoviesByCategories('popular', 1)),
-      child: const MovieListView(),
-    );
-  }
-}
-
-class MovieListView extends StatefulWidget {
-  const MovieListView({super.key});
 
   @override
   MovieListScreenState createState() => MovieListScreenState();
 }
 
-class MovieListScreenState extends State<MovieListView> {
+class MovieListScreenState extends State<MovieListScreen> {
   bool isListView = true;
   String selectedCategory = 'popular';
   int selectedPage = 1;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  void getMovieByCategory() {
-    context
-        .read<MovieBloc>()
-        .add(LoadMoviesByCategories(selectedCategory, selectedPage));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,11 +52,12 @@ class MovieListScreenState extends State<MovieListView> {
             ),
           ),
           Expanded(
-            child: BlocBuilder<MovieBloc, MovieState>(
+            child: BlocBuilder<MainFetchMovieByCategoriesBloc,
+                MainFetchMovieByCategoriesState>(
               builder: (context, state) {
-                if (state is MovieLoading) {
+                if (state is MovieCategoriesLoading) {
                   return const Center(child: CircularProgressIndicator());
-                } else if (state is MovieLoaded) {
+                } else if (state is MovieCategoriesLoaded) {
                   List<Movie> movies;
                   switch (selectedCategory) {
                     case 'popular':
@@ -145,7 +119,7 @@ class MovieListScreenState extends State<MovieListView> {
                                 );
                               },
                             );
-                } else if (state is MovieError) {
+                } else if (state is MovieCategoriesFalure) {
                   return Center(child: Text(state.message));
                 } else {
                   return const SizedBox();
@@ -169,7 +143,6 @@ class MovieListScreenState extends State<MovieListView> {
             setState(() {
               selectedCategory = categoryKey;
             });
-            getMovieByCategory();
           }
         },
       ),

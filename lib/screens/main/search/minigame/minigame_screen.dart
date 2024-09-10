@@ -2,9 +2,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/animation/dice_roll_animation.dart';
-import 'package:my_movie/data/repository/movie_repository.dart';
-import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
-import 'package:my_movie/screens/main/minigame/quizz_screen.dart';
+import 'package:my_movie/screens/main/search/minigame/list_items/mini_games_card.dart';
+import 'package:my_movie/screens/main/search/minigame/quizz_screen.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -19,11 +18,9 @@ class MinigameScreen extends StatefulWidget {
 }
 
 class MinigameScreenState extends State<MinigameScreen> {
-  final MovieBloc _movieBloc =
-      MovieBloc(MovieRepository());
-
   @override
   Widget build(BuildContext context) {
+    final movieBloc = context.read<MovieBloc>();
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -44,16 +41,10 @@ class MinigameScreenState extends State<MinigameScreen> {
                   title: AppLocalizations.of(context)!.pickRandomMovie,
                   imageUrl: 'assets/images/dice.png',
                   onTap: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => BlocProvider.value(
-                          value: _movieBloc,
-                          child: const LoadingRandomScreen(),
-                        ),
-                      ),
-                    );
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoadingRandomScreen()));
                     var rng = Random();
-                    _movieBloc.add(LoadMovieById(2 + rng.nextInt(299)));
+                    movieBloc.add(LoadMovieById(2 + rng.nextInt(299)));
                   },
                 ),
                 MiniGamesCard(

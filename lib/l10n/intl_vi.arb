@@ -282,5 +282,6 @@
   "noNotificationsFound" :"Không có thông báo nào!",
   "loadCommentError": "Tải bình luận và đánh giá không thành công!",
   "loadNotificationsError": "Tải thông báo không thành công!",
-  "delete": "Xóa"
+  "delete": "Xóa",
+  "noCommentAvilable": "Không có bình luận nào!"
 }

@@ -11,6 +11,8 @@ import 'package:my_movie/data/repository/quizz_repository.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_genre_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/notification_bloc/notification_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_bloc.dart';
@@ -40,6 +42,10 @@ void main() async {
           create: (context) => CommentBloc(authRepository, movieRepository)),
       BlocProvider(create: (context) => AuthBloc(authRepository)),
       BlocProvider(create: (context) => MovieBloc(movieRepository)),
+      BlocProvider(
+          create: (context) => MainFetchMovieByCategoriesBloc(movieRepository)),
+      BlocProvider(
+          create: (context) => MainFetchMovieGenreBloc(movieRepository)),
       BlocProvider(create: (context) => SettingsBloc()),
       BlocProvider(create: (context) => UserDataBloc(authRepository)),
       BlocProvider(create: (context) => QuizzBloc(quizzRepository)),

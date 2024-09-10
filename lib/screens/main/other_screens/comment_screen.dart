@@ -80,18 +80,23 @@ class CommentScreenState extends State<CommentScreen> {
                 ),
                 selectedRate == AppLocalizations.of(context)!.tmdbComments
                     ? Expanded(
-                        child: ListView.builder(
-                          itemCount: reviews.length,
-                          itemBuilder: (context, index) {
-                            final review = reviews[index];
-                            final authorDetails = review.authorDetails;
+                        child: reviews.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: reviews.length,
+                                itemBuilder: (context, index) {
+                                  final review = reviews[index];
+                                  final authorDetails = review.authorDetails;
 
-                            return ReviewBox(
-                              authorDetails: authorDetails,
-                              review: review,
-                            );
-                          },
-                        ),
+                                  return ReviewBox(
+                                    authorDetails: authorDetails,
+                                    review: review,
+                                  );
+                                },
+                              )
+                            : Center(
+                                child: Text(AppLocalizations.of(context)!
+                                    .noCommentAvilable),
+                              ),
                       )
                     : BlocBuilder<UserDataBloc, UserDataState>(
                         builder: (context, state) {
@@ -103,17 +108,23 @@ class CommentScreenState extends State<CommentScreen> {
                         } else if (state is UserCommentDatasLoaded) {
                           List<UserDisplayInfo> listUserInfors =
                               state.userCommentDatas;
-                          return Expanded(
-                            child: ListView.builder(
-                              itemCount: comments.length,
-                              itemBuilder: (context, index) {
-                                return CommentBox(
-                                  comment: comments[index],
-                                  userDisplayInfo: listUserInfors[index],
-                                );
-                              },
-                            ),
-                          );
+                          return comments.isNotEmpty
+                              ? Expanded(
+                                  child: ListView.builder(
+                                    itemCount: comments.length,
+                                    itemBuilder: (context, index) {
+                                      return CommentBox(
+                                        comment: comments[index],
+                                        userDisplayInfo: listUserInfors[index],
+                                      );
+                                    },
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Center(
+                                  child: Text(AppLocalizations.of(context)!
+                                      .noCommentAvilable),
+                                ));
                         } else if (state is UserDataFailure) {
                           return const Expanded(
                               child: Center(

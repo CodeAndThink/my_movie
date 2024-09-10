@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/screens/main/home/home_screen.dart';
-import 'package:my_movie/screens/main/minigame/minigame_screen.dart';
+import 'package:my_movie/screens/main/search/minigame/minigame_screen.dart';
 import 'package:my_movie/screens/main/notifications/notifications_screen.dart';
 import 'package:my_movie/screens/main/profile/profile_screen.dart';
 import 'package:my_movie/screens/main/search/search_screen.dart';

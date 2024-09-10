@@ -8,20 +8,6 @@ class MovieInitial extends MovieState {}
 
 class MovieLoading extends MovieState {}
 
-class MovieLoaded extends MovieState {
-  final List<Movie> popularMovies;
-  final List<Movie> topRatedMovies;
-  final List<Movie> nowPlayingMovies;
-  final List<Movie> upcomingMovies;
-
-  MovieLoaded({
-    required this.popularMovies,
-    required this.topRatedMovies,
-    required this.nowPlayingMovies,
-    required this.upcomingMovies,
-  });
-}
-
 class MovieGenresLoaded extends MovieState {
   final List<MovieGenre> genres;
 
@@ -45,7 +31,7 @@ class TrailerLoaded extends MovieState {
 }
 
 class SearchLoaded extends MovieState {
-  final List<dynamic> movies;
+  final List<Movie> movies;
 
   SearchLoaded(this.movies);
 }

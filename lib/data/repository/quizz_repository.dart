@@ -1,10 +1,11 @@
-import 'package:dio/dio.dart';
 import 'package:my_movie/data/connections/network/quizz_api_service.dart';
+import 'package:my_movie/data/models/trivia_question.dart';
 
 class QuizzRepository {
   final QuizzApiService _quizzApiService = QuizzApiService();
 
-  Future<Response> getQuizz(int num, int questDifficulty, int questType) async {
+  Future<List<TriviaQuestion>> getQuizz(
+      int num, int questDifficulty, int questType) async {
     String difficulty;
     String type;
     switch (questDifficulty) {
@@ -34,11 +35,16 @@ class QuizzRepository {
       default:
         type = '';
     }
-    return _quizzApiService.getTriviaQuestions('', queryParameters: {
-      'amount': num,
-      'category': 11,
-      'difficulty': difficulty,
-      'type': type
-    });
+    final response = await _quizzApiService.getTriviaQuestions('',
+        queryParameters: {
+          'amount': num,
+          'category': 11,
+          'difficulty': difficulty,
+          'type': type
+        });
+    final List<dynamic> quizzJson = response.data['results'];
+    final List<TriviaQuestion> quizzs =
+        quizzJson.map((json) => TriviaQuestion.fromJson(json)).toList();
+    return quizzs;
   }
 }

@@ -60,6 +60,7 @@ flutter:
     - assets/images/placeholder.png
     - assets/images/category.png
     - assets/images/actor.png
+    - assets/images/gamepad.png
     - assets/images/dice.png
     - assets/images/dice_1.png
     - assets/images/dice_2.png

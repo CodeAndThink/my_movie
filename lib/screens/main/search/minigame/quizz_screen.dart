@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/data/models/trivia_question.dart';
-import 'package:my_movie/screens/main/minigame/ranking_screen.dart';
+import 'package:my_movie/screens/main/search/minigame/ranking_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_event.dart';
 import 'package:my_movie/screens/main/viewmodel/quizz_bloc/quizz_state.dart';

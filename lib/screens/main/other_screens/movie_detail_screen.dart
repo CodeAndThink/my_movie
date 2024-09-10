@@ -138,7 +138,6 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                 movie = state.movie;
                 trailers = state.trailers;
                 credits = state.credits;
-
                 if (trailers.isNotEmpty) {
                   String trailerKey = trailers.first['key'];
                   _loadTrailer(trailerKey);

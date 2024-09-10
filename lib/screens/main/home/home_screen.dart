@@ -6,9 +6,9 @@ import 'package:my_movie/screens/main/home/list_view/movie_sections.dart';
 import 'package:my_movie/screens/main/notifications/notifications_screen.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
 import 'package:my_movie/screens/main/search/search_screen.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_event.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,18 +31,12 @@ class HomeScreenState extends State<HomeScreen> {
     _loadAllCategories();
   }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   void _loadAllCategories() {
-    final movieBloc = context.read<MovieBloc>();
-    movieBloc.add(LoadMoviesByCategories('popular', 1));
-    movieBloc.add(LoadMoviesByCategories('top_rated', 1));
-    movieBloc.add(LoadMoviesByCategories('now_playing', 1));
-    movieBloc.add(LoadMoviesByCategories('upcoming', 1));
+    final movieBloc = context.read<MainFetchMovieByCategoriesBloc>();
+    movieBloc.add(FetchCommonMovieCategory('popular', 1));
+    movieBloc.add(FetchCommonMovieCategory('top_rated', 1));
+    movieBloc.add(FetchCommonMovieCategory('now_playing', 1));
+    movieBloc.add(FetchCommonMovieCategory('upcoming', 1));
   }
 
   @override
@@ -78,14 +72,15 @@ class HomeScreenState extends State<HomeScreen> {
       ),
       body: CustomScrollView(
         slivers: [
-          BlocBuilder<MovieBloc, MovieState>(
+          BlocBuilder<MainFetchMovieByCategoriesBloc,
+              MainFetchMovieByCategoriesState>(
             builder: (context, state) {
-              if (state is MovieLoading) {
+              if (state is MovieCategoriesLoading) {
                 return _buildLoadingSection();
-              } else if (state is MovieLoaded) {
+              } else if (state is MovieCategoriesLoaded) {
                 return _buildMovieSection(
                     'Popular movies:', state.popularMovies);
-              } else if (state is MovieError) {
+              } else if (state is MovieCategoriesFalure) {
                 return SliverToBoxAdapter(
                   child: Center(child: Text('Error: ${state.message}')),
                 );
@@ -96,15 +91,16 @@ class HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          BlocBuilder<MovieBloc, MovieState>(
+          BlocBuilder<MainFetchMovieByCategoriesBloc,
+              MainFetchMovieByCategoriesState>(
             builder: (context, state) {
-              if (state is MovieLoading) {
+              if (state is MovieCategoriesLoading) {
                 return _buildLoadingSection();
-              } else if (state is MovieLoaded) {
+              } else if (state is MovieCategoriesLoaded) {
                 return _buildMovieSection(
                     '${AppLocalizations.of(context)!.topRatedMovies}:',
                     state.topRatedMovies);
-              } else if (state is MovieError) {
+              } else if (state is MovieCategoriesFalure) {
                 return SliverToBoxAdapter(
                   child: Center(child: Text('Error: ${state.message}')),
                 );
@@ -115,15 +111,16 @@ class HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          BlocBuilder<MovieBloc, MovieState>(
+          BlocBuilder<MainFetchMovieByCategoriesBloc,
+              MainFetchMovieByCategoriesState>(
             builder: (context, state) {
-              if (state is MovieLoading) {
+              if (state is MovieCategoriesLoading) {
                 return _buildLoadingSection();
-              } else if (state is MovieLoaded) {
+              } else if (state is MovieCategoriesLoaded) {
                 return _buildMovieSection(
                     '${AppLocalizations.of(context)!.nowPlayingMovies}:',
                     state.nowPlayingMovies);
-              } else if (state is MovieError) {
+              } else if (state is MovieCategoriesFalure) {
                 return SliverToBoxAdapter(
                   child: Center(child: Text('Error: ${state.message}')),
                 );
@@ -134,15 +131,16 @@ class HomeScreenState extends State<HomeScreen> {
               }
             },
           ),
-          BlocBuilder<MovieBloc, MovieState>(
+          BlocBuilder<MainFetchMovieByCategoriesBloc,
+              MainFetchMovieByCategoriesState>(
             builder: (context, state) {
-              if (state is MovieLoading) {
+              if (state is MovieCategoriesLoading) {
                 return _buildLoadingSection();
-              } else if (state is MovieLoaded) {
+              } else if (state is MovieCategoriesLoaded) {
                 return _buildMovieSection(
                     '${AppLocalizations.of(context)!.upcomingMovies}:',
                     state.upcomingMovies);
-              } else if (state is MovieError) {
+              } else if (state is MovieCategoriesFalure) {
                 return SliverToBoxAdapter(
                   child: Center(child: Text('Error: ${state.message}')),
                 );

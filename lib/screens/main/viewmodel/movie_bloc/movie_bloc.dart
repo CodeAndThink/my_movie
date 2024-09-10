@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:my_movie/data/models/actor.dart';
-import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/data/models/movie.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
@@ -10,8 +9,6 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
   final MovieRepository _movieRepository;
 
   MovieBloc(this._movieRepository) : super(MovieInitial()) {
-    on<LoadMoviesByCategories>(_onLoadMovieByCategories);
-    on<LoadMovieGenres>(_onLoadMovieGenres);
     on<LoadMovieById>(_onLoadMovieById);
     on<LoadTrailerMovies>(_onLoadTrailerMovies);
     on<SearchMovies>(_searchMovies);
@@ -23,70 +20,11 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     on<SearchActor>(_onSearchActor);
   }
 
-  Future<void> _onLoadMovieByCategories(
-      LoadMoviesByCategories event, Emitter<MovieState> emit) async {
-    emit(MovieLoading());
-    try {
-      final response = await _movieRepository.getMovieByCategories(
-          event.category, event.page);
-      final List<dynamic> movieJsonList = response.data['results'];
-      final List<Movie> movies =
-          movieJsonList.map((json) => Movie.fromJson(json)).toList();
-
-      final currentState = state;
-      if (currentState is MovieLoaded) {
-        emit(MovieLoaded(
-          popularMovies:
-              event.category == 'popular' ? movies : currentState.popularMovies,
-          topRatedMovies: event.category == 'top_rated'
-              ? movies
-              : currentState.topRatedMovies,
-          nowPlayingMovies: event.category == 'now_playing'
-              ? movies
-              : currentState.nowPlayingMovies,
-          upcomingMovies: event.category == 'upcoming'
-              ? movies
-              : currentState.upcomingMovies,
-        ));
-      } else {
-        emit(MovieLoaded(
-          popularMovies: event.category == 'popular' ? movies : [],
-          topRatedMovies: event.category == 'top_rated' ? movies : [],
-          nowPlayingMovies: event.category == 'now_playing' ? movies : [],
-          upcomingMovies: event.category == 'upcoming' ? movies : [],
-        ));
-      }
-    } catch (e) {
-      emit(MovieError('Failed to load ${event.category} movies'));
-    }
-  }
-
-  Future<void> _onLoadMovieGenres(
-      LoadMovieGenres event, Emitter<MovieState> emit) async {
-    emit(MovieLoading());
-    try {
-      final response = await _movieRepository.getGenreMovies();
-      final List<dynamic> genresJson = response.data['genres'];
-      final genres =
-          genresJson.map((json) => MovieGenre.fromJson(json)).toList();
-      final currentState = state;
-      if (currentState is MovieGenresLoaded) {
-        if (currentState.isEqual(genres)) {
-          return;
-        }
-      }
-      emit(MovieGenresLoaded(genres));
-    } catch (e) {
-      emit(MovieError('Failed to load genres of movies'));
-    }
-  }
-
   Future<void> _onLoadTrailerMovies(
       LoadTrailerMovies event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response = await _movieRepository.getMovieTrailer(event.trailerId);
-      final trailers = response.data['results'];
+      final trailers = await _movieRepository.getMovieTrailer(event.trailerId);
       emit(TrailerLoaded(trailers));
     } catch (e) {
       emit(MovieError('Failed to load trailer of this movie'));
@@ -98,8 +36,7 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     emit(MovieLoading());
     try {
       if (event.searchKey.isNotEmpty) {
-        final response = await _movieRepository.searchMovie(event.searchKey);
-        final movies = response.data['results'];
+        final movies = await _movieRepository.searchMovie(event.searchKey);
         emit(SearchLoaded(movies));
       } else {
         emit(SearchCancel());
@@ -113,16 +50,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       LoadMovieById event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response = await _movieRepository.getMovieDetails(event.movieId);
-      final movieJson = response.data;
-      final Movie movie = Movie.fromJson(movieJson);
-      final trailerResponse =
-          await _movieRepository.getMovieTrailer(event.movieId);
-
-      final creditsResponse =
-          await _movieRepository.getMovieCredits(event.movieId);
-      final credits = creditsResponse.data;
-      final trailers = trailerResponse.data['results'];
+      final movie = await _movieRepository.getMovieDetails(event.movieId);
+      final trailers = await _movieRepository.getMovieTrailer(event.movieId);
+      final credits = await _movieRepository.getMovieCredits(event.movieId);
       emit(SearchByIdLoaded(movie, trailers, credits));
     } catch (e) {
       emit(MovieError('Failed to find movies'));
@@ -133,11 +63,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       LoadMovieByGenre event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response = await _movieRepository.discoverMoviesByGenre(
+      final movies = await _movieRepository.discoverMoviesByGenre(
           event.genreId, event.page, event.sortOption);
-      final List<dynamic> moviesJson = response.data['results'];
-      final List<Movie> movies =
-          moviesJson.map((json) => Movie.fromJson(json)).toList();
       emit(SearchByMovieGenre(movies));
     } catch (e) {
       emit(MovieError('Failed to find movie by genre'));
@@ -163,12 +90,9 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       DeleteMovieRating event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response = await _movieRepository.deleteMovieRating(event.movieId);
-      if (response.statusCode == 200) {
-        emit(MovieRatingDeletedSuccess());
-      } else {
-        emit(MovieError('Failed to delete movie rating'));
-      }
+      await _movieRepository.deleteMovieRating(event.movieId);
+
+      emit(MovieRatingDeletedSuccess());
     } catch (e) {
       emit(MovieError('Failed to delete movie rating'));
     }
@@ -180,8 +104,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
     try {
       final List<Movie> listResponse = [];
       for (var id in event.listMovieId) {
-        final response = await _movieRepository.getMovieDetails(id);
-        listResponse.add(Movie.fromJson(response.data));
+        final movie = await _movieRepository.getMovieDetails(id);
+        listResponse.add(movie);
       }
 
       emit(SearchByListIdLoaded(listResponse));
@@ -194,10 +118,8 @@ class MovieBloc extends Bloc<MovieEvent, MovieState> {
       LoadPopularActor event, Emitter<MovieState> emit) async {
     emit(MovieLoading());
     try {
-      final response = await _movieRepository.getPopularActor(event.page);
-      final List<dynamic> actorsJson = response.data['results'];
       final List<Actor> actors =
-          actorsJson.map((json) => Actor.fromJson(json)).toList();
+          await _movieRepository.getPopularActor(event.page);
       emit(ActorLoaded(actors));
     } catch (e) {
       emit(MovieError(e.toString()));

@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/movie_genre.dart';
 import 'package:my_movie/screens/main/search/list_items/category_items.dart';
 import 'package:my_movie/screens/main/search/movie_by_genre_screen.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_event.dart';
-import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_state.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_genre_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_genre_event.dart';
+import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_genre_state.dart';
 
 class CategoryListScreen extends StatefulWidget {
   const CategoryListScreen({super.key});
@@ -23,7 +23,7 @@ class CategoryListScreenState extends State<CategoryListScreen> {
   }
 
   Future<void> _loadGenres() async {
-    context.read<MovieBloc>().add(LoadMovieGenres());
+    context.read<MainFetchMovieGenreBloc>().add(FetchMovieGenres());
   }
 
   @override
@@ -36,11 +36,11 @@ class CategoryListScreenState extends State<CategoryListScreen> {
           ),
         ),
         body: Center(
-          child: BlocBuilder<MovieBloc, MovieState>(
+          child: BlocBuilder<MainFetchMovieGenreBloc, MainFetchMovieGenreState>(
             builder: (context, state) {
-              if (state is MovieLoading) {
+              if (state is FetchMovieGenresLoading) {
                 return const CircularProgressIndicator();
-              } else if (state is MovieGenresLoaded) {
+              } else if (state is FetchMovieGenresLoaded) {
                 List<MovieGenre> genres = state.genres;
                 return ListView.builder(
                   itemCount: genres.length,
@@ -56,14 +56,12 @@ class CategoryListScreenState extends State<CategoryListScreen> {
                               genreId: category.id,
                             ),
                           ),
-                        ).then((_) {
-                          _loadGenres();
-                        });
+                        );
                       },
                     );
                   },
                 );
-              } else if (state is MovieError) {
+              } else if (state is FetchMovieGenresError) {
                 return Text(state.message);
               } else {
                 return Text(AppLocalizations.of(context)!.noGenreFound);

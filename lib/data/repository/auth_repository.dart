@@ -74,8 +74,7 @@ class AuthRepository {
     return commentId;
   }
 
-  Future<List<Map<String, dynamic>>> getMymovieCommentsByMovieId(
-      int movieId) async {
+  Future<List<Comment>> getMymovieCommentsByMovieId(int movieId) async {
     try {
       final querySnapshot = await _firestore
           .collection('comments')
@@ -86,14 +85,17 @@ class AuthRepository {
         return doc.data();
       }).toList();
 
-      return comments;
+      final List<Map<String, dynamic>> listCommentsJson = comments;
+      final List<Comment> listComments =
+          listCommentsJson.map((json) => Comment.fromJson(json)).toList();
+
+      return listComments;
     } catch (e) {
       throw Exception('Failed to get comments: $e');
     }
   }
 
-  Future<List<Map<String, dynamic>>> getMymovieCommentsByUserId(
-      String userDocId) async {
+  Future<List<Comment>> getMymovieCommentsByUserId(String userDocId) async {
     try {
       final querySnapshot = await _firestore
           .collection('comments')
@@ -103,8 +105,10 @@ class AuthRepository {
       final comments = querySnapshot.docs.map((doc) {
         return doc.data();
       }).toList();
-
-      return comments;
+      final List<Map<String, dynamic>> listCommentsJson = comments;
+      final List<Comment> listComments =
+          listCommentsJson.map((json) => Comment.fromJson(json)).toList();
+      return listComments;
     } catch (e) {
       throw Exception('Failed to get comments: $e');
     }

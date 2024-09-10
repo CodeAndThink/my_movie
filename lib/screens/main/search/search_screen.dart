@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:my_movie/data/models/movie.dart';
-import 'package:my_movie/screens/main/minigame/list_items/mini_games_card.dart';
+import 'package:my_movie/screens/main/search/minigame/list_items/mini_games_card.dart';
+import 'package:my_movie/screens/main/search/minigame/minigame_screen.dart';
 import 'package:my_movie/screens/main/other_screens/movie_detail_screen.dart';
 import 'package:my_movie/screens/main/search/category_list_screen.dart';
 import 'package:my_movie/screens/main/search/search_by_actor.dart';
@@ -40,25 +40,23 @@ class SearchScreenState extends State<SearchScreen> {
               return const Center(child: CircularProgressIndicator());
             } else if (state is SearchLoaded) {
               final movies = state.movies;
-              final List<Movie> listMovie =
-                  movies.map((json) => Movie.fromJson(json)).toList();
 
-              if (listMovie.isEmpty) {
+              if (movies.isEmpty) {
                 return Center(
                     child: Text(AppLocalizations.of(context)!.noMoviesFound));
               }
 
               return ListView.builder(
-                itemCount: listMovie.length,
+                itemCount: movies.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(listMovie[index].title),
+                    title: Text(movies[index].title),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MovieDetailScreen(
-                                movieId: listMovie[index].id)),
+                            builder: (context) =>
+                                MovieDetailScreen(movieId: movies[index].id)),
                       );
                     },
                   );
@@ -93,8 +91,17 @@ class SearchScreenState extends State<SearchScreen> {
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const SearchByActor()),
+                                builder: (context) => const SearchByActor()),
+                          );
+                        },
+                      ),
+                      MiniGamesCard(
+                        title: AppLocalizations.of(context)!.miniGame,
+                        imageUrl: 'assets/images/gamepad.png',
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const MinigameScreen()),
                           );
                         },
                       ),
