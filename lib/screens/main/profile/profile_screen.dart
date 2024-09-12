@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:my_movie/data/models/user.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
+import 'package:my_movie/screens/main/book_ticket/book_ticket_screen.dart';
 import 'package:my_movie/screens/main/profile/calendar/calendar_screen.dart';
 import 'package:my_movie/screens/main/profile/comment/comment_screen.dart';
 import 'package:my_movie/screens/main/profile/favorites/favorites_screen.dart';
@@ -112,7 +113,7 @@ class ProfileScreenState extends State<ProfileScreen> {
           appBar: AppBar(
             title: Text(
               AppLocalizations.of(context)!.profile,
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           body: Padding(
@@ -230,6 +231,13 @@ class ProfileScreenState extends State<ProfileScreen> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const FavoritesScreen()));
+                    }),
+                    _buildProfileButton(Icons.confirmation_number,
+                        AppLocalizations.of(context)!.bookTicket, () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const BookTicketScreen()));
                     }),
                     _buildProfileButton(
                         Icons.comment, AppLocalizations.of(context)!.comments,

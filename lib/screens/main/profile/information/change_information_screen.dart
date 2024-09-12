@@ -110,7 +110,7 @@ class ChangeInformationScreenState extends State<ChangeInformationScreen> {
             appBar: AppBar(
               title: Text(AppLocalizations.of(context)!.changeInformation,
                   style:
-                      TextStyle(color: Theme.of(context).colorScheme.primary)),
+                      Theme.of(context).textTheme.headlineMedium),
             ),
             body: SingleChildScrollView(
               child: Padding(

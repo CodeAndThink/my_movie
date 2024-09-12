@@ -32,7 +32,7 @@ class CategoryListScreenState extends State<CategoryListScreen> {
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context)!.categories,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         body: Center(

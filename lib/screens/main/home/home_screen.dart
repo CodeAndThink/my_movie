@@ -10,6 +10,7 @@ import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_c
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_event.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -50,7 +51,7 @@ class HomeScreenState extends State<HomeScreen> {
           constraints: BoxConstraints(maxWidth: screenWidth * 0.6),
           child: Text(
             AppLocalizations.of(context)!.welcome,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         actions: [
@@ -165,42 +166,62 @@ class HomeScreenState extends State<HomeScreen> {
     if (title == 'Popular movies:') {
       return SliverToBoxAdapter(
           child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SizedBox(
-          width: cardWidth,
-          height: cardHeight,
-          child: PageView.builder(
-            controller: _pageController,
-            scrollDirection: Axis.horizontal,
-            itemCount: itemCount * _infiniteScrollFactor,
-            itemBuilder: (context, index) {
-              final realIndex = index % itemCount;
-              final movie = movies[realIndex];
-              return LargeCard(
-                movie: movie,
-                width: cardWidth,
-                height: cardHeight,
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          MovieDetailScreen(movieId: movie.id),
-                    ),
-                  );
-                },
-              );
-            },
-            onPageChanged: (index) {
-              final realIndex = index % itemCount;
-              if (realIndex == 0) {
-                _pageController
-                    .jumpToPage(itemCount * _infiniteScrollFactor ~/ 2);
-              }
-            },
-          ),
-        ),
-      ));
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                  width: cardWidth,
+                  height: cardHeight,
+                  child: Stack(
+                    children: [
+                      PageView.builder(
+                        controller: _pageController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: itemCount * _infiniteScrollFactor,
+                        itemBuilder: (context, index) {
+                          final realIndex = index % itemCount;
+                          final movie = movies[realIndex];
+                          return LargeCard(
+                            movie: movie,
+                            width: cardWidth,
+                            height: cardHeight,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      MovieDetailScreen(movieId: movie.id),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        onPageChanged: (index) {
+                          final realIndex = index % itemCount;
+                          if (realIndex == 0) {
+                            _pageController.jumpToPage(
+                                itemCount * _infiniteScrollFactor ~/ 2);
+                          }
+                        },
+                      ),
+                      Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: SmoothPageIndicator(
+                            controller: _pageController,
+                            count: itemCount,
+                            effect: WormEffect(
+                              dotColor: Theme.of(context).colorScheme.secondary,
+                              activeDotColor:
+                                  Theme.of(context).colorScheme.primary,
+                              dotHeight: 8,
+                              dotWidth: 10,
+                              spacing: 5,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ))));
     } else {
       return SliverToBoxAdapter(
         child: MoviesSection(

@@ -29,7 +29,7 @@ class CastAndCrewScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             name,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         body: SingleChildScrollView(

@@ -170,7 +170,7 @@ class MovieListAppBar extends StatelessWidget {
           constraints: BoxConstraints(maxWidth: screenWidth * 0.55),
           child: Text(
             AppLocalizations.of(context)!.listOfMovies,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         const Spacer(),

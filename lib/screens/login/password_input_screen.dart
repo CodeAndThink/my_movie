@@ -89,14 +89,15 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
                     }
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    foregroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    foregroundColor: Theme.of(context).colorScheme.surface,
                     minimumSize:
                         Size(MediaQuery.of(context).size.width - 20, 50),
                   ),
                   child: Text(
                     AppLocalizations.of(context)!.logIn,
-                    style: const TextStyle(color: Colors.white),
+                    style:
+                        TextStyle(color: Theme.of(context).colorScheme.surface),
                   ),
                 ),
               ),

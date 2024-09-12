@@ -20,7 +20,7 @@ class CalendarScreenState extends State<CalendarScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.calendar,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Center(

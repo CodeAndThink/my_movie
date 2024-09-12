@@ -54,7 +54,7 @@ class InformationScreenState extends State<InformationScreen> {
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context)!.userProfile,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         body: SingleChildScrollView(

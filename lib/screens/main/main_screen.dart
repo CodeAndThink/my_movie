@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_movie/screens/main/book_ticket/book_ticket_screen.dart';
 import 'package:my_movie/screens/main/home/home_screen.dart';
-import 'package:my_movie/screens/main/search/minigame/minigame_screen.dart';
 import 'package:my_movie/screens/main/notifications/notifications_screen.dart';
 import 'package:my_movie/screens/main/profile/profile_screen.dart';
 import 'package:my_movie/screens/main/search/search_screen.dart';
@@ -36,7 +36,7 @@ class MainScreenState extends State<MainScreen> {
     return [
       const HomeScreen(),
       const SearchScreen(),
-      const MinigameScreen(),
+      const BookTicketScreen(),
       const NotificationScreen(),
       const ProfileScreen(),
     ];
@@ -68,8 +68,8 @@ class MainScreenState extends State<MainScreen> {
                       label: AppLocalizations.of(context)!.search,
                     ),
                     BottomNavigationBarItem(
-                      icon: const Icon(Icons.games),
-                      label: AppLocalizations.of(context)!.miniGame,
+                      icon: const Icon(Icons.confirmation_number),
+                      label: AppLocalizations.of(context)!.bookTicket,
                     ),
                     BottomNavigationBarItem(
                       icon: notificationIcon,

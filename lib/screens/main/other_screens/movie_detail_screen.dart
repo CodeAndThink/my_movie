@@ -7,6 +7,7 @@ import 'package:my_movie/data/models/movie.dart';
 import 'package:my_movie/data/models/user.dart' as my_user;
 import 'package:my_movie/data/models/user_display_info.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
+import 'package:my_movie/screens/main/book_ticket/book_ticket_screen.dart';
 import 'package:my_movie/screens/main/other_screens/cast_and_crew_screen.dart';
 import 'package:my_movie/screens/main/other_screens/comment_screen.dart';
 import 'package:my_movie/screens/main/other_screens/list_items/comment_box.dart';
@@ -103,10 +104,26 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
     super.dispose();
   }
 
+  Widget _imageHolder(String imageUrl) {
+    return FadeInImage.assetNetwork(
+      placeholder: 'assets/images/placeholder.png',
+      image: movie.posterPath != null
+          ? Values.imageUrl + Values.imageSmall + imageUrl
+          : 'assets/images/placeholder.png',
+      fit: BoxFit.cover,
+      imageErrorBuilder: (context, error, stackTrace) {
+        return Image.asset(
+          'assets/images/placeholder.png',
+          fit: BoxFit.cover,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final cardWidth = screenSize.width;
+    final screenWidth = screenSize.width;
 
     return BlocListener<UserDataBloc, UserDataState>(
         listener: (context, state) {
@@ -115,6 +132,13 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
               userData = state.userData;
               if (userData.favoritesList.contains(widget.id)) {
                 buttonState = true;
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      AppLocalizations.of(context)!.addToFavoriteSuccess,
+                    ),
+                  ),
+                );
               } else {
                 buttonState = false;
               }
@@ -127,7 +151,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
           appBar: AppBar(
             title: Text(
               AppLocalizations.of(context)!.movieDetail,
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
           body: BlocBuilder<MovieBloc, MovieState>(
@@ -149,21 +173,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                 return Stack(
                   children: [
                     Positioned.fill(
-                      child: FadeInImage.assetNetwork(
-                        placeholder: 'assets/images/placeholder.png',
-                        image: movie.posterPath != null
-                            ? Values.imageUrl +
-                                Values.imageSmall +
-                                movie.posterPath!
-                            : 'assets/images/placeholder.png',
-                        fit: BoxFit.cover,
-                        imageErrorBuilder: (context, error, stackTrace) {
-                          return Image.asset(
-                            'assets/images/placeholder.png',
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      ),
+                      child: _imageHolder(movie.posterPath!),
                     ),
                     Positioned.fill(
                       child: Container(
@@ -189,26 +199,9 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                             Row(
                               children: [
                                 SizedBox(
-                                  width: 120,
-                                  height: 200,
-                                  child: FadeInImage.assetNetwork(
-                                    placeholder:
-                                        'assets/images/placeholder.png',
-                                    image: movie.posterPath != null
-                                        ? Values.imageUrl +
-                                            Values.imageSmall +
-                                            movie.posterPath!
-                                        : 'assets/images/placeholder.png',
-                                    fit: BoxFit.cover,
-                                    imageErrorBuilder:
-                                        (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/images/placeholder.png',
-                                        fit: BoxFit.cover,
-                                      );
-                                    },
-                                  ),
-                                ),
+                                    width: 120,
+                                    height: 200,
+                                    child: _imageHolder(movie.posterPath!)),
                                 const SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
@@ -439,7 +432,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                   children: [
                                     ConstrainedBox(
                                       constraints: BoxConstraints(
-                                        maxWidth: cardWidth * 0.6,
+                                        maxWidth: screenWidth * 0.6,
                                       ),
                                       child: Text(
                                         AppLocalizations.of(context)!
@@ -558,49 +551,69 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                     Positioned(
                         bottom: 10,
                         child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: ElevatedButton(
-                            onPressed: () {
-                              final List<int> userFavoriteList =
-                                  userData.favoritesList;
-                              final authBloc = context.read<AuthBloc>();
-                              final userId = authBloc.state is AuthAuthenticated
-                                  ? (authBloc.state as AuthAuthenticated).docId
-                                  : '';
-                              final userDataBloc = context.read<UserDataBloc>();
-                              if (userId.isNotEmpty) {
-                                if (userFavoriteList.contains(widget.id)) {
-                                  final newFavoriteList =
-                                      List<int>.from(userFavoriteList)
-                                        ..remove(widget.id);
-                                  userDataBloc.add(UpdateFavorite(
-                                      movieId: newFavoriteList,
-                                      userId: userId));
-                                } else {
-                                  final newFavoriteList =
-                                      List<int>.from(userFavoriteList)
-                                        ..add(widget.id);
-                                  userDataBloc.add(UpdateFavorite(
-                                      movieId: newFavoriteList,
-                                      userId: userId));
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  buttonState ? Colors.red : Colors.green,
-                              foregroundColor: Colors.white,
-                              minimumSize: Size(cardWidth - 20, 50),
-                            ),
-                            child: Text(
-                              buttonState
-                                  ? AppLocalizations.of(context)!
-                                      .removeFromFavorites
-                                  : AppLocalizations.of(context)!
-                                      .saveToFavorites,
-                            ),
-                          ),
-                        ))
+                            padding: const EdgeInsets.all(10),
+                            child: Row(
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const BookTicketScreen()));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    foregroundColor:
+                                        Theme.of(context).colorScheme.surface,
+                                    minimumSize: Size(screenWidth - 50, 50),
+                                  ),
+                                  child: Text(
+                                      AppLocalizations.of(context)!.watchMovie),
+                                ),
+                                IconButton(
+                                    onPressed: () {
+                                      final List<int> userFavoriteList =
+                                          userData.favoritesList;
+                                      final authBloc = context.read<AuthBloc>();
+                                      final userId =
+                                          authBloc.state is AuthAuthenticated
+                                              ? (authBloc.state
+                                                      as AuthAuthenticated)
+                                                  .docId
+                                              : '';
+                                      final saveFavoriteBloc =
+                                          context.read<UserDataBloc>();
+                                      if (userId.isNotEmpty) {
+                                        if (userFavoriteList
+                                            .contains(widget.id)) {
+                                          final newFavoriteList =
+                                              List<int>.from(userFavoriteList)
+                                                ..remove(widget.id);
+                                          saveFavoriteBloc.add(UpdateFavorite(
+                                              movieId: newFavoriteList,
+                                              userId: userId));
+                                        } else {
+                                          final newFavoriteList =
+                                              List<int>.from(userFavoriteList)
+                                                ..add(widget.id);
+                                          saveFavoriteBloc.add(UpdateFavorite(
+                                              movieId: newFavoriteList,
+                                              userId: userId));
+                                        }
+                                      }
+                                    },
+                                    icon: Icon(
+                                      Icons.favorite,
+                                      color: buttonState
+                                          ? Colors.red
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                    )),
+                              ],
+                            ))),
                   ],
                 );
               } else if (state is MovieError) {

@@ -23,7 +23,7 @@ class SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.settings,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary)),
+            style: Theme.of(context).textTheme.headlineMedium),
       ),
       body: BlocBuilder<SettingsBloc, SettingsState>(
         builder: (context, state) {

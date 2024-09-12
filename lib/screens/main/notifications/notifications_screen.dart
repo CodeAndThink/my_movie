@@ -76,7 +76,7 @@ class NotificationScreenState extends State<NotificationScreen> {
       children: [
         Text(
           AppLocalizations.of(context)!.notifications,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
         const Spacer(),
         IconButton(onPressed: () {}, icon: const Icon(Icons.clear_all))

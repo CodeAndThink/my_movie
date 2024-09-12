@@ -38,7 +38,7 @@ class MovieByActorScreenState extends State<MovieByActorScreen> {
       appBar: AppBar(
         title: Text(
           widget.actor.originalName,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: Column(

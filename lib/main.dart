@@ -6,11 +6,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:my_movie/data/connections/network/notification_service.dart';
 import 'package:my_movie/data/repository/auth_repository.dart';
+import 'package:my_movie/data/repository/gift_repository.dart';
 import 'package:my_movie/data/repository/movie_repository.dart';
 import 'package:my_movie/data/repository/quizz_repository.dart';
 import 'package:my_movie/screens/login/check_initial_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/auth_bloc/auth_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/comment_bloc/comment_bloc.dart';
+import 'package:my_movie/screens/main/viewmodel/gift_bloc/gift_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_genre_bloc.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/movie_bloc.dart';
@@ -36,6 +38,7 @@ void main() async {
   final authRepository = AuthRepository(FirebaseAuth.instance);
   final movieRepository = MovieRepository();
   final quizzRepository = QuizzRepository();
+  final giftRepository = GiftRepository();
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
@@ -46,6 +49,7 @@ void main() async {
           create: (context) => MainFetchMovieByCategoriesBloc(movieRepository)),
       BlocProvider(
           create: (context) => MainFetchMovieGenreBloc(movieRepository)),
+      BlocProvider(create: (context) => GiftBloc(giftRepository)),
       BlocProvider(create: (context) => SettingsBloc()),
       BlocProvider(create: (context) => UserDataBloc(authRepository)),
       BlocProvider(create: (context) => QuizzBloc(quizzRepository)),

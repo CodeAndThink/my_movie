@@ -160,13 +160,14 @@ class LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      foregroundColor: Colors.white,
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      foregroundColor: Theme.of(context).colorScheme.surface,
                       minimumSize: Size(screenWidth - 20, 50),
                     ),
                     child: Text(
                       AppLocalizations.of(context)!.logIn,
-                      style: const TextStyle(color: Colors.white),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.surface),
                     ),
                   ),
                   const SizedBox(height: 16.0),
@@ -186,7 +187,13 @@ class LoginScreenState extends State<LoginScreen> {
                       }
                     },
                     builder: (context, state) {
-                      return Container();
+                      if (state is AuthInProgress) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        return Container();
+                      }
                     },
                   ),
                   Column(

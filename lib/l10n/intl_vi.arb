@@ -283,5 +283,19 @@
   "loadCommentError": "Tải bình luận và đánh giá không thành công!",
   "loadNotificationsError": "Tải thông báo không thành công!",
   "delete": "Xóa",
-  "noCommentAvilable": "Không có bình luận nào!"
+  "noCommentAvilable": "Không có bình luận nào!",
+  "bookTicket": "Đặt vé xem phim",
+  "watchMovie": "Xem Phim",
+  "saveToFavoriteSuccess": "Lưu vào mục yêu thích thành công!",
+  "promotion": "Khuyến mãi",
+  "gift": "Quà lưu niệm",
+  "cinema": "Rạp chiếu",
+  "movie": "Phim",
+  "giftDetail": "Thông tin chi tiết sản phẩm",
+  "food": "Đồ ăn",
+  "loadGiftError": "Tải danh sách quà tặng không thành công!", 
+  "price": "Giá",
+  "source": "Nguồn gốc",
+  "quantity": "Số lượng",
+  "purchase": "Mua"
 }

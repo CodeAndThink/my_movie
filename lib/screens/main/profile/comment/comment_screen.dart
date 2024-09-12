@@ -46,7 +46,7 @@ class CommentScreenState extends State<CommentScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.comments,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: BlocBuilder<CommentBloc, CommentState>(

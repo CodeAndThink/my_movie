@@ -35,8 +35,7 @@ class DiceRollScreenState extends State<DiceRollScreen>
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        Navigator.of(context).popUntil((route) => route.isFirst);
-        Navigator.of(context).push(
+        Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => widget.nextScreen),
         );
       }

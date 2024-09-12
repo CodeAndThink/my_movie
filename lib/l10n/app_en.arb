@@ -283,5 +283,19 @@
   "loadCommentError": "Load Comments and Review failure!",
   "loadNotificationsError": "Load Notification failure!",
   "delete": "Delete",
-  "noCommentAvilable": "No Comment Available!"
+  "noCommentAvilable": "No Comment Available!",
+  "bookTicket": "Book Ticket",
+  "watchMovie": "Watch Movie",
+  "saveToFavoriteSuccess": "Save To Favorite Success!",
+  "promotion": "Promotion",
+  "gift": "Gift",
+  "cinema": "Cinema",
+  "movie": "Movie",
+  "giftDetail": "Gift Detail",
+  "food": "Food",
+  "loadGiftError": "Load Gift Failure", 
+  "price": "Price",
+  "source": "Source",
+  "quantity": "Quantity",
+  "purchase": "Purchase"
 }

@@ -71,8 +71,7 @@ class LoadingRandomScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is SearchByIdLoaded) {
             final resuilt = state.movie;
-
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) => DiceRollScreen(
                   nextScreen: MovieDetailScreen(movieId: resuilt.id),

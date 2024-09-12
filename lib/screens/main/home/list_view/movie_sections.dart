@@ -54,6 +54,8 @@ class MoviesSection extends StatelessWidget {
                   child: Text(
                     AppLocalizations.of(context)!.seeMore,
                     overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary),
                   ),
                 ),
               ),
