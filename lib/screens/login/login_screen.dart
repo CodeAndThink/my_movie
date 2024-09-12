@@ -88,13 +88,8 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(height: 30.0),
-                      Text(
-                        AppLocalizations.of(context)!.welcomeBack,
-                        style:
-                            Theme.of(context).textTheme.headlineLarge!.copyWith(
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                      ),
+                      Text(AppLocalizations.of(context)!.welcomeBack,
+                          style: Theme.of(context).textTheme.headlineLarge),
                     ],
                   )),
                 ),
@@ -134,8 +129,11 @@ class LoginScreenState extends State<LoginScreen> {
                                   builder: (context) =>
                                       const ForgotPasswordScreen()));
                         },
-                        child:
-                            Text(AppLocalizations.of(context)!.forgotPassword),
+                        child: Text(
+                          AppLocalizations.of(context)!.forgotPassword,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
+                        ),
                       ),
                     ],
                   ),
@@ -211,6 +209,8 @@ class LoginScreenState extends State<LoginScreen> {
                         ),
                         child: Text(
                           AppLocalizations.of(context)!.becomeNewMember,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.secondary),
                         ),
                       ),
                     ],

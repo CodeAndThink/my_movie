@@ -44,7 +44,7 @@ class AccountListScreenState extends State<AccountListScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final cardWidth = screenSize.width;
+    final screenWidth = screenSize.width;
     final cardHeight = screenSize.height;
 
     return Scaffold(
@@ -125,13 +125,14 @@ class AccountListScreenState extends State<AccountListScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(cardWidth - 20, 50),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  foregroundColor: Theme.of(context).colorScheme.surface,
+                  minimumSize: Size(screenWidth - 20, 50),
                 ),
                 child: Text(
                   AppLocalizations.of(context)!.moveToLogin,
-                  style: const TextStyle(color: Colors.white),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.surface),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

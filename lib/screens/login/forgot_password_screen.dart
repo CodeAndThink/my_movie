@@ -28,7 +28,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         appBar: AppBar(
           title: Text(
             AppLocalizations.of(context)!.forgotPassword,
-            style: TextStyle(color: Theme.of(context).colorScheme.primary),
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
         body: Padding(
@@ -83,13 +83,14 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green,
-                  foregroundColor: Colors.white,
-                  minimumSize: Size(cardWidth - 20, 50),
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  foregroundColor: Theme.of(context).colorScheme.surface,
+                  minimumSize: Size(MediaQuery.of(context).size.width - 20, 50),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.logIn,
-                  style: const TextStyle(color: Colors.white),
+                  AppLocalizations.of(context)!.sendCode,
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.surface),
                 ),
               ),
             ])));

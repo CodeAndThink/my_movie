@@ -297,5 +297,6 @@
   "price": "Price",
   "source": "Source",
   "quantity": "Quantity",
-  "purchase": "Purchase"
+  "purchase": "Purchase",
+  "sendCode": "Send Code"
 }

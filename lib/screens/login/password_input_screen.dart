@@ -39,7 +39,7 @@ class PasswordInputScreenState extends State<PasswordInputScreen> {
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.password,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: BlocListener<AuthBloc, AuthState>(

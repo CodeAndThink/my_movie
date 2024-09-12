@@ -24,14 +24,14 @@ class RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final cardWidth = screenSize.width;
+    final screenWidth = screenSize.width;
     final cardHeight = screenSize.height;
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
           AppLocalizations.of(context)!.register,
-          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          style: Theme.of(context).textTheme.headlineMedium,
         ),
       ),
       body: BlocConsumer<AuthBloc, AuthState>(
@@ -148,13 +148,16 @@ class RegisterScreenState extends State<RegisterScreen> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green,
-                          foregroundColor: Colors.white,
-                          minimumSize: Size(cardWidth - 20, 50),
+                          backgroundColor:
+                              Theme.of(context).colorScheme.secondary,
+                          foregroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          minimumSize: Size(screenWidth - 20, 50),
                         ),
                         child: Text(
                           AppLocalizations.of(context)!.register,
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.surface),
                         ),
                       ),
                       const SizedBox(height: 16.0),

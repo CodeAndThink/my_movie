@@ -297,5 +297,6 @@
   "price": "Giá",
   "source": "Nguồn gốc",
   "quantity": "Số lượng",
-  "purchase": "Mua"
+  "purchase": "Mua",
+  "sendCode": "Gửi mã"
 }
