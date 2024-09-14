@@ -7,7 +7,8 @@ class Gift {
   final int quantity;
   final String source;
   final DateTime mfgDate; // Manufacturing date
-  final DateTime? expDate; // Expiry date
+  final DateTime? expDate; // Expiry date, nullable
+  final String material;
 
   Gift({
     required this.name,
@@ -17,6 +18,7 @@ class Gift {
     required this.source,
     required this.mfgDate,
     this.expDate,
+    required this.material,
   });
 
   Map<String, dynamic> toJson() {
@@ -26,8 +28,9 @@ class Gift {
       'price': price,
       'quantity': quantity,
       'source': source,
-      'mfgDate': mfgDate.toIso8601String(),
-      'expDate': expDate?.toIso8601String(),
+      'mfgDate': Timestamp.fromDate(mfgDate),
+      'expDate': expDate != null ? Timestamp.fromDate(expDate!) : null,
+      'material': material,
     };
   }
 
@@ -36,12 +39,13 @@ class Gift {
       name: json['name'],
       url: List<String>.from(json['url']),
       price: json['price'],
-      quantity: int.parse(json['quantity']),
+      quantity: json['quantity'] as int,
       source: json['source'],
       mfgDate: (json['mfgDate'] as Timestamp).toDate(),
       expDate: json['expDate'] != null
           ? (json['expDate'] as Timestamp).toDate()
-          : null,
+          : DateTime.now(),
+      material: json['material'],
     );
   }
 }

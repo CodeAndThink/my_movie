@@ -12,7 +12,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: const ColorScheme.light(
         primary: Colors.blueAccent,
-        secondary: Colors.amber,
+        secondary: Colors.orange,
         surface: Colors.white,
       ),
       textTheme: const TextTheme(
@@ -60,7 +60,7 @@ class AppTheme {
       useMaterial3: true,
       colorScheme: const ColorScheme.dark(
         primary: Colors.blueAccent,
-        secondary: Colors.amber,
+        secondary: Colors.orange,
         surface: Colors.black,
       ),
       textTheme: const TextTheme(
@@ -68,19 +68,19 @@ class AppTheme {
           fontSize: 25.0,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.bold,
-          color: Colors.amber,
+          color: Colors.orange,
         ),
         headlineMedium: TextStyle(
           fontSize: 20.0,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.bold,
-          color: Colors.amber,
+          color: Colors.orange,
         ),
         headlineSmall: TextStyle(
           fontSize: 17.0,
           fontStyle: FontStyle.normal,
           fontWeight: FontWeight.bold,
-          color: Colors.amber,
+          color: Colors.orange,
         ),
       ),
       appBarTheme: const AppBarTheme(

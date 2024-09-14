@@ -1,4 +1,4 @@
-import 'package:my_movie/data/models/gift.dart';
+import 'package:my_movie/data/models/gift_item.dart';
 
 abstract class GiftState {}
 
@@ -7,7 +7,7 @@ class GiftInitial extends GiftState {}
 class GiftLoading extends GiftState {}
 
 class GiftLoaded extends GiftState {
-  final List<Gift> listGifts;
+  final List<GiftItem> listGifts;
 
   GiftLoaded(this.listGifts);
 }

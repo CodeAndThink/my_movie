@@ -30,10 +30,14 @@ class ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-    getUserData();
+    _getUserData();
   }
 
-  void getUserData() {
+  void _changeAvatar() {
+    
+  }
+
+  void _getUserData() {
     final authBloc = context.read<AuthBloc>();
     final userDataBloc = context.read<UserDataBloc>();
     final userId = authBloc.state is AuthAuthenticated

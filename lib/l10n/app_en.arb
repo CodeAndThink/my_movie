@@ -298,5 +298,21 @@
   "source": "Source",
   "quantity": "Quantity",
   "purchase": "Purchase",
-  "sendCode": "Send Code"
+  "sendCode": "Send Code",
+  "mfgDate": "Release Date",
+  "material": "Material",
+  "detailInformation": "Detail Information",
+  "shoppingCart": "Shopping Cart",
+  "loadOrderError": "Load Orders failure!",
+  "retry": "Retry",
+  "reconfirmOrder": "Reconfirm Order",
+  "shippingInformation": "Shipping information",
+  "shippingAddress" : "Shipping address",
+  "product": "Product",
+  "paymentMethod": "Payment method",
+  "deliveryTime": "Delivery time",
+  "paymentTime": "Payment time",
+  "contact": "Contact",
+  "returnRequest": "Return Request",
+  "pleaseEnterAnotherQuantity": "Please enter another quantity of product!"
 }

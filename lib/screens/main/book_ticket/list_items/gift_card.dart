@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:my_movie/data/models/gift.dart';
+import 'package:my_movie/data/models/gift_item.dart';
 
-class MovieAvailableCard extends StatelessWidget {
-  const MovieAvailableCard(
+class GiftCard extends StatelessWidget {
+  const GiftCard(
       {super.key, required this.onTap, required this.gift});
   final VoidCallback onTap;
-  final Gift gift;
+  final GiftItem gift;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class MovieAvailableCard extends StatelessWidget {
                   children: [
                     FadeInImage.assetNetwork(
                       placeholder: 'assets/images/placeholder.png',
-                      image: gift.url.first,
+                      image: gift.gift.url.first,
                       width: 150,
                       height: 200,
                       fit: BoxFit.fitWidth,
@@ -37,7 +37,7 @@ class MovieAvailableCard extends StatelessWidget {
                       },
                     ),
                     Text(
-                      gift.name,
+                      gift.gift.name,
                       style: Theme.of(context).textTheme.headlineSmall,
                       overflow: TextOverflow.ellipsis,
                     )

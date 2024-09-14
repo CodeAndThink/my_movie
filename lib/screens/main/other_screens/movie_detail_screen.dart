@@ -104,6 +104,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
     super.dispose();
   }
 
+//Widget of image box
   Widget _imageHolder(String imageUrl) {
     return FadeInImage.assetNetwork(
       placeholder: 'assets/images/placeholder.png',
@@ -120,11 +121,13 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
     );
   }
 
+//
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final screenWidth = screenSize.width;
 
+    //BlocListener of UserDataBloc for updating 'add to favorite' button
     return BlocListener<UserDataBloc, UserDataState>(
         listener: (context, state) {
           if (state is UserDataLoaded) {
@@ -172,9 +175,12 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
 
                 return Stack(
                   children: [
+                    //Background image
                     Positioned.fill(
                       child: _imageHolder(movie.posterPath!),
                     ),
+
+                    //Gradien color of background image
                     Positioned.fill(
                       child: Container(
                         decoration: BoxDecoration(
@@ -189,6 +195,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                         ),
                       ),
                     ),
+
+                    //Main
                     SingleChildScrollView(
                       child: Padding(
                         padding: const EdgeInsets.all(5),
@@ -208,6 +216,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      //Title of movie
                                       Text(
                                         movie.title,
                                         style: Theme.of(context)
@@ -216,6 +225,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
                                       ),
+
+                                      //Release date of movie
                                       Text(
                                         (movie.releaseDate != null &&
                                                 movie.releaseDate!.length >= 4
@@ -225,6 +236,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                             .textTheme
                                             .headlineSmall,
                                       ),
+
+                                      //Genres of movie
                                       Text(
                                         (movie.genres ?? [])
                                             .map((genre) => genre.name)
@@ -234,6 +247,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                             .bodyMedium,
                                       ),
                                       const SizedBox(height: 20),
+
+                                      //Rating of movie
                                       Row(
                                         children: [
                                           Expanded(
@@ -241,6 +256,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
+                                                //Rating star bar
                                                 RatingBar.builder(
                                                   initialRating:
                                                       (movie.voteAverage / 2)
@@ -260,6 +276,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                                   ),
                                                   onRatingUpdate: (rating) {},
                                                 ),
+
+                                                //Rating score
                                                 Text(
                                                   movie.voteAverage
                                                       .toStringAsFixed(1),
@@ -278,21 +296,28 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
+
                             const SizedBox(
                               height: 15,
                             ),
+
+                            //Title of Trailer part
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                //Title
                                 Text(
                                   AppLocalizations.of(context)!.trailer,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium,
                                 ),
+
                                 const SizedBox(
                                   height: 15,
                                 ),
+
+                                //Youtube screen
                                 Container(
                                   height: 200,
                                   color: Colors.black,
@@ -306,19 +331,26 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
+
                             const SizedBox(
                               height: 15,
                             ),
+
+                            //Cast and Crew part
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                //Title
                                 Text(
                                   AppLocalizations.of(context)!.castAndCrew,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium,
                                 ),
+
                                 const SizedBox(height: 12),
+
+                                //List of crew and cast
                                 SizedBox(
                                   height: 220,
                                   child: ListView.builder(
@@ -352,19 +384,26 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
+
                             const SizedBox(
                               height: 15,
                             ),
+
+                            //Overview part
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                //Title
                                 Text(
                                   AppLocalizations.of(context)!.overview,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium,
                                 ),
+
                                 const SizedBox(height: 12),
+
+                                //Overview content
                                 Text(
                                   movie.overview ?? '',
                                   style: Theme.of(context).textTheme.bodySmall,
@@ -372,9 +411,11 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
+
                             const SizedBox(
                               height: 15,
                             ),
+
                             //Comments part area
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -386,7 +427,10 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                       .textTheme
                                       .headlineMedium,
                                 ),
+
                                 const SizedBox(height: 12),
+
+                                //Comment edit text box and send button
                                 Row(
                                   children: [
                                     Expanded(
@@ -407,6 +451,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                         border: const OutlineInputBorder(),
                                       ),
                                     )),
+
+                                    //Send comment button
                                     IconButton(
                                       onPressed: () => {
                                         context
@@ -427,6 +473,7 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                     ),
                                   ],
                                 ),
+
                                 //Like, dislike and unsure comments
                                 Row(
                                   children: [
@@ -434,13 +481,18 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                       constraints: BoxConstraints(
                                         maxWidth: screenWidth * 0.6,
                                       ),
+
+                                      //Title
                                       child: Text(
                                         AppLocalizations.of(context)!
                                             .doYouLikeThisMovie,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ),
+
                                     const Spacer(),
+
+                                    //Like button
                                     IconButton(
                                       onPressed: () => {favoriteLevel = 1},
                                       icon: const Icon(
@@ -448,6 +500,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                         color: Colors.blue,
                                       ),
                                     ),
+
+                                    //Dislike button
                                     IconButton(
                                       onPressed: () => {favoriteLevel = 2},
                                       icon: const Icon(
@@ -459,18 +513,24 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                 ),
                               ],
                             ),
+
+                            //List comments of currently user
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
                                   children: [
+                                    //Title
                                     Text(
                                       AppLocalizations.of(context)!.rates,
                                       style: Theme.of(context)
                                           .textTheme
                                           .headlineMedium,
                                     ),
+
                                     const Spacer(),
+
+                                    //Move to Comment Screen button
                                     TextButton(
                                         onPressed: () => {
                                               Navigator.push(
@@ -486,13 +546,17 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                             },
                                         child: Text(
                                           AppLocalizations.of(context)!.details,
-                                          style: const TextStyle(
-                                              color: Colors.blueAccent),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary),
                                         ))
                                   ],
                                 ),
                               ],
                             ),
+                            
+                            //BlocBuilder of 'add to favorite button'
                             BlocBuilder<CommentBloc, CommentState>(
                                 builder: (context, state) {
                               if (state is CommentLoading) {
@@ -548,12 +612,15 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                         ),
                       ),
                     ),
+
+                    //Watch movie and add to favorite list
                     Positioned(
                         bottom: 10,
                         child: Padding(
                             padding: const EdgeInsets.all(10),
                             child: Row(
                               children: [
+                                //'Watch movie'
                                 ElevatedButton(
                                   onPressed: () {
                                     Navigator.push(
@@ -572,6 +639,8 @@ class MovieDetailScreenState extends State<MovieDetailScreenView> {
                                   child: Text(
                                       AppLocalizations.of(context)!.watchMovie),
                                 ),
+
+                                //Add to favorite button
                                 IconButton(
                                     onPressed: () {
                                       final List<int> userFavoriteList =

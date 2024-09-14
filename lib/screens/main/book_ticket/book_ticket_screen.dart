@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:my_movie/data/models/movie.dart';
 import 'package:my_movie/screens/main/book_ticket/gift_store_screen.dart';
 import 'package:my_movie/screens/main/book_ticket/list_cinema_screen.dart';
 import 'package:my_movie/screens/main/book_ticket/now_playing_movie_screen.dart';
+import 'package:my_movie/screens/main/book_ticket/shopping_list_screen.dart';
 import 'package:my_movie/screens/main/home/list_items/large_card.dart';
 import 'package:my_movie/screens/main/notifications/notifications_screen.dart';
 import 'package:my_movie/screens/main/viewmodel/movie_bloc/main_fetch_movie_by_categories_bloc.dart';
@@ -21,6 +23,7 @@ class BookTicketScreen extends StatefulWidget {
 
 class BookTicketScreenState extends State<BookTicketScreen> {
   late final PageController _pageController;
+
   final int _infiniteScrollFactor = 20;
 
   @override
@@ -29,6 +32,7 @@ class BookTicketScreenState extends State<BookTicketScreen> {
     _pageController = PageController(
       viewportFraction: 1.0,
     );
+
     _loadAllCategories();
   }
 
@@ -156,43 +160,57 @@ class BookTicketScreenState extends State<BookTicketScreen> {
                             return Center(
                                 child: Text('Error: ${state.message}'));
                           } else {
-                            return const Center(
-                                child: Text('No data available'));
+                            return Center(
+                                child: Text(AppLocalizations.of(context)!
+                                    .noMoviesAvailable));
                           }
                         },
                       ))),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(8),
                 child: Card(
                   elevation: 2,
                   child: SizedBox(
-                    height: 80,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        _subNavigationButton(
-                            context,
-                            Icons.movie,
-                            const NowPlayingMovieScreen(),
-                            AppLocalizations.of(context)!.movie),
-                        _subNavigationButton(
-                            context,
-                            Icons.redeem,
-                            const GiftStoreScreen(),
-                            AppLocalizations.of(context)!.gift),
-                        _subNavigationButton(
-                            context,
-                            Icons.local_movies,
-                            const ListCinemaScreen(),
-                            AppLocalizations.of(context)!.cinema),
-                        _subNavigationButton(
-                            context,
-                            Icons.percent,
-                            const NotificationScreen(),
-                            AppLocalizations.of(context)!.promotion),
-                      ],
-                    ),
-                  ),
+                      height: 160,
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _subNavigationButton(
+                                  context,
+                                  FontAwesomeIcons.video,
+                                  const NowPlayingMovieScreen(),
+                                  AppLocalizations.of(context)!.movie),
+                              _subNavigationButton(
+                                  context,
+                                  FontAwesomeIcons.gifts,
+                                  const GiftStoreScreen(),
+                                  AppLocalizations.of(context)!.gift),
+                              _subNavigationButton(
+                                  context,
+                                  FontAwesomeIcons.film,
+                                  const ListCinemaScreen(),
+                                  AppLocalizations.of(context)!.cinema),
+                              _subNavigationButton(
+                                  context,
+                                  FontAwesomeIcons.percent,
+                                  const NotificationScreen(),
+                                  AppLocalizations.of(context)!.promotion),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              _subNavigationButton(
+                                  context,
+                                  FontAwesomeIcons.cartShopping,
+                                  const ShoppingListScreen(),
+                                  AppLocalizations.of(context)!.shoppingCart),
+                            ],
+                          ),
+                        ],
+                      )),
                 ),
               )
             ],

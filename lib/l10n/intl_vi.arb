@@ -298,5 +298,21 @@
   "source": "Nguồn gốc",
   "quantity": "Số lượng",
   "purchase": "Mua",
-  "sendCode": "Gửi mã"
+  "sendCode": "Gửi mã",
+  "mfgDate": "Ngày sản xuất",
+  "material": "Vật liệu",
+  "detailInformation": "Thông tin sản phẩm",
+  "shoppingCart": "Giỏ đồ",
+  "loadOrderError": "Tải đơn hàng không thành công!",
+  "retry": "Tải lại",
+  "reconfirmOrder": "Xác nhận lại hóa đơn",
+  "shippingInformation": "Thông tin vận chuyển",
+  "shippingAddress" : "Địa chỉ nhận hàng",
+  "product": "Sản phẩm",
+  "paymentMethod": "Phương thức thanh toán",
+  "deliveryTime": "Thời gian vận chuyển",
+  "paymentTime": "Thời gian thanh toán",
+  "contact": "Liên hệ",
+  "returnRequest": "Yêu cầu trả hàng",
+  "pleaseEnterAnotherQuantity": "Vui lòng chọn số lượng sản phẩm!"
 }

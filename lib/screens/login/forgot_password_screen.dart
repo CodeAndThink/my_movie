@@ -21,8 +21,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final cardWidth = screenSize.width;
-    final cardHeight = screenSize.height;
+    final screenHeight = screenSize.height;
 
     return Scaffold(
         appBar: AppBar(
@@ -35,7 +34,7 @@ class ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             padding: const EdgeInsets.all(16),
             child: Column(children: [
               SizedBox(
-                height: cardHeight * 0.3,
+                height: screenHeight * 0.3,
                 child: Center(
                     child: Card(
                         elevation: 5,
